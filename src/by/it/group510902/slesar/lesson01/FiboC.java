@@ -21,12 +21,31 @@ public class FiboC {
         return System.currentTimeMillis() - startTime;
     }
 
-    long fasterC(long n, int m) {
+    long fasterC(int n, int m) {
         //Интуитивно найти решение не всегда просто и
         //возможно потребуется дополнительный поиск информации
-        return -1L;
+        if (n <= 1) return n % m;
+
+        long[] fibost = new long[(m*m+1)*2];
+
+        fibost[0] = 0;
+        fibost[1] = 1;
+
+        int period = 0;
+
+        for (int i = 2; i < fibost.length; i++) {
+            fibost[i] = (fibost[i - 1] + fibost[i - 2]) % m;
+
+            if (fibost[i - 1] == 0 && fibost[i] == 1) {
+                period = i - 1;
+                break;
+            }
+        }
+
+        if (period > 0) {
+            n = n % period;
+        }
+
+        return fibost[n];
     }
-
-
 }
-
