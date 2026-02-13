@@ -26,7 +26,7 @@ public class FiboC {
         //возможно потребуется дополнительный поиск информации
         if (n <= 1) return n % m;
 
-        long[] fibost = new long[(m*m+1)*2];
+        long[] fibost = new long[(m*m+1)];
 
         fibost[0] = 0;
         fibost[1] = 1;
