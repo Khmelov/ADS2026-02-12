@@ -24,6 +24,7 @@ public class FiboC {
     long fasterC(long n, int m) {
         //Интуитивно найти решение не всегда просто и
         //возможно потребуется дополнительный поиск информации
+<<<<<<< HEAD
         if (n == 0 || n == 1)
             return n;
         if (m == 1)
@@ -55,9 +56,4 @@ public class FiboC {
         }
         return Arr[FiboNumber] % m; // Фактически возвращаем остаток от деления F(n) на m
     }
-
-    
-
-
-}
 
