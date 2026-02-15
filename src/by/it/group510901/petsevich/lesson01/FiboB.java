@@ -1,4 +1,4 @@
-package by.it.group510901.piatsevich.lesson01;
+package by.it.group510901.petsevich.lesson01;
 
 import java.math.BigInteger;
 
