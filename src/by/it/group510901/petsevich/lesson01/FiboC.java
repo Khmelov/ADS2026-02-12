@@ -42,8 +42,7 @@ public class FiboC {
         return period;
     }
 
-    long getFibonacciWithPisano(long n, int m)
-    {
+    long fasterC(long n, int m) {
         long period = getPisanoPeriod(m);
         n = n % period;
 
@@ -58,10 +57,6 @@ public class FiboC {
         }
 
         return b;
-    }
-
-    long fasterC(long n, int m) {
-        return getFibonacciWithPisano(n, m);
     }
 
 
