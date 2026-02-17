@@ -28,18 +28,19 @@ public class FiboB {
             return BigInteger.ZERO;
         if (n == 1)
             return BigInteger.ONE;
-        int i;
-        BigInteger first = BigInteger.ZERO;
-        BigInteger second = BigInteger.ONE;
-        BigInteger third = BigInteger.ZERO;
-        for (i = 0; i <= n - 2; i++) {
-            third = BigInteger.ZERO;
-            third = third.add(first);
-            third = third.add(second);
-            first = second;
-            second = third;
+
+        ArrayList<BigInteger> fib = new ArrayList<>();
+        BigInteger last;
+        fib.add(BigInteger.ZERO);
+        fib.add(BigInteger.ONE);
+
+        for (int i = 2; i <= n; i++) {
+            last = BigInteger.ZERO;
+            last = last.add(fib.get(i - 1));
+            last = last.add(fib.get(i - 2));
+            fib.add(last);
         }
-        return third;
+        return fib.getLast();
     }
 
 }
