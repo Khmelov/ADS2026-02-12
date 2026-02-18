@@ -1,4 +1,4 @@
-package by.it.a_khmelev.lesson01;
+package by.it.group551004.kruk.lesson01;
 
 /*
  * Даны целые числа 1<=n<=1E18 и 2<=m<=1E5,
@@ -22,11 +22,43 @@ public class FiboC {
     }
 
     long fasterC(long n, int m) {
-        //Интуитивно найти решение не всегда просто и
-        //возможно потребуется дополнительный поиск информации
-        return -1L;
+
+        if (n == 0) return 0;
+        if (n == 1) return 1;
+
+        int prev = 0;
+        int curr = 1;
+        int period = 0;
+
+
+
+        for (int i = 0; i < m * 6; i++) {
+            int temp = (prev + curr) % m;
+            prev = curr;
+            curr = temp;
+
+            if (prev == 0 && curr == 1) {
+                period = i + 1;
+            }
+        }
+
+        long reduced_n = n % period;
+
+        long a = 0;
+        long b = 1;
+        long answer = 0;
+
+        for (int i = 2; i <= reduced_n; i++) {
+            answer = (a + b) % m;
+            a = b;
+            b = answer;
+        }
+
+        return answer;
     }
-
-
 }
+
+
+
+
 
