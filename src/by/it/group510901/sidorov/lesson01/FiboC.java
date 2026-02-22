@@ -24,7 +24,30 @@ public class FiboC {
     long fasterC(long n, int m) {
         //Интуитивно найти решение не всегда просто и
         //возможно потребуется дополнительный поиск информации
-        return -1L;
+        long[] per = new long[m * 6];
+        per[0] = 0;
+        per[1] = 1;
+        int perLength = 0;
+
+        for (int i = 2; i < per.length; i++) {
+            per[i] = (per[i - 1] + per[i - 2]) % m;
+            if (per[i - 1] == 0 && per[i] == 1) {
+                perLength = i - 1;
+                break;
+            }
+        }
+
+        long remain = n % perLength;
+
+        long a = 0, b = 1, c = 0;
+        if (remain == 0) return 0;
+        for (int i = 2; i <= remain; i++) {
+            c = (a + b) % m;
+            a = b;
+            b = c;
+        }
+
+        return b;
     }
 
 
