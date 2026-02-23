@@ -22,9 +22,30 @@ public class FiboC {
     }
 
     long fasterC(long n, int m) {
-        //Интуитивно найти решение не всегда просто и
-        //возможно потребуется дополнительный поиск информации
-        return -1L;
+        if (n == 0) return 0;
+        if (n == 1 || n == 2) return 1 % m;
+
+        // Находим период Пизано π(m)
+        int a = 0, b = 1;
+        long period = 0;
+        do {
+            int temp = (a + b) % m;
+            a = b;
+            b = temp;
+            period++;
+        } while (!(a == 0 && b == 1));
+
+        // Вычисляем F(n % period) mod m
+        long k = n % period;
+        if (k == 0) k = period;
+
+        long prev = 0, curr = 1;
+        for (long i = 2; i <= k; i++) {
+            long temp = (prev + curr) % m;
+            prev = curr;
+            curr = temp;
+        }
+        return curr;
     }
 
 
