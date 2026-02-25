@@ -1,4 +1,4 @@
-package by.it.group510901.poltorak.lesson01;
+package by.it.group510901.poltorak;
 
 import org.junit.Test;
 
