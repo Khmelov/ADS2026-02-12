@@ -1,4 +1,4 @@
-package by.it.group510901.poltorak;
+package by.it.group510901.poltorak.lesson01;
 
 import java.math.BigInteger;
 
