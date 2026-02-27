@@ -39,10 +39,10 @@ public class C_GreedyKnapsack {
             System.out.println(item);
         }
         System.out.printf("Всего предметов: %d. Рюкзак вмещает %d кг.\n", n, W);
-
         //тут необходимо реализовать решение задачи
         //итогом является максимально воможная стоимость вещей в рюкзаке
         //вещи можно резать на кусочки (непрерывный рюкзак)
+
         double result = 0;
         //тут реализуйте алгоритм сбора рюкзака
         //будет особенно хорошо, если с собственной сортировкой
@@ -50,9 +50,51 @@ public class C_GreedyKnapsack {
 
         //ваше решение.
 
+        sort(items, 0, n);
+
+        int currentW = 0;
+
+        for (Item item:items) {
+            if (item.weight <= W-currentW) { //если предмет вмещается целиком
+                result += item.cost; //добавляем цену товара к общей стоимости
+                currentW += item.weight;
+            }
+            else { //если целиком не влезат(по частям)
+                result += item.coeff() * (W-currentW); //добавляем к стоимости ровно столько сколько влезает
+                currentW = W;
+                break;
+            }
+        }
 
         System.out.printf("Удалось собрать рюкзак на сумму %f\n", result);
         return result;
+    }
+
+    static Item[] sort(Item[] items, int left, int right) {
+
+        if (left >= right - 1) { return null;} //базовый случай
+
+        int basepoint = (right+left)/2;
+        Item base = items[basepoint];
+
+        int pointer = left;
+
+        for (int i = left; i < right; i++){
+            if (items[i].compareTo(base) < 0) {
+                Item temp = items[pointer];
+                items[pointer] = items[i];
+                items[i] = temp;
+                if (pointer == basepoint) {basepoint = i;}
+                pointer++;
+            }
+        }
+        Item temp = items[pointer];
+        items[pointer] = items[basepoint];
+        items[basepoint] = temp;
+
+        sort(items, left, pointer);
+        sort(items, pointer+1, right);
+        return items;
     }
 
     private static class Item implements Comparable<Item> {
@@ -62,6 +104,10 @@ public class C_GreedyKnapsack {
         Item(int cost, int weight) {
             this.cost = cost;
             this.weight = weight;
+        }
+
+        double coeff() {
+            return (double)cost/weight;
         }
 
         @Override
@@ -75,9 +121,7 @@ public class C_GreedyKnapsack {
         @Override
         public int compareTo(Item o) {
             //тут может быть ваш компаратор
-
-
-            return 0;
+            return Double.compare(o.coeff(), this.coeff());
         }
     }
 }
