@@ -1,7 +1,5 @@
 package by.it.group510901.sinyak.lesson02;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.*;
 import java.util.Comparator;
 
@@ -28,6 +26,7 @@ public class B_Sheduler {
     }
 
     List<Event> calcStartTimes(Event[] events, int from, int to) {
+
         //Events - события которые нужно распределить в аудитории
         //в период [from, int] (включительно).
         //оптимизация проводится по наибольшему числу непересекающихся событий.
