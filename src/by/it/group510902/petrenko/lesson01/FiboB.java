@@ -1,4 +1,5 @@
-package by.it.a_khmelev.lesson01;
+package by.it.group510902.petrenko.lesson01;
+
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -24,9 +25,21 @@ public class FiboB {
     }
 
     BigInteger fastB(Integer n) {
-        //здесь нужно реализовать вариант с временем O(n) и памятью O(n)
-        return BigInteger.valueOf(-1L);
+        if (n <= 1) return BigInteger.valueOf(n);
+
+        BigInteger prev = BigInteger.ZERO; // 0
+        BigInteger curr = BigInteger.ONE;  // 1
+
+        for (int i = 2; i <= n; i++) {
+            BigInteger next = prev.add(curr);
+            prev = curr;
+            curr = next;
+        }
+
+        return curr;
+
     }
+
 
 }
 

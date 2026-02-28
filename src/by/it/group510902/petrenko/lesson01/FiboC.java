@@ -1,4 +1,5 @@
-package by.it.a_khmelev.lesson01;
+package by.it.group510902.petrenko.lesson01;
+
 
 /*
  * Даны целые числа 1<=n<=1E18 и 2<=m<=1E5,
@@ -22,9 +23,25 @@ public class FiboC {
     }
 
     long fasterC(long n, int m) {
-        //Интуитивно найти решение не всегда просто и
-        //возможно потребуется дополнительный поиск информации
-        return -1L;
+        if (n <= 1) return n;
+
+        java.util.ArrayList<Long> leftovers = new java.util.ArrayList<>();
+        leftovers.add(0L);
+        leftovers.add(1L);
+
+        for (int i = 2; i <= 6 * m; i++) {
+            leftovers.add((leftovers.get(i - 1) + leftovers.get(i - 2)) % m);
+            if (leftovers.get(i) == 1 && leftovers.get(i - 1) == 0) {
+                leftovers.remove(leftovers.size() - 1);
+                leftovers.remove(leftovers.size() - 1);
+
+                long periodLength = leftovers.size();
+                int targetIndex = (int) (n % periodLength);
+                return leftovers.get(targetIndex);
+            }
+        }
+
+        return leftovers.get((int) (n % leftovers.size()));
     }
 
 
