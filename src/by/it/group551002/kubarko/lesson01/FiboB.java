@@ -1,4 +1,4 @@
-package by.it.group551002.kubarko;
+package by.it.group551002.kubarko.lesson01;
 
 import java.math.BigInteger;
 

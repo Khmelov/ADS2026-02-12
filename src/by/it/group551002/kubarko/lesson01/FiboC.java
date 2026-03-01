@@ -1,4 +1,4 @@
-package by.it.group551002.kubarko;
+package by.it.group551002.kubarko.lesson01;
 
 /*
  * Даны целые числа 1<=n<=1E18 и 2<=m<=1E5,
@@ -6,8 +6,6 @@ package by.it.group551002.kubarko;
  * время расчета должно быть не более 2 секунд
  */
 
-import java.math.BigInteger;
-import java.sql.Array;
 import java.util.ArrayList;
 
 public class FiboC {
