@@ -2,6 +2,8 @@ package by.it.group551001.bondarenko.lesson02;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
+import java.util.Comparator;
 /*
 Даны интервальные события events
 реализуйте метод calcStartTimes, так, чтобы число принятых к выполнению
@@ -32,6 +34,16 @@ public class B_Sheduler {
         List<Event> result;
         result = new ArrayList<>();
         //ваше решение.
+        Arrays.sort(events, Comparator.comparingInt(event -> event.stop));
+        int lastEnd = from;
+        for(Event event : events) {
+            if (event.start >= from && event.stop <= to) {
+                if (event.start >= lastEnd) {
+                    result.add(event);
+                    lastEnd = event.stop;
+                }
+            }
+        }
 
 
         return result;          //вернем итог
