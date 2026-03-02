@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
-
 public class Lesson02Test {
     /*
     для прохождения тестов создайте JUnit-конфигурацию на свой пакет:
