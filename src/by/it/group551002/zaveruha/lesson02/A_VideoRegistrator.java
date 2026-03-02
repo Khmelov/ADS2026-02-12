@@ -38,6 +38,16 @@ public class A_VideoRegistrator {
         //и теперь пропустим все покрываемые события
         //за время до конца работы, увеличивая индекс
 
+        java.util.Arrays.sort(events);
+        int n = events.length;
+        while (i < n) {
+            double start = events[i];
+            double end = start + workDuration;
+            result.add(start);
+            while (i < n && events[i] <= end) {
+                i++;
+            }
+        }
 
         return result;                        //вернем итог
     }
