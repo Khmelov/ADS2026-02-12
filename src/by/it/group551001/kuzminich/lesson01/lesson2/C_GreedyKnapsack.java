@@ -26,7 +26,6 @@ public class C_GreedyKnapsack {
         long finishTime = System.currentTimeMillis();
         System.out.printf("Общая стоимость %f (время %d)", costFinal, finishTime - startTime);
     }
-
     double calc(InputStream inputStream) throws FileNotFoundException {
         Scanner input = new Scanner(inputStream);
         int n = input.nextInt();      //сколько предметов в файле
@@ -40,7 +39,6 @@ public class C_GreedyKnapsack {
             System.out.println(item);
         }
         System.out.printf("Всего предметов: %d. Рюкзак вмещает %d кг.\n", n, W);
-
         Arrays.sort(items);
         //тут необходимо реализовать решение задачи
         //итогом является максимально воможная стоимость вещей в рюкзаке
@@ -66,13 +64,9 @@ public class C_GreedyKnapsack {
             }
 
             }
-
-
-
         System.out.printf("Удалось собрать рюкзак на сумму %f\n", result);
         return result;
     }
-
     private static class Item implements Comparable<Item> {
         int cost;
         int weight;
@@ -81,7 +75,6 @@ public class C_GreedyKnapsack {
             this.cost = cost;
             this.weight = weight;
         }
-
         @Override
         public String toString() {
             return "Item{" +
@@ -89,7 +82,6 @@ public class C_GreedyKnapsack {
                    ", weight=" + weight +
                    '}';
         }
-
         @Override
         public int compareTo(Item o) {
             //тут может быть ваш компаратор
@@ -100,8 +92,6 @@ public class C_GreedyKnapsack {
 
             if (this_object > next_object) return -1;
             if (this_object < next_object) return 1;
-
-
             return 0;
         }
     }

@@ -1,6 +1,4 @@
 package by.it.group551001.kuzminich.lesson01.lesson2;
-
-
 import java.util.ArrayList;
 import java.util.List;
 /*
@@ -9,7 +7,6 @@ import java.util.List;
 непересекающихся событий было максимально.
 Алгоритм жадный. Для реализации обдумайте надежный шаг.
 */
-
 public class B_Sheduler {
     public static void main(String[] args) {
         B_Sheduler instance = new B_Sheduler();
@@ -24,7 +21,6 @@ public class B_Sheduler {
         List<Event> starts = instance.calcStartTimes(events, 0, 10);  //рассчитаем оптимальное заполнение аудитории
         System.out.println(starts);                                 //покажем рассчитанный график занятий
     }
-
     List<Event> calcStartTimes(Event[] events, int from, int to) {
         //Events - события которые нужно распределить в аудитории
         //в период [from, int] (включительно).
@@ -39,9 +35,7 @@ public class B_Sheduler {
                 good_events.add(events[i]);
             }
         }// массив корректных по диапазонам периодов
-
         good_events.sort((a,b)->a.stop-b.stop);
-
         int last_end = from;
         for (int i=0; i<good_events.size(); i++){
             Event curr_event = good_events.get(i);
@@ -50,22 +44,16 @@ public class B_Sheduler {
                 last_end = curr_event.stop;
             }
         }
-
-
-
         return result;          //вернем итог
     }
-
     //событие у аудитории(два поля: начало и конец)
     static class Event {
         int start;
         int stop;
-
         Event(int start, int stop) {
             this.start = start;
             this.stop = stop;
         }
-
         @Override
         public String toString() {
             return "(" + start + ":" + stop + ")";
