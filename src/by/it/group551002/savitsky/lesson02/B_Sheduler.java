@@ -1,6 +1,7 @@
 package by.it.group551002.savitsky.lesson02;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 /*
 Даны интервальные события events
@@ -24,6 +25,39 @@ public class B_Sheduler {
         System.out.println(starts);                                 //покажем рассчитанный график занятий
     }
 
+    void swap(Event[] arr, int i, int j){
+        Event temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
+    int partition(Event[] arr, int low, int high){
+
+        int pivot = arr[high].stop;
+        int i = low - 1;
+
+        for (int j = low; j < high; j++){
+            if (arr[j].stop <= pivot){
+                i++;
+                swap(arr, i, j);
+            }
+        }
+
+        swap(arr, i+1, high);
+
+        return i+1;
+    }
+
+    void Quicksort(Event[] arr, int low, int high){
+        if (low < high){
+
+            int Pivotindex = partition(arr, low, high);
+
+            Quicksort(arr, low, Pivotindex-1);
+            Quicksort(arr,Pivotindex+1, high);
+        }
+    }
+
     List<Event> calcStartTimes(Event[] events, int from, int to) {
         //Events - события которые нужно распределить в аудитории
         //в период [from, int] (включительно).
@@ -33,6 +67,15 @@ public class B_Sheduler {
         result = new ArrayList<>();
         //ваше решение.
 
+        Quicksort(events, 0, events.length - 1);
+
+        int laststop = from;
+        for (int i = 0; i < events.length; i++){
+            if (events[i].start >= laststop) {
+                result.add(events[i]);
+                laststop = events[i].stop;
+            }
+        }
 
         return result;          //вернем итог
     }

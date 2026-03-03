@@ -26,6 +26,37 @@ public class C_GreedyKnapsack {
         System.out.printf("Общая стоимость %f (время %d)", costFinal, finishTime - startTime);
     }
 
+    void swap(Item[] arr, int i, int j){
+        Item temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
+    int partition(Item[] arr, int low, int high){
+        int pivot = arr[high].cost / arr[high].weight;
+        int i = low - 1;
+
+        for(int j = low; j < high; j++){
+            if(arr[j].cost / arr[j].weight >= pivot){
+                i++;
+                swap(arr, i, j);
+            }
+        }
+
+        swap(arr, i+1, high);
+
+        return i+1;
+    }
+
+    void quicksort(Item[] arr, int low, int high){
+        if(low < high) {
+            int pivotindex = partition(arr, low, high);
+
+            quicksort(arr, low, pivotindex - 1);
+            quicksort(arr, pivotindex + 1, high);
+        }
+    }
+
     double calc(InputStream inputStream) throws FileNotFoundException {
         Scanner input = new Scanner(inputStream);
         int n = input.nextInt();      //сколько предметов в файле
@@ -50,6 +81,20 @@ public class C_GreedyKnapsack {
 
         //ваше решение.
 
+        quicksort(items, 0, items.length-1);
+
+        int i = 0;
+        while (i < items.length && W != 0) {
+            if (items[i].weight > W){
+                result = result + (double)W * items[i].cost/items[i].weight;
+                W = 0;
+            }
+            else{
+                result = result + items[i].cost;
+                W = W - items[i].weight;
+            }
+            i = i+1;
+        }
 
         System.out.printf("Удалось собрать рюкзак на сумму %f\n", result);
         return result;
