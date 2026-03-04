@@ -40,6 +40,7 @@ public class FiboA {
 
         if (n <2) return n;
 
+
         for (i = 1; i < n; i++) {
             x3 = x1 + x2;
             x1 = x2;

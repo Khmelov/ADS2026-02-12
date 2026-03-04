@@ -32,6 +32,7 @@ public class FiboC {
         long range;
         answer = 1;
 
+
         if (n + 1 > 6 * m + 2)
             range = 6 * m + 2;
         else
