@@ -22,8 +22,6 @@ public class FiboC {
     }
 
     long fasterC(long n, int m) {
-        //Интуитивно найти решение не всегда просто и
-        //возможно потребуется дополнительный поиск информации
         if (n < 2) return n;
         int pisanoPeriod = 0, lim = 6 * m, size = lim + 2; // п(m)<=6m - период Пизано не превышает 6m
         int[] pisanoArr = new int[size];

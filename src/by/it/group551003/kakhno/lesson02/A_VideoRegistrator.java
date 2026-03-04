@@ -1,4 +1,4 @@
-package by.it.group551003.kakhno.lesson01.lesson02;
+package by.it.group551003.kakhno.lesson02;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package by.it.group551003.kakhno.lesson01.lesson02;
+package by.it.group551003.kakhno.lesson02;
 /*
 Даны
 1) объем рюкзака 4
