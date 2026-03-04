@@ -22,9 +22,24 @@ public class FiboC {
     }
 
     long fasterC(long n, int m) {
-        //Интуитивно найти решение не всегда просто и
-        //возможно потребуется дополнительный поиск информации
-        return -1L;
+        int period=2;
+        int n_reduced;
+        int[] fib=new int[6*m+2];
+        boolean notFound=true;
+        if (m==1) return 0;
+        if (n<=1) return n;
+        fib[0]=0;
+        fib[1]=1;
+        do
+        {
+            fib[period]=(fib[period-1]+fib[period-2])%m;
+            if (fib[period]%m==0 && fib[period-1]%m==1)
+                notFound = false;
+            else
+                ++period;
+        }while (notFound);
+        n_reduced=(int)n%period;
+        return fib[n_reduced];
     }
 
 
