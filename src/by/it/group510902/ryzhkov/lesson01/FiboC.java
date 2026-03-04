@@ -50,7 +50,7 @@ public class FiboC {
             arr[1] = arr[2];
         }
         if (p == 0) {
-            p = 6L * m; // Берём максимум по теореме
+            p = 6L * m;
         }
         r_n = n % p;
 
