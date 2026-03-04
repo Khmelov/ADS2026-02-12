@@ -1,4 +1,5 @@
 package by.it.group510902.gordeev.lesson01;
+import java.util.ArrayList;
 
 /*
  * Даны целые числа 1<=n<=1E18 и 2<=m<=1E5,
@@ -22,12 +23,45 @@ public class FiboC {
     }
 
     long fasterC(long n, int m) {
-        //Интуитивно найти решение не всегда просто и
-        //возможно потребуется дополнительный поиск информации
 
-        return -1L;
+        if (n == 0) return 0;
+        if (n == 1) return 1 % m;
+
+        ArrayList<Integer> period = getPisanoPeriod(m);
+        int periodLength = period.size();
+
+
+        int index = (int)(n % periodLength);
+
+
+        return period.get(index);
     }
 
 
-}
+    private ArrayList<Integer> getPisanoPeriod(int m) {
+        ArrayList<Integer> period = new ArrayList<>();
+        period.add(0);
+        period.add(1);
 
+        int prev = 0;
+        int curr = 1;
+
+
+        for (int i = 0; i < m * 6; i++) {
+            int next = (prev + curr) % m;
+            period.add(next);
+
+            prev = curr;
+            curr = next;
+
+            if (prev == 0 && curr == 1) {
+
+                period.remove(period.size() - 1);
+                period.remove(period.size() - 1);
+                break;
+            }
+        }
+
+        return period;
+    }
+}
