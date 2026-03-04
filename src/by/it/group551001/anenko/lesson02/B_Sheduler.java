@@ -24,20 +24,53 @@ public class B_Sheduler {
         System.out.println(starts);                                 //покажем рассчитанный график занятий
     }
 
-    List<Event> calcStartTimes(Event[] events, int from, int to) {
-        //Events - события которые нужно распределить в аудитории
-        //в период [from, int] (включительно).
-        //оптимизация проводится по наибольшему числу непересекающихся событий.
-        //Начало и конец событий могут совпадать.
-        List<Event> result;
-        result = new ArrayList<>();
-        //ваше решение.
-
-
-        return result;          //вернем итог
+    private void quickSort(Event[] arr, int left, int right) {
+        if (left < right) {
+            int pivotIndex = partition(arr, left, right);
+            quickSort(arr, left, pivotIndex - 1);
+            quickSort(arr, pivotIndex + 1, right);
+        }
     }
 
-    //событие у аудитории(два поля: начало и конец)
+    private int partition(Event[] arr, int left, int right) {
+        int pivot = arr[right].stop;
+        int i = left - 1;
+
+        for (int j = left; j < right; j++) {
+            if (arr[j].stop <= pivot) {
+                i++;
+                Event temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+
+        Event temp = arr[i + 1];
+        arr[i + 1] = arr[right];
+        arr[right] = temp;
+
+        return i + 1;
+    }
+
+    List<Event> calcStartTimes(Event[] events, int from, int to) {
+        List<Event> result = new ArrayList<>();
+
+        quickSort(events, 0, events.length - 1);
+
+        int lastEnd = from;
+
+        for (Event event : events) {
+            if (event.start >= from && event.stop <= to) {
+                if (event.start >= lastEnd) {
+                    result.add(event);
+                    lastEnd = event.stop;
+                }
+            }
+        }
+
+        return result;
+    }
+
     static class Event {
         int start;
         int stop;

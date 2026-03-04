@@ -1,17 +1,4 @@
 package by.it.group551001.anenko.lesson02;
-/*
-Даны
-1) объем рюкзака 4
-2) число возможных предметов 60
-3) сам набор предметов
-    100 50
-    120 30
-    100 50
-Все это указано в файле (by/it/a_khmelev/lesson02/greedyKnapsack.txt)
-
-Необходимо собрать наиболее дорогой вариант рюкзака для этого объема
-Предметы можно резать на кусочки (т.е. алгоритм будет жадным)
- */
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -26,36 +13,80 @@ public class C_GreedyKnapsack {
         System.out.printf("Общая стоимость %f (время %d)", costFinal, finishTime - startTime);
     }
 
+    private void quickSort(Item[] items, int left, int right) {
+        if (left < right) {
+            int pivotIndex = partition(items, left, right);
+            quickSort(items, left, pivotIndex - 1);
+            quickSort(items, pivotIndex + 1, right);
+        }
+    }
+
+    private int partition(Item[] items, int left, int right) {
+        double pivot = (double)items[right].cost / items[right].weight;
+        int i = left - 1;
+
+        for (int j = left; j < right; j++) {
+            if ((double)items[j].cost / items[j].weight >= pivot) {
+                i++;
+                Item temp = items[i];
+                items[i] = items[j];
+                items[j] = temp;
+            }
+        }
+
+        Item temp = items[i + 1];
+        items[i + 1] = items[right];
+        items[right] = temp;
+
+        return i + 1;
+    }
+
     double calc(InputStream inputStream) throws FileNotFoundException {
         Scanner input = new Scanner(inputStream);
-        int n = input.nextInt();      //сколько предметов в файле
-        int W = input.nextInt();      //какой вес у рюкзака
-        Item[] items = new Item[n];   //получим список предметов
-        for (int i = 0; i < n; i++) { //создавая каждый конструктором
+        int n = input.nextInt();
+        int W = input.nextInt();
+        Item[] items = new Item[n];
+
+        for (int i = 0; i < n; i++) {
             items[i] = new Item(input.nextInt(), input.nextInt());
         }
-        //покажем предметы
+
+        System.out.println("Исходные предметы:");
         for (Item item : items) {
             System.out.println(item);
         }
         System.out.printf("Всего предметов: %d. Рюкзак вмещает %d кг.\n", n, W);
 
-        //тут необходимо реализовать решение задачи
-        //итогом является максимально воможная стоимость вещей в рюкзаке
-        //вещи можно резать на кусочки (непрерывный рюкзак)
+        quickSort(items, 0, items.length - 1);
+
+        System.out.println("\nПредметы после сортировки (по убыванию цены за кг):");
+        for (Item item : items) {
+            System.out.printf("%s (цена за кг: %.2f)\n", item, (double)item.cost / item.weight);
+        }
+
         double result = 0;
-        //тут реализуйте алгоритм сбора рюкзака
-        //будет особенно хорошо, если с собственной сортировкой
-        //кроме того, можете описать свой компаратор в классе Item
+        int remainingWeight = W;
 
-        //ваше решение.
+        for (Item item : items) {
+            if (remainingWeight <= 0) break;
 
+            if (item.weight <= remainingWeight) {
+                result += item.cost;
+                remainingWeight -= item.weight;
+                System.out.printf("Взяли весь предмет: %s, осталось места: %d\n", item, remainingWeight);
+            } else {
+                double fraction = (double)remainingWeight / item.weight;
+                result += item.cost * fraction;
+                System.out.printf("Взяли %.2f предмета: %s\n", fraction, item);
+                remainingWeight = 0;
+            }
+        }
 
-        System.out.printf("Удалось собрать рюкзак на сумму %f\n", result);
+        System.out.printf("\nУдалось собрать рюкзак на сумму %f\n", result);
         return result;
     }
 
-    private static class Item implements Comparable<Item> {
+    private static class Item {
         int cost;
         int weight;
 
@@ -66,18 +97,7 @@ public class C_GreedyKnapsack {
 
         @Override
         public String toString() {
-            return "Item{" +
-                   "cost=" + cost +
-                   ", weight=" + weight +
-                   '}';
-        }
-
-        @Override
-        public int compareTo(Item o) {
-            //тут может быть ваш компаратор
-
-
-            return 0;
+            return "Item{cost=" + cost + ", weight=" + weight + "}";
         }
     }
 }

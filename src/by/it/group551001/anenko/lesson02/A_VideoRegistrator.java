@@ -20,25 +20,54 @@ public class A_VideoRegistrator {
     }
 
     //модификаторы доступа опущены для возможности тестирования
+    private void quickSort(double[] arr, int left, int right) {
+        if (left < right) {
+            int pivotIndex = partition(arr, left, right);
+            quickSort(arr, left, pivotIndex - 1);
+            quickSort(arr, pivotIndex + 1, right);
+        }
+    }
+
+    private int partition(double[] arr, int left, int right) {
+        double pivot = arr[right];
+        int i = left - 1;
+
+        for (int j = left; j < right; j++) {
+            if (arr[j] <= pivot) {
+                i++;
+                double temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+
+        double temp = arr[i + 1];
+        arr[i + 1] = arr[right];
+        arr[right] = temp;
+
+        return i + 1;
+    }
+
     List<Double> calcStartTimes(double[] events, double workDuration) {
-        //events - события которые нужно зарегистрировать
-        //timeWorkDuration время работы видеокамеры после старта
-        List<Double> result;
-        result = new ArrayList<>();
-        int i = 0;                              //i - это индекс события events[i]
-        //Комментарии от проверочного решения сохранены для подсказки, но вы можете их удалить.
-        //Подготовка к жадному поглощению массива событий
-        //hint: сортировка Arrays.sort обеспечит скорость алгоритма
-        //C*(n log n) + C1*n = O(n log n)
+        List<Double> result = new ArrayList<>();
 
-        //пока есть незарегистрированные события
-        //получим одно событие по левому краю
-        //и запомним время старта видеокамеры
-        //вычислим момент окончания работы видеокамеры
-        //и теперь пропустим все покрываемые события
-        //за время до конца работы, увеличивая индекс
+        quickSort(events, 0, events.length - 1);
 
+        int i = 0;
+        int n = events.length;
 
-        return result;                        //вернем итог
+        while (i < n) {
+            double start = events[i];
+            result.add(start);
+
+            double end = start + workDuration;
+            i++;
+
+            while (i < n && events[i] <= end) {
+                i++;
+            }
+        }
+
+        return result;
     }
 }
