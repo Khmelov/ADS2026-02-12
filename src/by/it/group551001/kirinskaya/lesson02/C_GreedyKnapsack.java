@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:src/by/it/group551004/bulavin/lesson02/C_GreedyKnapsack.java
-package by.it.group551004.bulavin.lesson02;
-========
-package by.it.group551004.kruk.lesson02;
->>>>>>>> 3c469a0f3f731b89d880af060e147b3ea053589c:src/by/it/group551004/kruk/lesson02/C_GreedyKnapsack.java
+package by.it.group551001.kirinskaya.lesson02;
 /*
 Даны
 1) объем рюкзака 4
@@ -30,34 +26,6 @@ public class C_GreedyKnapsack {
         System.out.printf("Общая стоимость %f (время %d)", costFinal, finishTime - startTime);
     }
 
-    private void quickSort(Item[] items, int low, int high) {
-        if (low < high) {
-            int pivotIdx = partition(items, low, high);
-            quickSort(items, low, pivotIdx - 1);
-            quickSort(items, pivotIdx + 1, high);
-        }
-    }
-
-    private int partition(Item[] items, int low, int high) {
-        Item pivot = items[high];
-        int i = low - 1;
-
-        for (int j = low; j < high; j++) {
-            if (items[j].compareTo(pivot) < 0) {
-                i++;
-                Item temp = items[i];
-                items[i] = items[j];
-                items[j] = temp;
-            }
-        }
-
-        Item temp = items[i + 1];
-        items[i + 1] = items[high];
-        items[high] = temp;
-
-        return i + 1;
-    }
-
     double calc(InputStream inputStream) throws FileNotFoundException {
         Scanner input = new Scanner(inputStream);
         int n = input.nextInt();      //сколько предметов в файле
@@ -72,28 +40,31 @@ public class C_GreedyKnapsack {
         }
         System.out.printf("Всего предметов: %d. Рюкзак вмещает %d кг.\n", n, W);
 
-        //тут необходимо реализовать решение задачи
-        //итогом является максимально воможная стоимость вещей в рюкзаке
-        //вещи можно резать на кусочки (непрерывный рюкзак)
-        double result = 0;
-        //тут реализуйте алгоритм сбора рюкзака
-        //будет особенно хорошо, если с собственной сортировкой
-        //кроме того, можете описать свой компаратор в классе Item
-
-        //ваше решение.
-        quickSort(items, 0, items.length - 1);
-        int remainingCapacity = W;
-        for (Item item : items) {
-            if (remainingCapacity <= 0) break;
-
-            if (item.weight <= remainingCapacity) {
-                result += item.cost;
-                remainingCapacity -= item.weight;
-            } else {
-                result += (double) remainingCapacity / item.weight * item.cost;
-                remainingCapacity = 0;
+        for (int i = 0; i < items.length - 1; i++) {
+            for (int j = 0; j < items.length - 1 - i; j++) {
+                if (items[j].compareTo(items[j + 1]) < 0) {
+                    Item temp = items[j];
+                    items[j] = items[j + 1];
+                    items[j + 1] = temp;
+                }
             }
         }
+
+        double result = 0;
+        int remainingweight = W;
+
+        for (Item item: items){
+            if (remainingweight == 0) break;
+            if (item.weight <= remainingweight) {
+                result += item.cost;
+                remainingweight -= item.weight;
+            } else {
+                double part = (double) remainingweight/item.weight;
+                result += item.cost* part;
+                remainingweight = 0;
+            }
+        }
+
 
         System.out.printf("Удалось собрать рюкзак на сумму %f\n", result);
         return result;
@@ -118,10 +89,17 @@ public class C_GreedyKnapsack {
 
         @Override
         public int compareTo(Item o) {
-            //тут может быть ваш компаратор
+            double valuePerKgThis = (double) this.cost / this.weight;
+            double valuePerKgOther = (double) o.cost / o.weight;
+            if (valuePerKgThis > valuePerKgOther) {
+                return 1;
+            } else if (valuePerKgThis < valuePerKgOther) {
+                return -1;
+            } else {
+                return 0;
+            }
 
 
-            return 0;
         }
     }
 }

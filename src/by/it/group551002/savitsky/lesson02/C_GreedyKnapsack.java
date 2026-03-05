@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:src/by/it/group551004/bulavin/lesson02/C_GreedyKnapsack.java
-package by.it.group551004.bulavin.lesson02;
-========
-package by.it.group551004.kruk.lesson02;
->>>>>>>> 3c469a0f3f731b89d880af060e147b3ea053589c:src/by/it/group551004/kruk/lesson02/C_GreedyKnapsack.java
+package by.it.group551002.savitsky.lesson02;
 /*
 Даны
 1) объем рюкзака 4
@@ -30,32 +26,35 @@ public class C_GreedyKnapsack {
         System.out.printf("Общая стоимость %f (время %d)", costFinal, finishTime - startTime);
     }
 
-    private void quickSort(Item[] items, int low, int high) {
-        if (low < high) {
-            int pivotIdx = partition(items, low, high);
-            quickSort(items, low, pivotIdx - 1);
-            quickSort(items, pivotIdx + 1, high);
-        }
+    void swap(Item[] arr, int i, int j){
+        Item temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
     }
 
-    private int partition(Item[] items, int low, int high) {
-        Item pivot = items[high];
+    int partition(Item[] arr, int low, int high){
+        int pivot = arr[high].cost / arr[high].weight;
         int i = low - 1;
 
-        for (int j = low; j < high; j++) {
-            if (items[j].compareTo(pivot) < 0) {
+        for(int j = low; j < high; j++){
+            if(arr[j].cost / arr[j].weight >= pivot){
                 i++;
-                Item temp = items[i];
-                items[i] = items[j];
-                items[j] = temp;
+                swap(arr, i, j);
             }
         }
 
-        Item temp = items[i + 1];
-        items[i + 1] = items[high];
-        items[high] = temp;
+        swap(arr, i+1, high);
 
-        return i + 1;
+        return i+1;
+    }
+
+    void quicksort(Item[] arr, int low, int high){
+        if(low < high) {
+            int pivotindex = partition(arr, low, high);
+
+            quicksort(arr, low, pivotindex - 1);
+            quicksort(arr, pivotindex + 1, high);
+        }
     }
 
     double calc(InputStream inputStream) throws FileNotFoundException {
@@ -81,18 +80,20 @@ public class C_GreedyKnapsack {
         //кроме того, можете описать свой компаратор в классе Item
 
         //ваше решение.
-        quickSort(items, 0, items.length - 1);
-        int remainingCapacity = W;
-        for (Item item : items) {
-            if (remainingCapacity <= 0) break;
 
-            if (item.weight <= remainingCapacity) {
-                result += item.cost;
-                remainingCapacity -= item.weight;
-            } else {
-                result += (double) remainingCapacity / item.weight * item.cost;
-                remainingCapacity = 0;
+        quicksort(items, 0, items.length-1);
+
+        int i = 0;
+        while (i < items.length && W != 0) {
+            if (items[i].weight > W){
+                result = result + (double)W * items[i].cost/items[i].weight;
+                W = 0;
             }
+            else{
+                result = result + items[i].cost;
+                W = W - items[i].weight;
+            }
+            i = i+1;
         }
 
         System.out.printf("Удалось собрать рюкзак на сумму %f\n", result);

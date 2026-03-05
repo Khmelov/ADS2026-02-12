@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:src/by/it/group551004/bulavin/lesson02/C_GreedyKnapsack.java
-package by.it.group551004.bulavin.lesson02;
-========
-package by.it.group551004.kruk.lesson02;
->>>>>>>> 3c469a0f3f731b89d880af060e147b3ea053589c:src/by/it/group551004/kruk/lesson02/C_GreedyKnapsack.java
+package by.it.group551002.efimchikov.lesson02;
 /*
 Даны
 1) объем рюкзака 4
@@ -30,34 +26,6 @@ public class C_GreedyKnapsack {
         System.out.printf("Общая стоимость %f (время %d)", costFinal, finishTime - startTime);
     }
 
-    private void quickSort(Item[] items, int low, int high) {
-        if (low < high) {
-            int pivotIdx = partition(items, low, high);
-            quickSort(items, low, pivotIdx - 1);
-            quickSort(items, pivotIdx + 1, high);
-        }
-    }
-
-    private int partition(Item[] items, int low, int high) {
-        Item pivot = items[high];
-        int i = low - 1;
-
-        for (int j = low; j < high; j++) {
-            if (items[j].compareTo(pivot) < 0) {
-                i++;
-                Item temp = items[i];
-                items[i] = items[j];
-                items[j] = temp;
-            }
-        }
-
-        Item temp = items[i + 1];
-        items[i + 1] = items[high];
-        items[high] = temp;
-
-        return i + 1;
-    }
-
     double calc(InputStream inputStream) throws FileNotFoundException {
         Scanner input = new Scanner(inputStream);
         int n = input.nextInt();      //сколько предметов в файле
@@ -72,31 +40,40 @@ public class C_GreedyKnapsack {
         }
         System.out.printf("Всего предметов: %d. Рюкзак вмещает %d кг.\n", n, W);
 
-        //тут необходимо реализовать решение задачи
-        //итогом является максимально воможная стоимость вещей в рюкзаке
-        //вещи можно резать на кусочки (непрерывный рюкзак)
         double result = 0;
-        //тут реализуйте алгоритм сбора рюкзака
-        //будет особенно хорошо, если с собственной сортировкой
-        //кроме того, можете описать свой компаратор в классе Item
+        double curWeight=0;
+        Qsort(0,n-1,items);
 
-        //ваше решение.
-        quickSort(items, 0, items.length - 1);
-        int remainingCapacity = W;
-        for (Item item : items) {
-            if (remainingCapacity <= 0) break;
-
-            if (item.weight <= remainingCapacity) {
-                result += item.cost;
-                remainingCapacity -= item.weight;
-            } else {
-                result += (double) remainingCapacity / item.weight * item.cost;
-                remainingCapacity = 0;
+        int ptr=0;
+        while((curWeight<W)&&(ptr<n)){
+            if(curWeight+items[ptr].weight<=W){
+                curWeight+=items[ptr].weight;
+                result+=items[ptr++].cost;
+            }else{
+                result+=(double)((W-curWeight)/items[ptr].weight)*(double)(items[ptr].cost);
+                curWeight=W;
             }
         }
 
         System.out.printf("Удалось собрать рюкзак на сумму %f\n", result);
         return result;
+    }
+
+    static void Qsort(int L,int R,Item[] items){
+        int i=L,j=R;
+        Item pivot=items[(R+L)/2];
+        do{
+            while(items[i].compareTo(pivot)<0)i++;
+            while(items[j].compareTo(pivot)>0)j--;
+            if(i<=j){
+                Item temp=items[i];
+                items[i]=items[j];
+                items[j]=temp;
+                i++;j--;
+            }
+        }while(i<=j);
+        if(L<j)Qsort(L,j,items);
+        if(i<R)Qsort(i,R,items);
     }
 
     private static class Item implements Comparable<Item> {
@@ -117,11 +94,14 @@ public class C_GreedyKnapsack {
         }
 
         @Override
-        public int compareTo(Item o) {
-            //тут может быть ваш компаратор
-
-
-            return 0;
+        public int compareTo(Item o){
+            if ((double)(this.cost/this.weight) < (double)(o.cost/o.weight)) {
+                return 1;
+            } else if ((double)(this.cost/this.weight)>(double)(o.cost/o.weight)) {
+                return -1;
+            } else {
+                return 0;
         }
     }
+}
 }
