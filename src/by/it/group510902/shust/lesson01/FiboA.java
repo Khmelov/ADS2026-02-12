@@ -29,21 +29,19 @@ public class FiboA {
     }
 
     private int calc(int n) {
-        //здесь простейший вариант, в котором код совпадает
-        //с математическим определением чисел Фибоначчи
-        //время O(2^n)
-        return 0;
+        // Базовые случаи для первых двух чисел
+        if (n == 0) return 0;
+        if (n == 1) return 1;
+        // Рекурсивный вызов
+        return calc(n - 1) + calc(n - 2);
     }
 
-
     BigInteger slowA(Integer n) {
-        //рекурсия
-        //здесь нужно реализовать вариант без ограничения на размер числа,
-        //в котором код совпадает с математическим определением чисел Фибоначчи
-        //время O(2^n)
+        // То же самое, но с использованием BigInteger
+        if (n == 0) return BigInteger.ZERO;
+        if (n == 1) return BigInteger.ONE;
 
-
-        return BigInteger.ZERO;
+        return slowA(n - 1).add(slowA(n - 2));
     }
 
 

@@ -22,9 +22,38 @@ public class FiboC {
     }
 
     long fasterC(long n, int m) {
-        //Интуитивно найти решение не всегда просто и
-        //возможно потребуется дополнительный поиск информации
-        return -1L;
+        // 1. Ищем длину периода Пизано
+        long periodLength = 0;
+        long prev = 0;
+        long curr = 1;
+
+        // Максимальная длина периода Пизано для m не превышает 6*m
+        for (int i = 0; i < m * 6; i++) {
+            long temp = (prev + curr) % m;
+            prev = curr;
+            curr = temp;
+
+            // Период начинается с 0 и 1
+            if (prev == 0 && curr == 1) {
+                periodLength = i + 1;
+                break;
+            }
+        }
+
+        // 2. Находим остаток от деления n на длину периода
+        long remainder = n % periodLength;
+        if (remainder == 0) return 0;
+
+        // 3. Вычисляем нужное число Фибоначчи для полученного остатка
+        prev = 0;
+        curr = 1;
+        for (int i = 1; i < remainder; i++) {
+            long temp = (prev + curr) % m;
+            prev = curr;
+            curr = temp;
+        }
+
+        return curr % m;
     }
 
 
