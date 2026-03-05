@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:src/by/it/group551004/bulavin/lesson02/C_GreedyKnapsack.java
-package by.it.group551004.bulavin.lesson02;
-========
 package by.it.group551004.kruk.lesson02;
->>>>>>>> 3c469a0f3f731b89d880af060e147b3ea053589c:src/by/it/group551004/kruk/lesson02/C_GreedyKnapsack.java
 /*
 Даны
 1) объем рюкзака 4
