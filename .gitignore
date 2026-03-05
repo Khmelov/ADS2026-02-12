@@ -56,3 +56,5 @@ TaskB.txt
 TaskC.txt
 
 .gitignore
+/src/by/it/group551001/bogush/lesson02/greedyKnapsack.txt
+/src/by/it/group551001/bogush/lesson02/Lesson02Test.java
