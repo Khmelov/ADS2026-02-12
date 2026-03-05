@@ -26,16 +26,6 @@ public class FiboC {
     long fasterC(long n, int m) {
         //Интуитивно найти решение не всегда просто и
         //возможно потребуется дополнительный поиск информации
-        BigInteger arr[];
-        arr = new BigInteger[n + 1];
-
-        arr[0] = BigInteger.ZERO;
-        arr[1] = BigInteger.ONE;
-
-        for (int i = 2; i <= n; i++) {
-            arr[i] = arr[i - 1].add(arr[i - 2]);
-        }
-
         return 0;
     }
 
