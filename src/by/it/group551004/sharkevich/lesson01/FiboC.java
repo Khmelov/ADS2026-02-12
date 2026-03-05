@@ -36,7 +36,7 @@ public class FiboC {
             arr[i] = arr[i - 1].add(arr[i - 2]);
         }
 
-        return arr[n].remainder(arr[m]);
+        return 0;
     }
 
 
