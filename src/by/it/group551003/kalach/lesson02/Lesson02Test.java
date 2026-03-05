@@ -14,7 +14,7 @@ public class Lesson02Test {
     Name:               Test a_khmelev (тут ваша фамилия)
     Test kind:          All in package
     Package:            by.it.a_khmelev (тут ваша фамилия)
-    Search for test:    In whole project
+    Search for test:    In whole project//
     */
 
 
