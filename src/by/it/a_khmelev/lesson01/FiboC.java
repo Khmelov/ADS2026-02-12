@@ -1,12 +1,10 @@
-package by.it.group551004.sharkevich.lesson01;
+package by.it.a_khmelev.lesson01;
 
 /*
  * Даны целые числа 1<=n<=1E18 и 2<=m<=1E5,
  * необходимо найти остаток от деления n-го числа Фибоначчи на m
  * время расчета должно быть не более 2 секунд
  */
-
-import java.math.BigInteger;
 
 public class FiboC {
 
@@ -26,17 +24,7 @@ public class FiboC {
     long fasterC(long n, int m) {
         //Интуитивно найти решение не всегда просто и
         //возможно потребуется дополнительный поиск информации
-        BigInteger arr[];
-        arr = new BigInteger[n + 1];
-
-        arr[0] = BigInteger.ZERO;
-        arr[1] = BigInteger.ONE;
-
-        for (int i = 2; i <= n; i++) {
-            arr[i] = arr[i - 1].add(arr[i - 2]);
-        }
-
-        return arr[n].remainder(arr[m]);
+        return -1L;
     }
 
 
