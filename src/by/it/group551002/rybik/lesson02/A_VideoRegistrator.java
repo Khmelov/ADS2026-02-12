@@ -35,12 +35,8 @@ public class A_VideoRegistrator {
             if ((result.get(j) + workDuration) < events[i]){
                 j++;
                 result.add(events[i]);
-            } else{
-
             }
             i++;
-
-
         }
         //Комментарии от проверочного решения сохранены для подсказки, но вы можете их удалить.
         //Подготовка к жадному поглощению массива событий
