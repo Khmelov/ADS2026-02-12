@@ -114,10 +114,7 @@ public class C_GreedyKnapsack {
 
         @Override
         public int compareTo(Item o) {
-            //тут может быть ваш компаратор
-
-
-            return 0;
+            return Double.compare((double) o.cost / o.weight, (double) this.cost / this.weight);
         }
     }
 }
