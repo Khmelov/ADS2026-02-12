@@ -1,4 +1,4 @@
-package by.it.group551002.Sevkovich.lesson01;
+package by.it.group551002.sevkovich.lesson01;
 
 import org.junit.Test;
 
