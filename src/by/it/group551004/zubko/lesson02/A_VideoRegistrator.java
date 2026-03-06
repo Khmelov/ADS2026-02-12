@@ -32,6 +32,16 @@ public class A_VideoRegistrator {
         //hint: сортировка Arrays.sort обеспечит скорость алгоритма
         //C*(n log n) + C1*n = O(n log n)
 
+        Arrays.sort(events);
+        for (int j = 0; j < events.length; j++) {
+            for (i = j + 1; i < events.length; i++)
+                if (events[i] - events[j] >= 1) {
+                    result.add(events[j]);
+                    break;
+                }
+            j = i - 1;
+        }
+
         return result;                        //вернем итог
     }
 }
