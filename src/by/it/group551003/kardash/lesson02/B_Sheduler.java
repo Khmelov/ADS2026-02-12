@@ -35,20 +35,19 @@ public class B_Sheduler {
         result = new ArrayList<>();
         //ваше решение.
 
-        // <-- ДОБАВЛЕНО: сортируем события по времени окончания (жадный выбор)
         Arrays.sort(events, (a, b) -> {
             if (a.stop != b.stop) return Integer.compare(a.stop, b.stop);
             return Integer.compare(a.start, b.start);
         });
 
-        int currentTime = from; // <-- ДОБАВЛЕНО: отслеживаем текущее время
+        int currentTime = from;
 
-        // <-- ДОБАВЛЕНО: перебираем отсортированные события
+
         for (Event event : events) {
-            // <-- ДОБАВЛЕНО: если событие начинается не раньше текущего времени и заканчивается не позже to
+
             if (event.start >= currentTime && event.stop <= to) {
-                result.add(event); // <-- ДОБАВЛЕНО: добавляем событие в результат
-                currentTime = event.stop; // <-- ДОБАВЛЕНО: обновляем текущее время
+                result.add(event);
+                currentTime = event.stop;
             }
         }
 

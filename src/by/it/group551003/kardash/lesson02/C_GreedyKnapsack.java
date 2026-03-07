@@ -51,24 +51,22 @@ public class C_GreedyKnapsack {
 
         //ваше решение.
 
-        // <-- ДОБАВЛЕНО: сортируем предметы по убыванию удельной стоимости (цена/вес)
         Arrays.sort(items);
 
-        int remainingWeight = W; // <-- ДОБАВЛЕНО: остаток вместимости рюкзака
+        int remainingWeight = W;
 
-        // <-- ДОБАВЛЕНО: жадно берём предметы в порядке убывания удельной стоимости
         for (Item item : items) {
-            if (remainingWeight <= 0) break; // <-- ДОБАВЛЕНО: рюкзак полон
+            if (remainingWeight <= 0) break;
 
             if (item.weight <= remainingWeight) {
-                // <-- ДОБАВЛЕНО: предмет помещается целиком
+
                 result += item.cost;
                 remainingWeight -= item.weight;
             } else {
-                // <-- ДОБАВЛЕНО: берём только часть предмета
+
                 double fraction = (double) remainingWeight / item.weight;
                 result += item.cost * fraction;
-                remainingWeight = 0; // <-- ДОБАВЛЕНО: рюкзак заполнен
+                remainingWeight = 0;
             }
         }
 
@@ -99,11 +97,9 @@ public class C_GreedyKnapsack {
         public int compareTo(Item o) {
             //тут может быть ваш компаратор
 
-            // <-- ДОБАВЛЕНО: сравниваем по удельной стоимости (цена/вес) по убыванию
-            // Используем cross-multiplication для избежания ошибок округления double
             double thisRatio = (double) this.cost / this.weight;
             double otherRatio = (double) o.cost / o.weight;
-            // Возвращаем отрицательное значение, если this должен идти перед o (больше удельная стоимость)
+
             return Double.compare(otherRatio, thisRatio);
         }
     }
