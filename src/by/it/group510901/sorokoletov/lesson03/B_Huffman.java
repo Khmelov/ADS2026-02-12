@@ -3,6 +3,8 @@ package by.it.group510901.sorokoletov.lesson03;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
 
 // Lesson 3. B_Huffman.
 // Восстановите строку по её коду и беспрефиксному коду символов.
@@ -58,6 +60,30 @@ public class B_Huffman {
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         //тут запишите ваше решение
 
+        // Создаём таблицу декодирования: код → символ
+        Map<String, Character> decodeMap = new HashMap<>();
+
+        // Считываем коды символов в формате "letter: code"
+        for (int i = 0; i < count; i++) {
+            String letterToken = scanner.next();  // например, "a:"
+            char letter = letterToken.charAt(0);   // извлекаем букву 'a'
+            String code = scanner.next();          // например, "0"
+            decodeMap.put(code, letter);
+        }
+
+        // Считываем закодированную строку
+        String encoded = scanner.next();
+
+        // Декодируем: наращиваем префикс, пока не найдём соответствие в карте
+        StringBuilder currentCode = new StringBuilder();
+        for (int i = 0; i < encoded.length(); i++) {
+            currentCode.append(encoded.charAt(i));
+            String code = currentCode.toString();
+            if (decodeMap.containsKey(code)) {
+                result.append(decodeMap.get(code));
+                currentCode.setLength(0); // сбрасываем для следующего символа
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         return result.toString(); //01001100100111

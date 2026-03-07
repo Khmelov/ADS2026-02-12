@@ -74,21 +74,75 @@ public class C_HeapMax {
         //Будет мало? Ну тогда можете его собрать как Generic и/или использовать в варианте B
         private List<Long> heap = new ArrayList<>();
 
+        // Вспомогательные методы для навигации по куче
+        private int parent(int i) {
+            return (i - 1) / 2;
+        }
+
+        private int leftChild(int i) {
+            return 2 * i + 1;
+        }
+
+        private int rightChild(int i) {
+            return 2 * i + 2;
+        }
+
         int siftDown(int i) { //просеивание вверх
+            int maxIndex = i;
+            int left = leftChild(i);
+
+            // Проверяем левого ребёнка
+            if (left < heap.size() && heap.get(left) > heap.get(maxIndex)) {
+                maxIndex = left;
+            }
+
+            // Проверяем правого ребёнка
+            int right = rightChild(i);
+            if (right < heap.size() && heap.get(right) > heap.get(maxIndex)) {
+                maxIndex = right;
+            }
+
+            // Если максимум не в текущем узле, меняем местами и продолжаем
+            if (i != maxIndex) {
+                Long temp = heap.get(i);
+                heap.set(i, heap.get(maxIndex));
+                heap.set(maxIndex, temp);
+                siftDown(maxIndex);
+            }
 
             return i;
         }
 
         int siftUp(int i) { //просеивание вниз
-
+            while (i > 0 && heap.get(i) > heap.get(parent(i))) {
+                // Меняем местами с родителем
+                Long temp = heap.get(i);
+                heap.set(i, heap.get(parent(i)));
+                heap.set(parent(i), temp);
+                i = parent(i);
+            }
             return i;
         }
 
         void insert(Long value) { //вставка
+            heap.add(value);
+            siftUp(heap.size() - 1);
         }
 
         Long extractMax() { //извлечение и удаление максимума
-            Long result = null;
+            if (heap.isEmpty()) {
+                return null;
+            }
+
+            Long result = heap.get(0);
+
+            if (heap.size() == 1) {
+                heap.remove(0);
+            } else {
+                // Перемещаем последний элемент на корень
+                heap.set(0, heap.remove(heap.size() - 1));
+                siftDown(0);
+            }
 
             return result;
         }
