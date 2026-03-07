@@ -1,5 +1,7 @@
-package by.it.a_khmelev.lesson01;
-import java.util.*;
+package by.it.group551002.kurzhalov.lesson01;
+
+import java.util.ArrayList;
+import java.util.List;
 /*
  * Даны целые числа 1<=n<=1E18 и 2<=m<=1E5,
  * необходимо найти остаток от деления n-го числа Фибоначчи на m
@@ -24,8 +26,10 @@ public class FiboC {
     long fasterC(long n, int m) {
         //Интуитивно найти решение не всегда просто и
         //возможно потребуется дополнительный поиск информации
-        // 1. Находим период Пизано для делителя m
+
+        // Период Пиано
         List<Long> list = new ArrayList<>();
+        // Добавляем 0 и 1, буква L - означает тип данных long
         list.add(0L);
         list.add(1L);
 
@@ -33,17 +37,19 @@ public class FiboC {
             list.add((list.get(i - 1) + list.get(i - 2)) % m);
             // Период всегда начинается с 0 и 1
             if (list.get(i) == 1 && list.get(i - 1) == 0) {
+                // Когда еще раз встретили 0 и 1, значит начался новый период, 0 и 1 удаляем и делаем break
                 list.remove(list.size() - 1);
+                // удаляем под тем же индексом, потому что размер листа уменьшился на 1
                 list.remove(list.size() - 1);
                 break;
             }
         }
 
-        // 2. Находим индекс внутри периода
+        // Индекс внутри периода (индекс остатка от деления n-го числа на m)
         int periodSize = list.size();
         int index = (int) (n % periodSize);
 
-        // 3. Возвращаем остаток
+        // возвращаем остаток по чуть выше найденному индексу
         return list.get(index);
     }
 
