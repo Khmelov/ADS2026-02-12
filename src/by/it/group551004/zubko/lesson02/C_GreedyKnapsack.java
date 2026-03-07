@@ -1,4 +1,4 @@
-package by.it.a_khmelev.lesson02;
+package by.it.group551004.zubko.lesson02;
 /*
 Даны
 1) объем рюкзака 4
@@ -49,7 +49,28 @@ public class C_GreedyKnapsack {
         //кроме того, можете описать свой компаратор в классе Item
 
         //ваше решение.
+        //Стоимость за 1кг
+        for (int j = 0; j < items.length - 1; j++) {
+            for (int i = 0; i < items.length - 1; i++) {
+                if (items[i].cost / items[i].weight > items[i + 1].cost / items[i + 1].weight) {
+                    Item buf = items[i];
+                    items[i] = items[i + 1];
+                    items[i + 1] = buf;
+                }
+            }
+        }
 
+        int i = 3;
+        while (W != 0) {
+            if (items[i].weight <= W) {
+                result = result + items[i].cost;
+                W = W - items[i].weight;
+            } else {
+                result = result + (items[i].cost / items[i].weight) * W;
+                W = W - W;
+            }
+            i--;
+        }
 
         System.out.printf("Удалось собрать рюкзак на сумму %f\n", result);
         return result;
@@ -67,9 +88,9 @@ public class C_GreedyKnapsack {
         @Override
         public String toString() {
             return "Item{" +
-                   "cost=" + cost +
-                   ", weight=" + weight +
-                   '}';
+                    "cost=" + cost +
+                    ", weight=" + weight +
+                    '}';
         }
 
         @Override
