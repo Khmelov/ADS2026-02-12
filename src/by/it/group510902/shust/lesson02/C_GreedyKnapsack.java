@@ -15,6 +15,7 @@ package by.it.group510902.shust.lesson02;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class C_GreedyKnapsack {
@@ -34,22 +35,21 @@ public class C_GreedyKnapsack {
         for (int i = 0; i < n; i++) { //создавая каждый конструктором
             items[i] = new Item(input.nextInt(), input.nextInt());
         }
-        //покажем предметы
-        for (Item item : items) {
-            System.out.println(item);
-        }
-        System.out.printf("Всего предметов: %d. Рюкзак вмещает %d кг.\n", n, W);
+        Arrays.sort(items);
 
-        //тут необходимо реализовать решение задачи
-        //итогом является максимально воможная стоимость вещей в рюкзаке
-        //вещи можно резать на кусочки (непрерывный рюкзак)
         double result = 0;
-        //тут реализуйте алгоритм сбора рюкзака
-        //будет особенно хорошо, если с собственной сортировкой
-        //кроме того, можете описать свой компаратор в классе Item
+        int currentWeight = 0;
 
-        //ваше решение.
-
+        for (Item item : items) {
+            if (currentWeight + item.weight <= W) {
+                result += item.cost;
+                currentWeight += item.weight;
+            } else {
+                int remainingWeight = W - currentWeight;
+                result += (double) item.cost * remainingWeight / item.weight;
+                break;
+            }
+        }
 
         System.out.printf("Удалось собрать рюкзак на сумму %f\n", result);
         return result;
@@ -66,18 +66,14 @@ public class C_GreedyKnapsack {
 
         @Override
         public String toString() {
-            return "Item{" +
-                   "cost=" + cost +
-                   ", weight=" + weight +
-                   '}';
+            return "Item{cost=" + cost + ", weight=" + weight + "}";
         }
 
         @Override
         public int compareTo(Item o) {
-            //тут может быть ваш компаратор
-
-
-            return 0;
+            double r1 = (double) this.cost / this.weight;
+            double r2 = (double) o.cost / o.weight;
+            return Double.compare(r2, r1);
         }
     }
 }
