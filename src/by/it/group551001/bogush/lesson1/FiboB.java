@@ -24,7 +24,6 @@ public class FiboB {
 
     BigInteger fastB(Integer n) {
         //здесь нужно реализовать вариант с временем O(n) и памятью O(n)
-<<<<<<< HEAD
         if (n < 0)
             return BigInteger.valueOf(-1L);
         if (n == 0)
@@ -37,9 +36,6 @@ public class FiboB {
     for (int i = 2;i <= n; i++)
         arr[i] = arr[i-1].add(arr[i - 2]);
     return arr[n];
-=======
-        return BigInteger.valueOf(-1L);
->>>>>>> 8e2b4bd (FiboA done)
     }
 
 }
