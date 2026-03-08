@@ -1,24 +1,18 @@
-package by.it.group510901.petsevich.lesson02;
+package by.it.group551001.telipko.lesson02;
 /*
 Даны
 1) объем рюкзака 4
 2) число возможных предметов 60
 3) сам набор предметов
-    100 50
-    120 30
-    100 50
+
 Все это указано в файле (by/it/a_khmelev/lesson02/greedyKnapsack.txt)
 
 Необходимо собрать наиболее дорогой вариант рюкзака для этого объема
-Предметы можно резать на кусочки (т.е. алгоритм будет жадным)
+Предметы можно резать на кусочки (т.е. Алгоритм будет жадным)
  */
 
-import java.io.Console;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Scanner;
 
 public class C_GreedyKnapsack {
@@ -33,33 +27,30 @@ public class C_GreedyKnapsack {
     double calc(InputStream inputStream) throws FileNotFoundException {
         Scanner input = new Scanner(inputStream);
         int n = input.nextInt();      //сколько предметов в файле
-        int W = input.nextInt();      //какой вес у рюкзака
+        int totalWeight = input.nextInt();      //какой вес у рюкзака
         Item[] items = new Item[n];   //получим список предметов
         for (int i = 0; i < n; i++) { //создавая каждый конструктором
             items[i] = new Item(input.nextInt(), input.nextInt());
-            System.out.printf(items[i].toString());
         }
-        //покажем предметы
         for (Item item : items) {
             System.out.println(item);
         }
-        System.out.printf("Всего предметов: %d. Рюкзак вмещает %d кг.\n", n, W);
+        System.out.printf("Всего предметов: %d. Рюкзак вмещает %d кг.\n", n, totalWeight);
 
-        Arrays.sort(items, Collections.reverseOrder());
+        bubbleSort(items);
+
         double result = 0;
-        double capacity = 0;
-        for(int i = 0; i < items.length; i++)
-        {
-            if(capacity == W) break;
-            if(capacity + items[i].weight < W)
-            {
-                capacity += items[i].weight;
-                result += items[i].cost;
-                continue;
+
+        for (int index = 0; index < items.length - 1; index++) {
+            Item item = items[index];
+            if (totalWeight >= item.weight) {
+                result += item.cost;
+                totalWeight -= item.weight;
+            } else {
+                result += totalWeight * (double) (items[index + 1].cost / items[index + 1].weight);
+                break;
             }
 
-            result += items[i].getCostPerWeight() * (W - capacity);
-            capacity = W;
         }
 
         System.out.printf("Удалось собрать рюкзак на сумму %f\n", result);
@@ -75,27 +66,45 @@ public class C_GreedyKnapsack {
             this.weight = weight;
         }
 
-        public float getCostPerWeight()
-        {
-            return cost / (float)weight;
-        }
-
         @Override
         public String toString() {
             return "Item{" +
-                   "cost=" + cost +
-                   ", weight=" + weight +
-                   '}';
+                    "cost=" + cost +
+                    ", weight=" + weight +
+                    '}';
         }
 
         @Override
         public int compareTo(Item o) {
-            float costPerWeight1 = getCostPerWeight();
-            float costPerWeight2 = o.getCostPerWeight();
+            if (this.weight < o.weight) return 1;
+            else if (this.weight > o.weight) return -1;
+            else return Integer.compare(this.cost, o.cost);
+        }
+    }
 
-            if(costPerWeight1 > costPerWeight2) return 1;
-            else if(costPerWeight1 < costPerWeight2) return -1;
-            return 0;
+    private static void bubbleSort(Item[] items) {
+        Item temp;
+        boolean flag = true;
+        int right = items.length - 1;
+
+        while (flag) {
+            flag = false;
+            int left = 1;
+
+            while (left <= right) {
+                if (items[left - 1].compareTo(items[left]) < 0) {
+                    flag = true;
+                    while (items[left - 1].compareTo(items[left]) < 0) {
+                        temp = items[left - 1];
+                        items[left - 1] = items[left];
+                        items[left] = temp;
+
+                    }
+                }
+                left++;
+            }
+
+            right--;
         }
     }
 }

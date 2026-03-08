@@ -1,4 +1,4 @@
-package by.it.group510901.petsevich.lesson02;
+package by.it.group551001.teryokhin.lesson02;
 /*
 Даны
 1) объем рюкзака 4
@@ -13,13 +13,10 @@ package by.it.group510901.petsevich.lesson02;
 Предметы можно резать на кусочки (т.е. алгоритм будет жадным)
  */
 
-import java.io.Console;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Scanner;
+import java.util.Arrays;
 
 public class C_GreedyKnapsack {
     public static void main(String[] args) throws FileNotFoundException {
@@ -37,29 +34,22 @@ public class C_GreedyKnapsack {
         Item[] items = new Item[n];   //получим список предметов
         for (int i = 0; i < n; i++) { //создавая каждый конструктором
             items[i] = new Item(input.nextInt(), input.nextInt());
-            System.out.printf(items[i].toString());
         }
-        //покажем предметы
+
+        Arrays.sort(items);
+
         for (Item item : items) {
             System.out.println(item);
         }
         System.out.printf("Всего предметов: %d. Рюкзак вмещает %d кг.\n", n, W);
 
-        Arrays.sort(items, Collections.reverseOrder());
         double result = 0;
-        double capacity = 0;
-        for(int i = 0; i < items.length; i++)
+        double left_size = W;
+        for(int i = 0;i < n;i++)
         {
-            if(capacity == W) break;
-            if(capacity + items[i].weight < W)
-            {
-                capacity += items[i].weight;
-                result += items[i].cost;
-                continue;
-            }
-
-            result += items[i].getCostPerWeight() * (W - capacity);
-            capacity = W;
+            double can_take = Math.min(left_size, items[i].weight);
+            result += items[i].cost * (can_take / items[i].weight);
+            left_size -= can_take;
         }
 
         System.out.printf("Удалось собрать рюкзак на сумму %f\n", result);
@@ -75,27 +65,17 @@ public class C_GreedyKnapsack {
             this.weight = weight;
         }
 
-        public float getCostPerWeight()
-        {
-            return cost / (float)weight;
-        }
-
         @Override
         public String toString() {
             return "Item{" +
-                   "cost=" + cost +
-                   ", weight=" + weight +
-                   '}';
+                    "cost=" + cost +
+                    ", weight=" + weight +
+                    '}';
         }
 
         @Override
         public int compareTo(Item o) {
-            float costPerWeight1 = getCostPerWeight();
-            float costPerWeight2 = o.getCostPerWeight();
-
-            if(costPerWeight1 > costPerWeight2) return 1;
-            else if(costPerWeight1 < costPerWeight2) return -1;
-            return 0;
+            return Double.compare((double)o.cost / o.weight, (double)this.cost / this.weight);
         }
     }
 }

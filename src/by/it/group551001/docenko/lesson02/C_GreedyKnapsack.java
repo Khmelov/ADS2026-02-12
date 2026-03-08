@@ -1,4 +1,4 @@
-package by.it.group510901.petsevich.lesson02;
+package by.it.group551001.docenko.lesson02;
 /*
 Даны
 1) объем рюкзака 4
@@ -13,12 +13,11 @@ package by.it.group510901.petsevich.lesson02;
 Предметы можно резать на кусочки (т.е. алгоритм будет жадным)
  */
 
-import java.io.Console;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
 
 public class C_GreedyKnapsack {
@@ -30,6 +29,49 @@ public class C_GreedyKnapsack {
         System.out.printf("Общая стоимость %f (время %d)", costFinal, finishTime - startTime);
     }
 
+    private void sortItems(Item[] items) {
+        if (items.length < 2) {
+            return;
+        }
+
+        int n = 0;
+        int m = items.length / 2;
+        Item mid = items[m];
+
+        for (Item cur : items) {
+            if (cur.compareTo(mid) < 0)
+                n += 1;
+        }
+
+        Item[] arr1 = new Item[n];
+        Item[] arr2 = new Item[items.length-n-1];
+
+        int i;
+        int j = 0;
+        int k = 0;
+        for (i = 0; i < items.length; i++) {
+            Item cur = items[i];
+            if (cur.compareTo(mid) < 0) {
+                arr1[j] = cur;
+                j += 1;
+            } else if (i != m) {
+                arr2[k] = cur;
+                k += 1;
+            }
+        }
+
+        this.sortItems(arr1);
+        this.sortItems(arr2);
+
+        for (i = 0; i < n; i++) {
+            items[i] = arr1[i];
+        }
+        items[n] = mid;
+        for (i = n+1; i < items.length; i++) {
+            items[i] = arr2[i-n-1];
+        }
+    }
+
     double calc(InputStream inputStream) throws FileNotFoundException {
         Scanner input = new Scanner(inputStream);
         int n = input.nextInt();      //сколько предметов в файле
@@ -37,7 +79,6 @@ public class C_GreedyKnapsack {
         Item[] items = new Item[n];   //получим список предметов
         for (int i = 0; i < n; i++) { //создавая каждый конструктором
             items[i] = new Item(input.nextInt(), input.nextInt());
-            System.out.printf(items[i].toString());
         }
         //покажем предметы
         for (Item item : items) {
@@ -45,21 +86,28 @@ public class C_GreedyKnapsack {
         }
         System.out.printf("Всего предметов: %d. Рюкзак вмещает %d кг.\n", n, W);
 
-        Arrays.sort(items, Collections.reverseOrder());
+
         double result = 0;
-        double capacity = 0;
-        for(int i = 0; i < items.length; i++)
-        {
-            if(capacity == W) break;
-            if(capacity + items[i].weight < W)
-            {
-                capacity += items[i].weight;
-                result += items[i].cost;
-                continue;
+        int i = n-1;
+
+        this.sortItems(items);
+
+        for (Item item : items) {
+            System.out.println(item);
+        }
+
+        while (W > 0 && i >= 0) {
+            Item cur = items[i];
+
+            if (cur.weight > W) {
+                result += ((double) cur.cost / cur.weight) * W;
+                W = 0;
+            } else {
+                result += cur.cost;
+                W -= cur.weight;
             }
 
-            result += items[i].getCostPerWeight() * (W - capacity);
-            capacity = W;
+            i -= 1;
         }
 
         System.out.printf("Удалось собрать рюкзак на сумму %f\n", result);
@@ -75,11 +123,6 @@ public class C_GreedyKnapsack {
             this.weight = weight;
         }
 
-        public float getCostPerWeight()
-        {
-            return cost / (float)weight;
-        }
-
         @Override
         public String toString() {
             return "Item{" +
@@ -90,12 +133,7 @@ public class C_GreedyKnapsack {
 
         @Override
         public int compareTo(Item o) {
-            float costPerWeight1 = getCostPerWeight();
-            float costPerWeight2 = o.getCostPerWeight();
-
-            if(costPerWeight1 > costPerWeight2) return 1;
-            else if(costPerWeight1 < costPerWeight2) return -1;
-            return 0;
+            return Double.compare( (double) this.cost / this.weight, (double) o.cost / o.weight);
         }
     }
 }
