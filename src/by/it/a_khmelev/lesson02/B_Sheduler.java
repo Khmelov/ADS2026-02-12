@@ -1,13 +1,9 @@
 package by.it.a_khmelev.lesson02;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
-/*
-Даны интервальные события events
-реализуйте метод calcStartTimes, так, чтобы число принятых к выполнению
-непересекающихся событий было максимально.
-Алгоритм жадный. Для реализации обдумайте надежный шаг.
-*/
+import java.util.ArrayList;
 
 public class B_Sheduler {
     public static void main(String[] args) {
@@ -29,10 +25,24 @@ public class B_Sheduler {
         //в период [from, int] (включительно).
         //оптимизация проводится по наибольшему числу непересекающихся событий.
         //Начало и конец событий могут совпадать.
-        List<Event> result;
-        result = new ArrayList<>();
-        //ваше решение.
+        List<Event> result = new ArrayList<>();
 
+        // Сортируем все события по времени окончания (stop), при равенстве — по start
+        Arrays.sort(events, Comparator.comparingInt((Event e) -> e.stop)
+                .thenComparingInt(e -> e.start));
+
+        int lastStop = from; // время окончания последнего выбранного события
+
+        for (Event event : events) {
+            // Проверяем, что событие полностью укладывается в заданный интервал [from, to]
+            if (event.start >= from && event.stop <= to) {
+                // Если событие начинается не раньше, чем закончилось предыдущее
+                if (event.start >= lastStop) {
+                    result.add(event);
+                    lastStop = event.stop; // обновляем время окончания
+                }
+            }
+        }
 
         return result;          //вернем итог
     }
