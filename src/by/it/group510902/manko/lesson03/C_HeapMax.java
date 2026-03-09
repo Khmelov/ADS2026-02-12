@@ -75,21 +75,38 @@ public class C_HeapMax {
         private List<Long> heap = new ArrayList<>();
 
         int siftDown(int i) { //просеивание вверх
-
-            return i;
+            int imx = i;
+            if(i * 2 < heap.size()){
+                imx = i * 2;
+            }
+            if(i * 2 + 1 < heap.size() && heap.get(2 * i) < heap.get(2 * i + 1)){
+                imx = 2 * i + 1;
+            }
+            if(imx != i) siftDown(imx);
+            return imx;
         }
 
         int siftUp(int i) { //просеивание вниз
-
-            return i;
+            if(heap.get(i) <= heap.get(i / 2)) {
+                return i;
+            }else{
+                Long a = heap.get(i), b = heap.get(i / 2);
+                heap.set(i, b); heap.set(i / 2, a);
+                return siftUp(i / 2);
+            }
         }
 
         void insert(Long value) { //вставка
+            heap.add(value);
+            siftUp(heap.size() - 1);
         }
 
         Long extractMax() { //извлечение и удаление максимума
-            Long result = null;
-
+            if(heap.isEmpty()) return null;
+            Long result = heap.get(0);
+            heap.set(0, heap.get(heap.size() - 1));
+            heap.remove(heap.size() - 1);
+            siftDown(0);
             return result;
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
