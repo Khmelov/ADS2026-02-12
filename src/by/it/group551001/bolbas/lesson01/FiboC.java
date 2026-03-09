@@ -1,4 +1,4 @@
-package by.it.group510901.bolbas.lesson01;
+package by.it.group551001.bolbas.lesson01;
 
 /*
  * Даны целые числа 1<=n<=1E18 и 2<=m<=1E5,
@@ -47,6 +47,7 @@ public class FiboC {
             }
         }
         return (long) 6 * m;
+
     }
 
 }

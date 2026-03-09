@@ -1,4 +1,4 @@
-package by.it.group510901.bolbas.lesson01;
+package by.it.group551001.bolbas.lesson01;
 
 import org.junit.Test;
 

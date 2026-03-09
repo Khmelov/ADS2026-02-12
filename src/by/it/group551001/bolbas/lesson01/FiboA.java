@@ -1,4 +1,4 @@
-package by.it.group510901.bolbas.lesson01;
+package by.it.group551001.bolbas.lesson01;
 
 import java.math.BigInteger;
 
@@ -43,14 +43,16 @@ public class FiboA {
     }
 
 
-    BigInteger slowA(Integer n) {
-        if (n == null || n < 0) return BigInteger.ZERO;
-        return BigInteger.valueOf(fibonacci(n));
+    BigInteger slowA(int n) {
+        if (n < 0) return BigInteger.ZERO;
+        return fibonacciSlow(n);
     }
 
-    private int fibonacci(int n) {
-        if (n <= 1) return n;
-        return fibonacci(n - 1) + fibonacci(n - 2);
+    private BigInteger fibonacciSlow(int n) {
+        if (n <= 1) return BigInteger.valueOf(n);
+        return fibonacciSlow(n - 1).add(fibonacciSlow(n - 2));
     }
-}
+
+    }
+
 

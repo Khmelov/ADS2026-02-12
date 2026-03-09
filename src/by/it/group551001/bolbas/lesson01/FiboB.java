@@ -1,4 +1,4 @@
-package by.it.group510901.bolbas.lesson01;
+package by.it.group551001.bolbas.lesson01;
 
 import java.math.BigInteger;
 
@@ -22,19 +22,21 @@ public class FiboB {
         return System.currentTimeMillis() - startTime;
     }
 
-    BigInteger fastB(Integer n) {
-            if (n <= 0) return BigInteger.ZERO;
-            if (n == 1) return BigInteger.ONE;
+    BigInteger fastB(int n) {
+        if (n <= 0) return BigInteger.ZERO;
+        if (n == 1) return BigInteger.ONE;
 
-            BigInteger[] fib = new BigInteger[n + 1];
-            fib[0] = BigInteger.ZERO;
-            fib[1] = BigInteger.ONE;
+        BigInteger prev = BigInteger.ZERO;
+        BigInteger curr = BigInteger.ONE;
 
-            for (int i = 2; i <= n; i++) {
-                fib[i] = fib[i - 1].add(fib[i - 2]);
-            }
-        return fib[n];
+        for (int i = 2; i <= n; i++) {
+            BigInteger next = prev.add(curr);
+            prev = curr;
+            curr = next;
+        }
+        return curr;
+    }
     }
 
-}
+
 
