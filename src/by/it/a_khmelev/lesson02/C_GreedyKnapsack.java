@@ -73,7 +73,6 @@ public class C_GreedyKnapsack {
                     ", weight=" + weight +
                     '}';
         }
-
         @Override
         public int compareTo(Item o) {
             // Сортировка по убыванию удельной стоимости (cost/weight)
