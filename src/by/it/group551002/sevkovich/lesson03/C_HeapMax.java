@@ -74,23 +74,46 @@ public class C_HeapMax {
         //Будет мало? Ну тогда можете его собрать как Generic и/или использовать в варианте B
         private List<Long> heap = new ArrayList<>();
 
-        int siftDown(int i) { //просеивание вверх
-
-            return i;
+        // 2*i+1 - left child, 2*i+2 - right child
+        int siftDown(int i) { //просеивание вниз
+            int toSwap = i;
+            while (true) {
+                if (2 * i + 1 < heap.size() && heap.get(i) < heap.get(2 * i + 1)) toSwap = 2 * i + 1;
+                if (2 * i + 2 < heap.size() && heap.get(i) < heap.get(2 * i + 2)) toSwap = 2 * i + 2;
+                if (toSwap == i) return i;
+                long tmp = heap.get(toSwap);
+                heap.set(toSwap, heap.get(i));
+                heap.set(i, tmp);
+            }
         }
 
-        int siftUp(int i) { //просеивание вниз
-
-            return i;
+        int siftUp(int i) { //просеивание вверх
+            long tmp;
+            while (i > 0) {
+                if (heap.get((i-1)/2) > heap.get(i)){
+                    return i;
+                }
+                tmp = heap.get((i-1)/2);
+                heap.set((i-1)/2, heap.get(i));
+                heap.set(i, tmp);
+                i = (i-1)/2;
+            }
+            return 0;
         }
 
         void insert(Long value) { //вставка
+            heap.add(value);              // 1. Добавляем в конец
+            System.out.printf("Successfully inserted to %d\n", siftUp(heap.size() - 1));      // 2. "Поднимаем" новый элемент, если нужно
         }
 
         Long extractMax() { //извлечение и удаление максимума
-            Long result = null;
-
-            return result;
+            if (heap.isEmpty()) return null;
+            Long max = heap.getFirst();       // 1. Запоминаем корень (максимум)
+            heap.set(0, heap.removeLast()); // 2. Последний → на место корня
+            if (!heap.isEmpty()) {
+                System.out.printf("Succesfully extracted and new root is sifted to %d!\n", siftDown(0));              // 3. "Опускаем" новый корень, если нужно
+            }
+            return max;
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
     }
