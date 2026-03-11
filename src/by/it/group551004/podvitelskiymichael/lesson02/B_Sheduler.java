@@ -22,11 +22,11 @@ public class B_Sheduler {
                 new Event(8, 9), new Event(4, 6), new Event(8, 10), new Event(7, 10)
         };
 
-        List<Event> starts = instance.calcStartTimes(events, 0, 10);  //рассчитаем оптимальное заполнение аудитории
+        List<Event> starts = instance.calcStartTimes(events);  //рассчитаем оптимальное заполнение аудитории
         System.out.println(starts);                                 //покажем рассчитанный график занятий
     }
 
-    List<Event> calcStartTimes(Event[] events, int from, int to) {
+    List<Event> calcStartTimes(Event[] events) {
         //Events - события которые нужно распределить в аудитории
         //в период [from, int] (включительно).
         //оптимизация проводится по наибольшему числу непересекающихся событий.
@@ -35,7 +35,7 @@ public class B_Sheduler {
         result = new ArrayList<>();
         //ваше решение.
         Arrays.sort(events, Comparator.comparingInt(e -> e.stop));
-        int lastEndTime = from;
+        int lastEndTime = 0;
 
         for (Event event : events) {
             if (event.start >= lastEndTime) {
