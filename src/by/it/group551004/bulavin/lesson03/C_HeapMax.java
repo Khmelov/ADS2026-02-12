@@ -74,22 +74,72 @@ public class C_HeapMax {
         //Будет мало? Ну тогда можете его собрать как Generic и/или использовать в варианте B
         private List<Long> heap = new ArrayList<>();
 
-        int siftDown(int i) { //просеивание вверх
+        private int parent(int i) {
+            return (i - 1) / 2;
+        }
 
+        private int leftChild(int i) {
+            return 2 * i + 1;
+        }
+
+        private int rightChild(int i) {
+            return 2 * i + 2;
+        }
+
+        int siftUp(int i) {
+            while (i > 0) {
+                int p = parent(i);
+                if (heap.get(i) > heap.get(p)) {
+                    long tmp = heap.get(i);
+                    heap.set(i, heap.get(p));
+                    heap.set(p, tmp);
+                    i = p;
+                } else {
+                    break;
+                }
+            }
             return i;
         }
 
-        int siftUp(int i) { //просеивание вниз
+        int siftDown(int i) {
+            int size = heap.size();
+            while (true) {
+                int left = leftChild(i);
+                int right = rightChild(i);
+                int largest = i;
 
+                if (left < size && heap.get(left) > heap.get(largest)) {
+                    largest = left;
+                }
+                if (right < size && heap.get(right) > heap.get(largest)) {
+                    largest = right;
+                }
+                if (largest == i) {
+                    break;
+                }
+                long tmp = heap.get(i);
+                heap.set(i, heap.get(largest));
+                heap.set(largest, tmp);
+                i = largest;
+            }
             return i;
         }
 
-        void insert(Long value) { //вставка
+        void insert(Long value) {
+            heap.add(value);
+            siftUp(heap.size() - 1);
         }
 
-        Long extractMax() { //извлечение и удаление максимума
-            Long result = null;
+        Long extractMax() {
+            if (heap.isEmpty()) return null;
 
+            Long result = heap.get(0);
+            Long last = heap.remove(heap.size() - 1);
+            if (!heap.isEmpty()) {
+                heap.set(0, last);
+                siftDown(0);
+            }
+            System.out.print(result);
             return result;
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1

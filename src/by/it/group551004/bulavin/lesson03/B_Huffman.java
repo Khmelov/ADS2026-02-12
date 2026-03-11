@@ -56,9 +56,27 @@ public class B_Huffman {
         Integer count = scanner.nextInt();
         Integer length = scanner.nextInt();
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-        //тут запишите ваше решение
+        scanner.nextLine();
 
+        java.util.Map<String, Character> codeToChar = new java.util.HashMap<>();
+        for (int i = 0; i < count; i++) {
+            String line = scanner.nextLine();
+            char ch = line.charAt(0);
+            String code = line.substring(line.indexOf(':') + 2);
+            codeToChar.put(code, ch);
+        }
 
+        String encoded = scanner.nextLine();
+
+        StringBuilder prefix = new StringBuilder();
+        for (int i = 0; i < encoded.length(); i++) {
+            prefix.append(encoded.charAt(i));
+            Character c = codeToChar.get(prefix.toString());
+            if (c != null) {
+                result.append(c);
+                prefix.setLength(0);
+            }
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         return result.toString(); //01001100100111
     }
