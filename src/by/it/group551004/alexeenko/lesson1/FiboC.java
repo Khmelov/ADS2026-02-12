@@ -1,4 +1,4 @@
-package by.it.group551004.lesson1;
+package by.it.group551004.alexeenko.lesson1;
 
 /*
  * Даны целые числа 1<=n<=1E18 и 2<=m<=1E5,

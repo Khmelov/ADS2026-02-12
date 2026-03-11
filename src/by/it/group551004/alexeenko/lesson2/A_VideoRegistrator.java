@@ -1,4 +1,4 @@
-package by.it.group551004.lesson2;
+package by.it.group551004.alexeenko.lesson2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
