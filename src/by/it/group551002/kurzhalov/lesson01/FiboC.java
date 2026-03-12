@@ -45,6 +45,7 @@ public class FiboC {
             }
         }
 
+
         // Индекс внутри периода (индекс остатка от деления n-го числа на m)
         int periodSize = list.size();
         int index = (int) (n % periodSize);
