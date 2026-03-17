@@ -1,4 +1,4 @@
-package by.it.group551002.brutski;
+package by.it.group551002.brutski.lesson02;
 /*
 Даны
 1) объем рюкзака 4

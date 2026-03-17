@@ -1,4 +1,4 @@
-package by.it.group551002.brutski.brutski;
+package by.it.group551002.brutski.lesson01;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
