@@ -15,6 +15,7 @@ package by.it.group551003.kakhno.lesson02;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class C_GreedyKnapsack {
@@ -49,7 +50,20 @@ public class C_GreedyKnapsack {
         //кроме того, можете описать свой компаратор в классе Item
 
         //ваше решение.
+        Arrays.sort(items);
+        int currWeight, remain;
+        currWeight = 0;
 
+        for (Item item : items) {
+            if (currWeight + item.weight <= W) {
+                result += item.cost;
+                currWeight += item.weight;
+            } else {
+                remain = W - currWeight;
+                result += (double) item.cost * remain / item.weight;
+                break;
+            }
+        }
 
         System.out.printf("Удалось собрать рюкзак на сумму %f\n", result);
         return result;
@@ -67,17 +81,19 @@ public class C_GreedyKnapsack {
         @Override
         public String toString() {
             return "Item{" +
-                   "cost=" + cost +
-                   ", weight=" + weight +
-                   '}';
+                    "cost=" + cost +
+                    ", weight=" + weight +
+                    '}';
         }
 
         @Override
         public int compareTo(Item o) {
             //тут может быть ваш компаратор
+            double r1, r2;
+            r1 = (double) this.cost / this.weight;
+            r2 = (double) o.cost / o.weight;
 
-
-            return 0;
+            return Double.compare(r2, r1);
         }
     }
 }
