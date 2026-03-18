@@ -15,6 +15,7 @@ package by.it.group551003.guk.lesson02;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class C_GreedyKnapsack {
@@ -43,17 +44,57 @@ public class C_GreedyKnapsack {
         //тут необходимо реализовать решение задачи
         //итогом является максимально воможная стоимость вещей в рюкзаке
         //вещи можно резать на кусочки (непрерывный рюкзак)
-        double result = 0;
+        double cost = 0;
+        int weight = 0;
+        Item thing;
+        int i = 0;
         //тут реализуйте алгоритм сбора рюкзака
         //будет особенно хорошо, если с собственной сортировкой
         //кроме того, можете описать свой компаратор в классе Item
 
         //ваше решение.
+        quickSort(items, 0, items.length - 1);
+        while (weight <= W && i < items.length) {
+            thing = items[i];
+            if (weight + thing.weight > W) {
+                cost = cost + (W - weight) * (thing.cost / thing.weight);
+                weight += thing.weight;
+            }
+            else {
+                cost = cost + thing.cost;
+                weight += thing.weight;
+            }
+            i++;
+        }
 
-
-        System.out.printf("Удалось собрать рюкзак на сумму %f\n", result);
-        return result;
+        System.out.printf("Удалось собрать рюкзак на сумму %f\n", cost);
+        return cost;
     }
+
+    void quickSort(Item[] items, int left, int right) {
+        if (left >= right) return;
+        int pivotIndex = partition(items, left, right);
+        quickSort(items, left, pivotIndex - 1);
+        quickSort(items, pivotIndex + 1, right);
+    }
+
+    int partition(Item[] items, int left, int right) {
+        Item pivot = items[right];
+        int i = left - 1;
+        for (int j = left; j < right; j++) {
+            if (items[j].compareTo(pivot) <= 0) {
+                i++;
+                Item temp = items[i];
+                items[i] = items[j];
+                items[j] = temp;
+            }
+        }
+        Item temp = items[i + 1];
+        items[i + 1] = items[right];
+        items[right] = temp;
+        return i + 1;
+    }
+
 
     private static class Item implements Comparable<Item> {
         int cost;
@@ -74,10 +115,7 @@ public class C_GreedyKnapsack {
 
         @Override
         public int compareTo(Item o) {
-            //тут может быть ваш компаратор
-
-
-            return 0;
+            return o.cost/o.weight - this.cost/this.weight;
         }
     }
 }

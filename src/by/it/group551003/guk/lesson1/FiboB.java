@@ -1,4 +1,4 @@
-package by.it.group551003.guk;
+package by.it.group551003.guk.lesson1;
 
 import java.math.BigInteger;
 

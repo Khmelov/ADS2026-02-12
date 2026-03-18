@@ -1,6 +1,7 @@
 package by.it.group551003.guk.lesson02;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 /*
 Даны интервальные события events
@@ -31,7 +32,18 @@ public class B_Sheduler {
         //Начало и конец событий могут совпадать.
         List<Event> result;
         result = new ArrayList<>();
+        int time = 0;
+        int i = 0;
         //ваше решение.
+        Arrays.sort(events, (a, b) -> a.stop - b.stop );
+        while (time <= to && i < events.length) {
+            if (time <= events[i].start) {
+            time = events[i].stop;
+            result.add(events[i]);
+            }
+            i++;
+        }
+
 
 
         return result;          //вернем итог
