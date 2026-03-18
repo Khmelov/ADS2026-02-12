@@ -24,16 +24,51 @@ public class B_Sheduler {
         System.out.println(starts);                                 //покажем рассчитанный график занятий
     }
 
+    void sortEventsEnds(Event[] events, int low, int high) {
+        if (low < high) {
+            int pivotIndex;
+            pivotIndex = partition(events, low, high);
+            sortEventsEnds(events, low, pivotIndex - 1);
+            sortEventsEnds(events, pivotIndex + 1, high);
+        }
+    }
+
+    int partition(Event[] events, int low, int high) {
+        int pivot, left;
+        Event temp;
+
+        pivot = events[high].stop;
+        left = low - 1;
+
+        for (int i = low; i < high; i++) {
+            if (events[i].stop <= pivot) {
+                left++;
+                temp = events[left];
+                events[left] = events[i];
+                events[i] = temp;
+            }
+        }
+        temp = events[left + 1];
+        events[left + 1] = events[high];
+        events[high] = temp;
+        return left + 1;
+    }
+
     List<Event> calcStartTimes(Event[] events, int from, int to) {
         //Events - события которые нужно распределить в аудитории
-        //в период [from, int] (включительно).
+        //в период [from, to] (включительно).
         //оптимизация проводится по наибольшему числу непересекающихся событий.
-        //Начало и конец событий могут совпадать.
+        //Начало и конец событий могут совпадать. нада =.
         List<Event> result;
         result = new ArrayList<>();
         //ваше решение.
-
-
+        sortEventsEnds(events, 0, events.length - 1);
+        result.add(events[0]);
+        for (Event event : events) {
+            if (result.get(result.size() - 1).stop <= event.start) {
+                result.add(event);
+            }
+        }
         return result;          //вернем итог
     }
 
