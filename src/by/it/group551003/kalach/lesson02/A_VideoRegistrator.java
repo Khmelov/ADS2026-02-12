@@ -17,7 +17,7 @@ public class A_VideoRegistrator {
         List<Double> starts = instance.calcStartTimes(events, 1);
         System.out.println(starts);
     }
-
+//
     List<Double> calcStartTimes(double[] events, double workDuration) {
         List<Double> result = new ArrayList<>();
         for (int i = 0; i < events.length - 1; i++) {

@@ -10,7 +10,7 @@ package by.it.group551003.kalach.lesson02;
 Все это указано в файле (by/it/a_khmelev/lesson02/greedyKnapsack.txt
 
 Необходимо собрать наиболее дорогой вариант рюкзака для этого объема */
-
+//
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
