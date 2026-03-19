@@ -81,6 +81,30 @@ public class A_Huffman {
         //это будет последний и единственный элемент оставшийся в очереди priorityQueue.
         StringBuilder sb = new StringBuilder();
         //.....
+        for (char ch : s.toCharArray()){
+            if (count.containsKey(ch))
+                count.put(ch,count.get(ch)+1);
+            else
+                count.put(ch, 1);
+        }
+
+        for (Map.Entry<Character, Integer> entry: count.entrySet()){
+            priorityQueue.add(new LeafNode(entry.getValue(),entry.getKey()));
+        }
+
+        while (priorityQueue.size() > 1){
+            Node left = priorityQueue.poll();
+            Node right = priorityQueue.poll();
+
+            Node parent = new InternalNode(left,right);
+            priorityQueue.add(parent);
+        }
+        Node head = priorityQueue.poll();
+        head.fillCodes("");
+
+        for (char ch: s.toCharArray()){
+            sb.append(codes.get(ch));
+        }
 
         return sb.toString();
         //01001100100111
