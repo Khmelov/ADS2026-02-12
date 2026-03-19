@@ -27,29 +27,32 @@ public class FiboA {
         startTime = System.currentTimeMillis();
         return res;
     }
-
+    int res = 0;
     private int calc(int n) {
         //здесь простейший вариант, в котором код совпадает
         //с математическим определеем чисел Фибоначчи
         //время O(2^n)ни
-        int first = 0, second = 1, res;
-        res = first + second;
-
-
-        return 0;
+        if(n == 0){
+            res = 0;
+        }
+        else if (n == 1){
+            res = 1;
+        }
+        else if (n > 1)
+            res = calc(n - 1) + calc(n - 2);
+        return res;
     }
 
-
+    BigInteger result = BigInteger.ZERO;
     BigInteger slowA(Integer n) {
         //рекурсия
         //здесь нужно реализовать вариант без ограничения на размер числа,
         //в котором код совпадает с математическим определением чисел Фибоначчи
         //время O(2^n)
+        if(n == 0)  return BigInteger.ZERO;
+        else if (n == 1) return BigInteger.ONE;
+        return slowA(n - 1).add(slowA(n - 2));
 
-
-        return BigInteger.ZERO;
     }
-
-
 }
 
