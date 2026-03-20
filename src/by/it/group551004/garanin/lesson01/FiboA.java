@@ -33,7 +33,7 @@ public class FiboA {
         return calc(n-1)+calc(n-2);
     }
 
-    //
+
     BigInteger slowA(Integer n) {
         if (n==0) return BigInteger.ZERO;
         if (n==1) return BigInteger.ONE;
