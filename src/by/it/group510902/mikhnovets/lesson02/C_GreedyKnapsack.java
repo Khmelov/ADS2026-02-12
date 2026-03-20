@@ -15,7 +15,10 @@ package by.it.group510902.mikhnovets.lesson02;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
+import java.util.*;
+import java.util.*;
 
 public class C_GreedyKnapsack {
     public static void main(String[] args) throws FileNotFoundException {
@@ -25,6 +28,12 @@ public class C_GreedyKnapsack {
         long finishTime = System.currentTimeMillis();
         System.out.printf("Общая стоимость %f (время %d)", costFinal, finishTime - startTime);
     }
+
+
+
+
+
+
 
     double calc(InputStream inputStream) throws FileNotFoundException {
         Scanner input = new Scanner(inputStream);
@@ -43,12 +52,32 @@ public class C_GreedyKnapsack {
         //тут необходимо реализовать решение задачи
         //итогом является максимально воможная стоимость вещей в рюкзаке
         //вещи можно резать на кусочки (непрерывный рюкзак)
+        Arrays.sort(items);
+
+
         double result = 0;
+        int remainingWeight = W;
+
+        for (int i = 0; i < items.length; i++) {
+            if (items[i].weight <= remainingWeight) {
+                remainingWeight -= items[i].weight;
+                result += items[i].cost;
+            } else {
+                double fraction = (double) remainingWeight / items[i].weight;
+                result += items[i].cost * fraction;
+                break;
+            }
+        }
+
+
+
+
         //тут реализуйте алгоритм сбора рюкзака
         //будет особенно хорошо, если с собственной сортировкой
         //кроме того, можете описать свой компаратор в классе Item
 
         //ваше решение.
+
 
 
         System.out.printf("Удалось собрать рюкзак на сумму %f\n", result);
@@ -75,6 +104,11 @@ public class C_GreedyKnapsack {
         @Override
         public int compareTo(Item o) {
             //тут может быть ваш компаратор
+            double thisRatio = (double) this.cost / this.weight;
+            double oRatio = (double) o.cost / o.weight;
+
+            if (thisRatio > oRatio) return -1;  // this дороже - идёт раньше
+            if (thisRatio < oRatio) return 1;
 
 
             return 0;
