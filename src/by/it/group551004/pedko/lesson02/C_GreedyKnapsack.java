@@ -50,6 +50,61 @@ public class C_GreedyKnapsack {
 
         //ваше решение.
 
+        double cost[];
+        int i;
+        int j;
+        double rational1;
+        double rational2;
+        double remainingW;
+        Item temp;
+
+        rational1 = 0;
+        rational2 = 0;
+
+        cost = new double[items.length];
+
+//        for (i = 0; i < items.length; ++i) {
+//            cost[i] = items[i].cost / items[i].weight;
+//            System.out.println(cost[i]);
+//        }
+//        System.out.println();
+
+
+        // Sort
+        for (i = 0; i < items.length; i++) {
+            for (j = 0; j < items.length - i - 1; j++) {
+                rational1 = (double) items[j].cost / items[j].weight;
+                rational2 = (double) items[j + 1].cost / items[j + 1].weight;
+                if (rational1 < rational2) {
+                    temp = items[j];
+                    items[j] = items[j+1];
+                    items[j+1] = temp;
+                    System.out.println(temp.cost + "  " + temp.weight);
+                }
+            }
+
+        }
+
+        for (i = 0; i < items.length; ++i) {
+            cost[i] = items[i].cost / items[i].weight;
+            System.out.println(cost[i]);
+        }
+
+        remainingW = W;
+
+        for (Item item : items) {
+            if (remainingW != 0) {
+                if (item.weight <= remainingW) {
+                    result = result + item.cost;
+                    remainingW = remainingW - item.weight;
+                } else {
+                    result = result + item.cost * (remainingW / item.weight);
+                    remainingW = 0;
+                }
+            }
+
+        }
+
 
         System.out.printf("Удалось собрать рюкзак на сумму %f\n", result);
         return result;
