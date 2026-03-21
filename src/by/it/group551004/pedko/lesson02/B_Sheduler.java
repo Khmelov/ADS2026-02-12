@@ -24,6 +24,30 @@ public class B_Sheduler {
         System.out.println(starts);                                 //покажем рассчитанный график занятий
     }
 
+    public static Event findBestEvent(Event[] events, int from) {
+        Event best;
+        int i;
+        int bestStop;
+
+        best = null;
+
+        bestStop = -1;
+
+        for (i = 0; i < events.length; ++i) {
+            if (events[i].start >= from) {
+                if (bestStop == -1) {
+                    bestStop = events[i].stop;
+                    best = events[i];
+                } else if ((events[i].stop - from) < (bestStop - from)) {
+                    bestStop = events[i].stop;
+                    best = events[i];
+                }
+            }
+        }
+
+        return best;
+    }
+
     List<Event> calcStartTimes(Event[] events, int from, int to) {
         //Events - события которые нужно распределить в аудитории
         //в период [from, int] (включительно).
@@ -33,6 +57,21 @@ public class B_Sheduler {
         result = new ArrayList<>();
         //ваше решение.
 
+        int i;
+        int lastStop;
+        Event best;
+
+        best = findBestEvent(events, 0);
+        lastStop = best.stop;
+        result.add(best);
+
+        for (i = 0; i < events.length; ++i) {
+            best = findBestEvent(events, lastStop);
+            if (best != null) {
+                lastStop = best.stop;
+                result.add(best);
+            }
+        }
 
         return result;          //вернем итог
     }
