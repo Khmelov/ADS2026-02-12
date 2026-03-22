@@ -8,7 +8,7 @@ import java.util.List;
 заданный период времени (1) было минимальным, а все события events
 были зарегистрированы.
 */
-
+//
 public class A_VideoRegistrator {
 
     public static void main(String[] args) {
