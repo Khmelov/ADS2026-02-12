@@ -3,6 +3,8 @@ package by.it.group551001.bogush.lesson03;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
 
 // Lesson 3. B_Huffman.
 // Восстановите строку по её коду и беспрефиксному коду символов.
@@ -57,7 +59,25 @@ public class B_Huffman {
         Integer length = scanner.nextInt();
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         //тут запишите ваше решение
+        Map<String, String> map = new HashMap<>();
 
+        for (int i = 0; i < count; i++) {
+            String Letter_with_twopoint = scanner.next();
+            String Code = scanner.next();
+            map.put(Code, Letter_with_twopoint.substring(0, 1));
+        }
+
+        String huff_code = scanner.next();
+
+        String code_part = "";
+
+        for (int i = 0; i < huff_code.length(); i++) {
+            code_part += huff_code.charAt(i);
+            if (map.containsKey(code_part)) {
+                result.append(map.get(code_part));
+            code_part = "";
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         return result.toString(); //01001100100111
