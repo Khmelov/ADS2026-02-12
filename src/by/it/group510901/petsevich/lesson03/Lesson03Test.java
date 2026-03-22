@@ -42,6 +42,6 @@ public class Lesson03Test {
         Long res = instance.findMaxValue(inputStream);
         boolean ok = (res == 500);
         assertTrue("C failed", ok);
-    }
+    
 
 }
