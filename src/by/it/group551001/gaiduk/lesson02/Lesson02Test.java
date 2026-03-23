@@ -1,8 +1,8 @@
 package by.it.group551001.gaiduk.lesson02;
 
-import by.it.group551001.biarezina.lesson02.A_VideoRegistrator;
-import by.it.group551001.biarezina.lesson02.B_Sheduler;
-import by.it.group551001.biarezina.lesson02.C_GreedyKnapsack;
+import by.it.group551001.gaiduk.lesson02.A_VideoRegistrator;
+import by.it.group551001.gaiduk.lesson02.B_Sheduler;
+import by.it.group551001.gaiduk.lesson02.C_GreedyKnapsack;
 import org.junit.Test;
 
 import java.io.InputStream;
@@ -23,7 +23,7 @@ public class Lesson02Test {
 
     @Test(timeout = 2000)
     public void checkA_videoRegistrator() {
-        by.it.group551001.biarezina.lesson02.A_VideoRegistrator instance = new A_VideoRegistrator();
+        by.it.group551001.gaiduk.lesson02.A_VideoRegistrator instance = new A_VideoRegistrator();
         double[] events = new double[]{1, 1.1, 1.6, 2.2, 2.4, 2.7, 3.9, 8.1, 9.1, 5.5, 3.7};
         List<Double> starts = instance.calcStartTimes(events, 1); //рассчитаем моменты старта, с длинной сеанса 1
         boolean ok = starts.toString().equals("[1.0, 2.2, 3.7, 5.5, 8.1]");
@@ -32,13 +32,13 @@ public class Lesson02Test {
 
     @Test(timeout = 2000)
     public void checkB_sheduler() {
-        by.it.group551001.biarezina.lesson02.B_Sheduler instance = new by.it.group551001.biarezina.lesson02.B_Sheduler();
-        by.it.group551001.biarezina.lesson02.B_Sheduler.Event[] events = {new by.it.group551001.biarezina.lesson02.B_Sheduler.Event(0, 3), new by.it.group551001.biarezina.lesson02.B_Sheduler.Event(0, 1), new by.it.group551001.biarezina.lesson02.B_Sheduler.Event(1, 2), new by.it.group551001.biarezina.lesson02.B_Sheduler.Event(3, 5),
-                new by.it.group551001.biarezina.lesson02.B_Sheduler.Event(1, 3), new by.it.group551001.biarezina.lesson02.B_Sheduler.Event(1, 3), new by.it.group551001.biarezina.lesson02.B_Sheduler.Event(1, 3), new by.it.group551001.biarezina.lesson02.B_Sheduler.Event(3, 6),
-                new by.it.group551001.biarezina.lesson02.B_Sheduler.Event(2, 7), new by.it.group551001.biarezina.lesson02.B_Sheduler.Event(2, 3), new by.it.group551001.biarezina.lesson02.B_Sheduler.Event(2, 7), new by.it.group551001.biarezina.lesson02.B_Sheduler.Event(7, 9),
-                new by.it.group551001.biarezina.lesson02.B_Sheduler.Event(3, 5), new by.it.group551001.biarezina.lesson02.B_Sheduler.Event(2, 4), new by.it.group551001.biarezina.lesson02.B_Sheduler.Event(2, 3), new by.it.group551001.biarezina.lesson02.B_Sheduler.Event(3, 7),
-                new by.it.group551001.biarezina.lesson02.B_Sheduler.Event(4, 5), new by.it.group551001.biarezina.lesson02.B_Sheduler.Event(6, 7), new by.it.group551001.biarezina.lesson02.B_Sheduler.Event(6, 9), new by.it.group551001.biarezina.lesson02.B_Sheduler.Event(7, 9),
-                new by.it.group551001.biarezina.lesson02.B_Sheduler.Event(8, 9), new by.it.group551001.biarezina.lesson02.B_Sheduler.Event(4, 6), new by.it.group551001.biarezina.lesson02.B_Sheduler.Event(8, 10), new by.it.group551001.biarezina.lesson02.B_Sheduler.Event(7, 10)
+        by.it.group551001.gaiduk.lesson02.B_Sheduler instance = new by.it.group551001.gaiduk.lesson02.B_Sheduler();
+        by.it.group551001.gaiduk.lesson02.B_Sheduler.Event[] events = {new by.it.group551001.gaiduk.lesson02.B_Sheduler.Event(0, 3), new by.it.group551001.gaiduk.lesson02.B_Sheduler.Event(0, 1), new by.it.group551001.gaiduk.lesson02.B_Sheduler.Event(1, 2), new by.it.group551001.gaiduk.lesson02.B_Sheduler.Event(3, 5),
+                new by.it.group551001.gaiduk.lesson02.B_Sheduler.Event(1, 3), new by.it.group551001.gaiduk.lesson02.B_Sheduler.Event(1, 3), new by.it.group551001.gaiduk.lesson02.B_Sheduler.Event(1, 3), new by.it.group551001.gaiduk.lesson02.B_Sheduler.Event(3, 6),
+                new by.it.group551001.gaiduk.lesson02.B_Sheduler.Event(2, 7), new by.it.group551001.gaiduk.lesson02.B_Sheduler.Event(2, 3), new by.it.group551001.gaiduk.lesson02.B_Sheduler.Event(2, 7), new by.it.group551001.gaiduk.lesson02.B_Sheduler.Event(7, 9),
+                new by.it.group551001.gaiduk.lesson02.B_Sheduler.Event(3, 5), new by.it.group551001.gaiduk.lesson02.B_Sheduler.Event(2, 4), new by.it.group551001.gaiduk.lesson02.B_Sheduler.Event(2, 3), new by.it.group551001.gaiduk.lesson02.B_Sheduler.Event(3, 7),
+                new by.it.group551001.gaiduk.lesson02.B_Sheduler.Event(4, 5), new by.it.group551001.gaiduk.lesson02.B_Sheduler.Event(6, 7), new by.it.group551001.gaiduk.lesson02.B_Sheduler.Event(6, 9), new by.it.group551001.gaiduk.lesson02.B_Sheduler.Event(7, 9),
+                new by.it.group551001.gaiduk.lesson02.B_Sheduler.Event(8, 9), new by.it.group551001.gaiduk.lesson02.B_Sheduler.Event(4, 6), new by.it.group551001.gaiduk.lesson02.B_Sheduler.Event(8, 10), new by.it.group551001.gaiduk.lesson02.B_Sheduler.Event(7, 10)
         };
 
         List<B_Sheduler.Event> starts = instance.calcStartTimes(events, 0, 10);  //рассчитаем оптимальное заполнение аудитории
@@ -48,7 +48,7 @@ public class Lesson02Test {
 
     @Test(timeout = 2000)
     public void checkC_greedyKnapsack() throws Exception {
-        InputStream inputStream = by.it.group551001.biarezina.lesson02.C_GreedyKnapsack.class.getResourceAsStream("greedyKnapsack.txt");
+        InputStream inputStream = by.it.group551001.gaiduk.lesson02.C_GreedyKnapsack.class.getResourceAsStream("greedyKnapsack.txt");
         double costFinal = new C_GreedyKnapsack().calc(inputStream);
         boolean ok = costFinal == 200;
         assertTrue("B_Sheduler failed", ok);
