@@ -1,0 +1,46 @@
+package by.it.group551003.paskal.lesson01;
+
+/*
+ * Даны целые числа 1<=n<=1E18 и 2<=m<=1E5,
+ * необходимо найти остаток от деления n-го числа Фибоначчи на m
+ * время расчета должно быть не более 2 секунд
+ */
+
+public class FiboC {
+
+    private long startTime = System.currentTimeMillis();
+
+    public static void main(String[] args) {
+        FiboC fibo = new FiboC();
+        int n = 55555;
+        int m = 1000;
+        System.out.printf("fasterC(%d)=%d \n\t time=%d \n\n", n, fibo.fasterC(n, m), fibo.time());
+    }
+
+    private long time() {
+        return System.currentTimeMillis() - startTime;
+    }
+
+    long fasterC(long n, int m) {
+        int[] remainders = new int[6 * m + 1];
+        remainders[0] = 0;
+        remainders[1] = 1;
+
+        int period = 0;
+
+        for (int i = 2; i <= 6 * m; i++) {
+            remainders[i] = (remainders[i-1] + remainders[i-2]) % m;
+
+            if (remainders[i-1] == 0 && remainders[i] == 1) {
+                period = i - 1;
+                break;
+            }
+        }
+
+        int index = (int)(n % period);
+        return remainders[index];
+    }
+
+
+}
+
