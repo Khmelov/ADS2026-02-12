@@ -50,7 +50,7 @@ public class C_GreedyKnapsack {
         //будет особенно хорошо, если с собственной сортировкой
         //кроме того, можете описать свой компаратор в классе Item
 
-        //ваше решение (my life be like uuuuuuu aaaaaaa ya uuuuuuu aaaaaaa my life be like ...).
+        //ваше решение.
         Arrays.sort(items);
         current = 0;
         for (Item i : items) {

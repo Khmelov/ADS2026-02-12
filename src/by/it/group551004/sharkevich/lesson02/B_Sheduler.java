@@ -33,7 +33,7 @@ public class B_Sheduler {
         List<Event> result;
         result = new ArrayList<>();
         int current;
-        //ваше решение (нет, ваше =) ).
+        //ваше решение.
         Arrays.sort(events);
         current = from;
         for (Event i : events) {
