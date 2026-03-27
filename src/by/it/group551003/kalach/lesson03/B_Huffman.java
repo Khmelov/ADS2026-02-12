@@ -55,11 +55,40 @@ public class B_Huffman {
         Scanner scanner = new Scanner(inputStream);
         Integer count = scanner.nextInt();
         Integer length = scanner.nextInt();
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-        //тут запишите ваше решение
+        ///!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+//тут запишите ваше решение
 
+// Создаем массивы для хранения букв и их кодов
+        String[] codes = new String[count];
+        char[] letters = new char[count];
 
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+// Считываем коды букв в формате "letter: code"
+        for (int i = 0; i < count; i++) {
+            String letterPart = scanner.next();  // читает "a:", "b:" и т.д.
+            letters[i] = letterPart.charAt(0);    // извлекаем букву (первый символ)
+            codes[i] = scanner.next();            // читает сам код: "0", "10", "110"...
+        }
+
+// Считываем закодированную строку
+        String encoded = scanner.next();
+
+// Декодируем: идём по битам и собираем код, пока не найдём соответствие
+        StringBuilder currentCode = new StringBuilder();
+        for (char bit : encoded.toCharArray()) {
+            currentCode.append(bit);
+            String code = currentCode.toString();
+
+            // Ищем совпадение в массиве кодов (линейный поиск)
+            for (int i = 0; i < count; i++) {
+                if (codes[i].equals(code)) {
+                    result.append(letters[i]);   // добавляем расшифрованный символ
+                    currentCode.setLength(0);     // сбрасываем накопитель кода
+                    break;                        // выходим из цикла поиска
+                }
+            }
+        }
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         return result.toString(); //01001100100111
     }
 
