@@ -39,30 +39,30 @@ public class C_HeapMax {
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = C_HeapMax.class.getResourceAsStream("dataC.txt");
         C_HeapMax instance = new C_HeapMax();
-        System.out.println("MAX=" + instance.findMaxValue(stream));
+        instance.findMaxValue(stream);
     }
 
     //эта процедура читает данные из файла, ее можно не менять.
     Long findMaxValue(InputStream stream) {
         Long maxValue = 0L;
         MaxHeap heap = new MaxHeap();
-        //прочитаем строку для кодирования из тестового файла
         Scanner scanner = new Scanner(stream);
         Integer count = scanner.nextInt();
-        for (int i = 0; i < count; ) {
-            String s = scanner.nextLine();
-            if (s.equalsIgnoreCase("extractMax")) {
+        scanner.nextLine();
+
+        for (int i = 0; i < count; i++) {
+            String line = scanner.nextLine();
+
+            if (line.equalsIgnoreCase("extractMax")) {
                 Long res = heap.extractMax();
-                if (res != null && res > maxValue) maxValue = res;
-                System.out.println();
-                i++;
+                if (res != null) {
+                    System.out.println(res);
+                    if (res > maxValue) maxValue = res;
+                }
             }
-            if (s.contains(" ")) {
-                String[] p = s.split(" ");
-                if (p[0].equalsIgnoreCase("insert"))
-                    heap.insert(Long.parseLong(p[1]));
-                i++;
-                //System.out.println(heap); //debug
+            else if (line.toLowerCase().startsWith("insert")) {
+                String[] parts = line.split(" ");
+                heap.insert(Long.parseLong(parts[1]));
             }
         }
         return maxValue;
@@ -111,15 +111,14 @@ public class C_HeapMax {
             siftUp(heap.size() - 1);
         }
 
-        Long extractMax() { //извлечение и удаление максимума
-            if (heap.isEmpty()) {
-                return null;
-            }
-            Long result = null;
+        Long extractMax() {
+            if (heap.isEmpty()) return null;
+
+            Long result = heap.get(0);
             Long lastElement = heap.remove(heap.size() - 1);
+
             if (!heap.isEmpty()) {
                 heap.set(0, lastElement);
-                // Просеиваем вниз для восстановления свойства кучи
                 siftDown(0);
             }
 
