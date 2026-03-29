@@ -2,6 +2,8 @@ package by.it.group551001.kuzminich.lesson3;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 // Lesson 3. B_Huffman.
@@ -57,7 +59,22 @@ public class B_Huffman {
         Integer length = scanner.nextInt();
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         //тут запишите ваше решение
-
+        Map<String, Character> code_to_char = new HashMap<>();
+        for (int i=0; i<count;i++){
+            String letter = scanner.next();
+            String code = scanner.next();
+            char ch = letter.charAt(0);
+            code_to_char.put(code, ch);
+        }
+        String encoded = scanner.next();
+        StringBuilder current = new StringBuilder();
+        for (char bit: encoded.toCharArray()){
+            current.append(bit);
+            if (code_to_char.containsKey(current.toString())){
+                result.append(code_to_char.get(current.toString()));
+                current.setLength(0); // clear buffer
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         return result.toString(); //01001100100111
