@@ -32,8 +32,8 @@ public class FiboC {
         long x1 = 0;
         long x2 = 1;
         long x3;
-        int ostx1;
-        int ostx2; // начинаю с пары (0,1)
+        int ostx1 = 0;
+        int ostx2 = 1; // начинаю с пары (0,1)
         int period = 0; // это длина периода
 
         // нахожу период
