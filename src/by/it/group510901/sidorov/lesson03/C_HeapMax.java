@@ -70,25 +70,62 @@ public class C_HeapMax {
 
     private class MaxHeap {
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-        //тут запишите ваше решение.
-        //Будет мало? Ну тогда можете его собрать как Generic и/или использовать в варианте B
+
+
         private List<Long> heap = new ArrayList<>();
 
         int siftDown(int i) { //просеивание вверх
+            int size = heap.size();
+            while (2 * i + 1 < size) {
+                int left = 2 * i + 1;
+                int right = 2 * i + 2;
+                int j = left; // Предположим, левый ребенок больше
 
+                // Если есть правый и он больше левого
+                if (right < size && heap.get(right) > heap.get(left)) {
+                    j = right;
+                }
+
+                if (heap.get(i) >= heap.get(j)) break; // Если мы уже больше детей - стоп
+
+                // Меняем местами
+                Long temp = heap.get(i);
+                heap.set(i, heap.get(j));
+                heap.set(j, temp);
+                i = j; // Идем ниже
+            }
             return i;
         }
 
         int siftUp(int i) { //просеивание вниз
+            while (i > 0) {
+                int parent = (i - 1) / 2;
+                if (heap.get(i) <= heap.get(parent)) break; // Если родитель уже больше - стоп
 
+                // Меняем местами с родителем
+                Long temp = heap.get(i);
+                heap.set(i, heap.get(parent));
+                heap.set(parent, temp);
+                i = parent; // Идем выше
+            }
             return i;
         }
 
-        void insert(Long value) { //вставка
+        void insert(Long value) {
+            heap.add(value); // Ставим в конец
+            siftUp(heap.size() - 1); // Заставляем "всплыть"
         }
 
-        Long extractMax() { //извлечение и удаление максимума
-            Long result = null;
+        Long extractMax() {
+            if (heap.isEmpty()) return null;
+
+            Long result = heap.get(0); // Максимум всегда в корне (индекс 0)
+            Long lastElement = heap.remove(heap.size() - 1); // Удаляем последний
+
+            if (!heap.isEmpty()) {
+                heap.set(0, lastElement); // Ставим последний на вершину
+                siftDown(0); // Заставляем его "утонуть" до нужного уровня
+            }
 
             return result;
         }

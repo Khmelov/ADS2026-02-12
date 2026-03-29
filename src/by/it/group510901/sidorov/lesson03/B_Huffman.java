@@ -2,6 +2,8 @@ package by.it.group510901.sidorov.lesson03;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 // Lesson 3. B_Huffman.
@@ -55,12 +57,38 @@ public class B_Huffman {
         Scanner scanner = new Scanner(inputStream);
         Integer count = scanner.nextInt();
         Integer length = scanner.nextInt();
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-        //тут запишите ваше решение
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+        // 1. Создаем карту для хранения кодов (Код -> Символ)
+        Map<String, Character> codes = new HashMap<>();
+
+        // Читаем k строк со словарем
+        for (int i = 0; i < count; i++) {
+            String letter = scanner.next();
+            String code = scanner.next();
+
+            // Очищаем букву от лишнего двоеточия
+            char charLetter = letter.charAt(0);
+            codes.put(code, charLetter);
+        }
+
+        // 2. Читаем саму закодированную строку
+        String encodedString = scanner.next();
+
+        // 3. Декодируем
+        StringBuilder current = new StringBuilder();
+        for (int i = 0; i < encodedString.length(); i++) {
+            current.append(encodedString.charAt(i)); // Добавляем один бит
+
+            // Проверяем, есть ли такой код в словаре
+            if (codes.containsKey(current.toString())) {
+                result.append(codes.get(current.toString())); // Добавляем букву в результат
+                current.setLength(0); // Очищаем временную строку для следующей буквы
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-        return result.toString(); //01001100100111
+        return result.toString();
     }
 
 
