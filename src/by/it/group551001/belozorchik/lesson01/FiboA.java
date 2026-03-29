@@ -32,9 +32,9 @@ public class FiboA {
         //здесь простейший вариант, в котором код совпадает
         //с математическим определением чисел Фибоначчи
         //время O(2^n)
-        if (n<2) return n;
-        return calc(n-1)+calc(n-2);
-        //return 0;
+        if (n == 0) return 0;
+        if (n == 1) return 1;
+        return calc(n - 1) + calc(n - 2);
     }
 
 
