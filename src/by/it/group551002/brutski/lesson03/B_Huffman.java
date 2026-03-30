@@ -66,7 +66,7 @@ public class B_Huffman {
             let = scanner.next();
             let = let.substring(0, 1);
             code = scanner.next();
-            hash.put(let, code);
+            hash.put(code, let);
         }
 
         String part = "";
