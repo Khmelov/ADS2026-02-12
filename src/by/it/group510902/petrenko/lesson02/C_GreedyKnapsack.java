@@ -1,4 +1,5 @@
-package by.it.a_khmelev.lesson02;
+package by.it.group510902.petrenko.lesson02;
+
 /*
 Даны
 1) объем рюкзака 4
@@ -16,6 +17,7 @@ package by.it.a_khmelev.lesson02;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
+import java.util.Arrays;
 
 public class C_GreedyKnapsack {
     public static void main(String[] args) throws FileNotFoundException {
@@ -32,18 +34,32 @@ public class C_GreedyKnapsack {
         int W = input.nextInt();      //какой вес у рюкзака
         Item[] items = new Item[n];   //получим список предметов
         for (int i = 0; i < n; i++) { //создавая каждый конструктором
-            items[i] = new Item(input.nextInt(), input.nextInt());
+            int cost = input.nextInt();
+            int weight = input.nextInt();
+            items[i] = new Item(cost, weight);
         }
         //покажем предметы
+        Arrays.sort(items);
         for (Item item : items) {
             System.out.println(item);
         }
         System.out.printf("Всего предметов: %d. Рюкзак вмещает %d кг.\n", n, W);
 
+
         //тут необходимо реализовать решение задачи
-        //итогом является максимально воможная стоимость вещей в рюкзаке
+        //итогом является максимально возможная стоимость вещей в рюкзаке
         //вещи можно резать на кусочки (непрерывный рюкзак)
         double result = 0;
+        for (Item item : items) {
+            if (W>=item.weight){
+                result+=item.cost;
+                W-=item.weight;
+            }
+            else {
+                result+=(double)W/item.weight*item.cost;
+                break;
+            }
+        }
         //тут реализуйте алгоритм сбора рюкзака
         //будет особенно хорошо, если с собственной сортировкой
         //кроме того, можете описать свой компаратор в классе Item
@@ -67,17 +83,17 @@ public class C_GreedyKnapsack {
         @Override
         public String toString() {
             return "Item{" +
-                   "cost=" + cost +
-                   ", weight=" + weight +
-                   '}';
+                    "cost=" + cost +
+                    ", weight=" + weight +
+                    '}';
         }
 
         @Override
         public int compareTo(Item o) {
             //тут может быть ваш компаратор
-
-
-            return 0;
+            long r1=(long)cost*o.weight;
+            long r2=(long)o.cost*weight;
+            return -Long.compare(r1, r2);
         }
     }
 }

@@ -1,7 +1,10 @@
-package by.it.a_khmelev.lesson02;
+package by.it.group510902.petrenko.lesson02;
+
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Comparator;
 /*
 Даны интервальные события events
 реализуйте метод calcStartTimes, так, чтобы число принятых к выполнению
@@ -31,6 +34,19 @@ public class B_Sheduler {
         //Начало и конец событий могут совпадать.
         List<Event> result;
         result = new ArrayList<>();
+        Arrays.sort(events, Comparator.comparingInt(Event::getStop));
+        if (events.length>0) {
+            Event last = events[0];
+            result.add(last);
+            for (int i = 1; i < events.length; i++) {
+                Event current = events[i];
+                if (current.start >= last.stop) {
+                    result.add(current);
+                    last = current;
+                }
+            }
+        }
+
         //ваше решение.
 
 
@@ -41,7 +57,9 @@ public class B_Sheduler {
     static class Event {
         int start;
         int stop;
-
+        public int getStop(){
+            return stop;
+        }
         Event(int start, int stop) {
             this.start = start;
             this.stop = stop;
