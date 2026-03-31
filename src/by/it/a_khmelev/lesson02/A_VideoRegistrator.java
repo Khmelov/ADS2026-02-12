@@ -10,6 +10,7 @@ import java.util.List;
 Алгоритм жадный. Для реализации обдумайте надежный шаг.
 */
 
+
 public class A_VideoRegistrator {
     public static void main(String[] args) {
         A_VideoRegistrator instance = new A_VideoRegistrator();
