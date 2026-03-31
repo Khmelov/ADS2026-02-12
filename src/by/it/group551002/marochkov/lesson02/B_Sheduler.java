@@ -32,9 +32,50 @@ public class B_Sheduler {
         List<Event> result;
         result = new ArrayList<>();
         //ваше решение.
+        quickSort(events, 0, events.length - 1);
 
+        Event current = events[0];
+        result.add(current);
+
+        for (int i = 1; i < events.length; i++) {
+            if (current.stop <= events[i].start) {
+                current = events[i];
+                result.add(current);
+            }
+        }
 
         return result;          //вернем итог
+    }
+    int partition(Event[] arr, int low, int high) {
+        int pivotStop = arr[high].stop;
+        int pivotStart = arr[high].start;
+
+        int i = low - 1;
+
+        for (int j = low; j < high; j++) {
+            if (arr[j].stop < pivotStop || (arr[j].stop == pivotStop && arr[j].start < pivotStart)) {
+                i++;
+
+                Event temp = arr[j];
+                arr[j] = arr[i];
+                arr[i] = temp;
+            }
+        }
+
+        Event temp = arr[high];
+        arr[high] = arr[i + 1];
+        arr[i + 1] = temp;
+
+        return i + 1;
+    }
+
+    void quickSort(Event[] arr, int low, int high) {
+        if (low < high) {
+            int pi = partition(arr, low, high);
+
+            quickSort(arr, pi + 1, high);
+            quickSort(arr, low, pi - 1);
+        }
     }
 
     //событие у аудитории(два поля: начало и конец)
