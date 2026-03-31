@@ -16,6 +16,7 @@ package by.it.group551002.pukalo.lesson02;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
+import java.util.Arrays;
 
 public class C_GreedyKnapsack {
     public static void main(String[] args) throws FileNotFoundException {
@@ -49,7 +50,20 @@ public class C_GreedyKnapsack {
         //кроме того, можете описать свой компаратор в классе Item
 
         //ваше решение.
-
+        Arrays.sort(items);
+        int Wreal = 0;
+        for(int i=0;i< items.length;i++){
+            if(Wreal<W){
+                if(items[i].weight<= (W-Wreal)){
+                    result += items[i].cost;
+                    Wreal += items[i].weight;
+                }
+                else{
+                    result += (W-Wreal)*((double)items[i].cost/items[i].weight);
+                    Wreal = W;
+                }
+            }
+        }
 
         System.out.printf("Удалось собрать рюкзак на сумму %f\n", result);
         return result;
@@ -75,9 +89,7 @@ public class C_GreedyKnapsack {
         @Override
         public int compareTo(Item o) {
             //тут может быть ваш компаратор
-
-
-            return 0;
+            return (int)((o.cost /o.weight) - (this.cost/ this.weight));
         }
     }
 }

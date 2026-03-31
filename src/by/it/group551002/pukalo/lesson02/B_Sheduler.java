@@ -2,7 +2,7 @@ package by.it.group551002.pukalo.lesson02;
 
 import java.util.ArrayList;
 import java.util.List;
-/*
+import java.util.Arrays;/*
 Даны интервальные события events
 реализуйте метод calcStartTimes, так, чтобы число принятых к выполнению
 непересекающихся событий было максимально.
@@ -32,7 +32,15 @@ public class B_Sheduler {
         List<Event> result;
         result = new ArrayList<>();
         //ваше решение.
+        Arrays.sort(events,(a,b)->a.stop -b.stop);
+        int lastStop = 0;
 
+        for (int i=0; i< events.length;i++){
+            if (events[i].start>=lastStop){
+                lastStop = events[i].stop;
+                result.add(events[i]);
+            }
+        }
 
         return result;          //вернем итог
     }
@@ -49,6 +57,7 @@ public class B_Sheduler {
 
         @Override
         public String toString() {
+
             return "(" + start + ":" + stop + ")";
         }
     }
