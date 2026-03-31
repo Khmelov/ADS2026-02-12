@@ -86,7 +86,6 @@ public class C_GreedyKnapsack {
                     ", weight=" + weight +
                     '}';
         }
-
         @Override
         public int compareTo(Item o) {
             //тут может быть ваш компаратор
