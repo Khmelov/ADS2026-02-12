@@ -58,7 +58,7 @@ public class C_GreedyKnapsack {
                 // иначе берём только часть
                 int remain = W - currWeight;
                 if (remain > 0) {
-                    // добавляем стоимость пропорционально
+                    // добавляем стоимость пропорционально весу
                     result += (double) item.cost * remain / item.weight;
                 }
                 break; // Рюкзак полон

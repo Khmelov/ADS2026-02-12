@@ -3,6 +3,8 @@ package by.it.group551002.kuzmenia.lesson03;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
 
 // Lesson 3. B_Huffman.
 // Восстановите строку по её коду и беспрефиксному коду символов.
@@ -51,16 +53,39 @@ public class B_Huffman {
 
     String decode(InputStream inputStream) throws FileNotFoundException {
         StringBuilder result = new StringBuilder();
-        //прочитаем строку для кодирования из тестового файла
         Scanner scanner = new Scanner(inputStream);
-        Integer count = scanner.nextInt();
-        Integer length = scanner.nextInt();
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-        //тут запишите ваше решение
 
+        int k = scanner.nextInt(); // k - количество букв в полученной строке
+        int l = scanner.nextInt(); // l - количество цифр закодированной строке
 
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-        return result.toString(); //01001100100111
+        // Создаём хэш-карту, делаем ключом код символа, а значением ключа сам символ
+        Map<String, Character> codeMap = new HashMap<>();
+
+        // Считываем k строк с кодами формата "a: 0"
+        for (int i = 0; i < k; i++) {
+            String letterWithColon = scanner.next(); // Считываем букву ("a:")
+            char letter = letterWithColon.charAt(0); // Оставляем только букву
+            String code = scanner.next();            // Считываем код буквы
+            codeMap.put(code, letter);               // Добавляем в хэш-карту
+        }
+
+        // Читаем саму закодированную строку
+        String encodedString = scanner.next();
+
+        // Восстанавливаем исходную строку
+        StringBuilder currentCode = new StringBuilder();
+        for (int i = 0; i < encodedString.length(); i++) {
+            currentCode.append(encodedString.charAt(i)); // Добавляем один символ кода
+
+            // Если считанный код есть в хэш-карте, то добавляем букву соответствующую коду
+            if (codeMap.containsKey(currentCode.toString())) {
+                result.append(codeMap.get(currentCode.toString())); // Добавление буквы в результирующую строку
+                currentCode.setLength(0);                           // Очищаем буфер для повторного ввода кода
+            }
+        }
+
+        // Возвращаем строку
+        return result.toString();
     }
 
 
