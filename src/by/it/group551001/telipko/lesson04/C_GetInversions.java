@@ -2,6 +2,7 @@ package by.it.group551001.telipko.lesson04;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /*
@@ -34,6 +35,8 @@ Sample Output:
 
 public class C_GetInversions {
 
+    private int count = 0;
+
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = C_GetInversions.class.getResourceAsStream("dataC.txt");
         C_GetInversions instance = new C_GetInversions();
@@ -54,11 +57,38 @@ public class C_GetInversions {
         for (int i = 0; i < n; i++) {
             a[i] = scanner.nextInt();
         }
-        int result = 0;
         //!!!!!!!!!!!!!!!!!!!!!!!!     тут ваше решение   !!!!!!!!!!!!!!!!!!!!!!!!
 
+        count = 0;
+        split(a);
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        return count;
+    }
+
+    private int[] split(int[] arr) {
+        if (arr.length <= 1) return arr;
+        int pivot = arr.length / 2;
+        int[] left = split(Arrays.copyOfRange(arr, 0, pivot));
+        int[] right = split(Arrays.copyOfRange(arr, pivot, arr.length));
+        return merge(left, right);
+    }
+
+    private int[] merge(int[] left, int[] right) {
+        int i, j, k;
+        i = j = k = 0;
+        int[] result = new int[left.length + right.length];
+
+        while (i < left.length && j < right.length) {
+            if (left[i] <= right[j]) {
+                result[k++] = left[i++];
+            } else {
+                count += (left.length - i);
+                result[k++] = right[j++];
+            }
+        }
+        while (i < left.length) result[k++] = left[i++];
+        while (j < right.length) result[k++] = right[j++];
         return result;
     }
 }
