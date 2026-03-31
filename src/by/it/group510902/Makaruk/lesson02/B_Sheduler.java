@@ -1,5 +1,4 @@
 package by.it.group510902.Makaruk.lesson02;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

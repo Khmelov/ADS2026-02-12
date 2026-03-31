@@ -17,7 +17,6 @@ public class Lesson02Test {
     Search for test:    In whole project
     */
 
-
     @Test(timeout = 2000)
     public void checkA_videoRegistrator() {
         A_VideoRegistrator instance = new A_VideoRegistrator();

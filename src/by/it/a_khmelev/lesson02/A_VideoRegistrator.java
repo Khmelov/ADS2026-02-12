@@ -11,7 +11,6 @@ import java.util.List;
 */
 
 public class A_VideoRegistrator {
-
     public static void main(String[] args) {
         A_VideoRegistrator instance = new A_VideoRegistrator();
         double[] events = new double[]{1, 1.1, 1.6, 2.2, 2.4, 2.7, 3.9, 8.1, 9.1, 5.5, 3.7};
