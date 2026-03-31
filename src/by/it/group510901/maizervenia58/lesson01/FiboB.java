@@ -1,4 +1,4 @@
-package by.it.group510901.maizervenia58;
+package by.it.group510901.maizervenia58.lesson01;
 
 import java.math.BigInteger;
 

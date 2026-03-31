@@ -1,4 +1,4 @@
-package by.it.group510901.maizervenia58;
+package by.it.group510901.maizervenia58.lesson01;
 
 /*
  * Даны целые числа 1<=n<=1E18 и 2<=m<=1E5,
