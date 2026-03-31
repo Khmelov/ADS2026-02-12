@@ -2,6 +2,8 @@ package by.it.group510902.chibisov.lesson03;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 // Lesson 3. B_Huffman.
@@ -58,10 +60,50 @@ public class B_Huffman {
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         //тут запишите ваше решение
 
+        Node root = new Node();
+        Node current = root;
 
+        for (int i = 0; i < count; i++) {
+            char c = scanner.next().charAt(0);
+            String code = scanner.next();
+            current = root;
+
+            for (char bit : code.toCharArray()) {
+                if (bit == '0') {
+                    if (current.left == null) current.left = new Node();
+                    current = current.left;
+                } else {
+                    if (current.right == null) current.right = new Node();
+                    current = current.right;
+                }
+            }
+            current.symbol = c;
+        }
+
+        String encoded = scanner.next();
+        StringBuilder sb = new StringBuilder();
+        current = root;
+
+        for (char bit : encoded.toCharArray()) {
+            if (bit == '0') {
+                current = current.left;
+            } else {
+                current = current.right;
+            }
+
+            if (current.symbol != 0) {
+                sb.append(current.symbol);
+                current = root;
+            }
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-        return result.toString(); //01001100100111
+        return sb.toString(); //01001100100111
     }
 
+    private class Node {
+        char symbol;
+        Node left;
+        Node right;
+    }
 
 }
