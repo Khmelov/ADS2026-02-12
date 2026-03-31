@@ -51,7 +51,6 @@ public class B_Sheduler {
 
         return result;          //вернем итог
     }
-
     //событие у аудитории(два поля: начало и конец)
     static class Event {
         int start;
