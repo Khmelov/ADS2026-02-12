@@ -32,7 +32,20 @@ public class B_Sheduler {
         List<Event> result;
         result = new ArrayList<>();
         //ваше решение.
-
+        List<Event> validEvents = new ArrayList<>();
+        for(Event event : events){
+            if(event.start >= from && event.stop <= to){
+                validEvents.add(event);
+            }
+        }
+        validEvents.sort((e1, e2) -> Integer.compare(e1.stop,e2.stop));
+        int lastEndtime = from;
+        for(Event event : validEvents){
+            if(event.start >= lastEndtime && event.start >= from && event.stop <= to){
+                result.add(event);
+                lastEndtime = event.stop;
+            }
+        }
 
         return result;          //вернем итог
     }
