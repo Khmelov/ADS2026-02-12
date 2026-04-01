@@ -11,7 +11,7 @@ import java.util.Arrays;
 были зарегистрированы.
 Алгоритм жадный. Для реализации обдумайте надежный шаг.
 */
-
+/**/
 public class A_VideoRegistrator {
 
     public static void main(String[] args) {
