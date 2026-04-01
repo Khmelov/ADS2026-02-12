@@ -44,13 +44,27 @@ public class C_GreedyKnapsack {
         //итогом является максимально воможная стоимость вещей в рюкзаке
         //вещи можно резать на кусочки (непрерывный рюкзак)
         double result = 0;
+        java.util.Arrays.sort(items);
         //тут реализуйте алгоритм сбора рюкзака
         //будет особенно хорошо, если с собственной сортировкой
         //кроме того, можете описать свой компаратор в классе Item
-
         //ваше решение.
+        int value = W;
+        for(Item item : items){
+            if(value <= 0){
+                break;
+            }
+            if(item.weight <= value){
+                result += item.cost;
+                value -= item.weight;
 
-
+            }
+            else{
+                double fraction = (double) value / item.weight;
+                result += item.cost * fraction;
+                value = 0;
+            }
+        }
         System.out.printf("Удалось собрать рюкзак на сумму %f\n", result);
         return result;
     }
@@ -75,9 +89,17 @@ public class C_GreedyKnapsack {
         @Override
         public int compareTo(Item o) {
             //тут может быть ваш компаратор
-
-
-            return 0;
+            double thisvalueperweight = (double) cost / weight;
+            double othervalueperweight = (double) o.cost / o.weight;
+            if(thisvalueperweight > othervalueperweight){
+                return -1;
+            }
+            else if(thisvalueperweight < othervalueperweight){
+                return 1;
+            }
+            else{
+                return 0;
+            }
         }
     }
 }
