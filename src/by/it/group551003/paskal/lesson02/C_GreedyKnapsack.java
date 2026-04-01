@@ -70,7 +70,6 @@ public class C_GreedyKnapsack {
                     ", weight=" + weight +
                     '}';
         }
-
         @Override
         public int compareTo(Item o) {
             return Double.compare(o.getValuePerWeight(), this.getValuePerWeight());

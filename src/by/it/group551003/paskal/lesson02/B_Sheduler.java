@@ -35,7 +35,6 @@ public class B_Sheduler {
                 lastEnd = event.stop;
             }
         }
-
         return result;
     }
 
