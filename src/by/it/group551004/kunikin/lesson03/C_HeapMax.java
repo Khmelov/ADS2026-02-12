@@ -1,4 +1,4 @@
-package by.it.group551001.bondarenko.lesson03;
+package by.it.group551004.kunikin.lesson03;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -72,69 +72,88 @@ public class C_HeapMax {
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         //тут запишите ваше решение.
         //Будет мало? Ну тогда можете его собрать как Generic и/или использовать в варианте B
-        private List<Long> heap = new ArrayList<>();
+//        private List<Long> heap = new ArrayList<>();
+//
+//        int siftDown(int i) { //просеивание вверх
+//
+//            return i;
+//        }
+//
+//        int siftUp(int i) { //просеивание вниз
+//
+//            return i;
+//        }
+//
+//        void insert(Long value) { //вставка
+//        }
+//
+//        Long extractMax() { //извлечение и удаление максимума
+//            Long result = null;
+//
+//            return result;
+//        }
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+            private List<Long> heap = new ArrayList<>();
 
-        int siftDown(int i) { //просеивание вверх
-            int size = heap.size();
-            long value = heap.get(i);
-            while (true) {
-                int leftKid = 2 * i + 1;
-                int rightKid = 2 * i + 2;
-                int biggest = i;
-                if (leftKid < size && heap.get(leftKid) > value) {
-                    biggest = leftKid;
-                } else {
-                    biggest = i;
+            int siftDown(int i) {
+                while (2 * i + 1 < heap.size()) {
+                    int left = 2 * i + 1;
+                    int right = 2 * i + 2;
+                    int j = left;
+
+                    if (right < heap.size() && heap.get(right) > heap.get(left)) {
+                        j = right;
+                    }
+
+                    if (heap.get(i) >= heap.get(j)) {
+                        break;
+                    }
+
+                    swap(i, j);
+                    i = j;
                 }
-                if (rightKid < size && heap.get(rightKid) > heap.get(biggest)) {
-                    biggest = rightKid;
-                }
-                if (biggest != i) {
-                    heap.set(i, heap.get(biggest));
-                    i = biggest;
-                } else {
-                    break;
-                }
+                return i;
             }
-            heap.set(i, value);
-            return i;
-        }
 
-        int siftUp(int i) { //просеивание вниз
-            long value = heap.get(i);
-            while (i > 0) {
-                int parent = (i - 1) / 2;
-                if (value > heap.get(parent)) {
-                    heap.set(i, heap.get(parent));
+            int siftUp(int i) {
+                while (i > 0) {
+                    int parent = (i - 1) / 2;
+                    if (heap.get(i) <= heap.get(parent)) {
+                        break;
+                    }
+                    swap(i, parent);
                     i = parent;
-                } else {
-                    break;
                 }
+                return i;
             }
-            heap.set(i, value);
-            return i;
-        }
 
-        void insert(Long value) { //вставка
-            heap.add(value);
-            siftUp(heap.size() - 1);
-        }
+            void insert(Long value) {
+                heap.add(value);
+                siftUp(heap.size() - 1);
+            }
 
-        Long extractMax() { //извлечение и удаление максимума
-            Long result = heap.get(0);
-            if (heap.size() == 1) {
-                heap.remove(0);
+            Long extractMax() {
+                if (heap.isEmpty()) return null;
+
+                Long result = heap.get(0);
+                Long lastElement = heap.remove(heap.size() - 1);
+
+                if (!heap.isEmpty()) {
+                    heap.set(0, lastElement);
+                    siftDown(0);
+                }
+
+                System.out.println(result);
                 return result;
             }
-            int lastInd = heap.size() - 1;
-            long lastVal = heap.get(lastInd);
-            heap.set(0, lastVal);
-            heap.remove(lastInd);
-            siftDown(0);
-            return result;
+
+            private void swap(int i, int j) {
+                Long temp = heap.get(i);
+                heap.set(i, heap.get(j));
+                heap.set(j, temp);
+            }
         }
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-    }
+
 
     // РЕМАРКА. Это задание исключительно учебное.
     // Свои собственные кучи нужны довольно редко.

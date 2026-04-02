@@ -1,4 +1,4 @@
-package by.it.group551001.bondarenko.lesson03;
+package by.it.group551003.kalach.lesson03;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -70,70 +70,70 @@ public class C_HeapMax {
 
     private class MaxHeap {
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-        //тут запишите ваше решение.
-        //Будет мало? Ну тогда можете его собрать как Generic и/или использовать в варианте B
+//тут запишите ваше решение.
+
         private List<Long> heap = new ArrayList<>();
 
-        int siftDown(int i) { //просеивание вверх
-            int size = heap.size();
-            long value = heap.get(i);
-            while (true) {
-                int leftKid = 2 * i + 1;
-                int rightKid = 2 * i + 2;
-                int biggest = i;
-                if (leftKid < size && heap.get(leftKid) > value) {
-                    biggest = leftKid;
-                } else {
-                    biggest = i;
-                }
-                if (rightKid < size && heap.get(rightKid) > heap.get(biggest)) {
-                    biggest = rightKid;
-                }
-                if (biggest != i) {
-                    heap.set(i, heap.get(biggest));
-                    i = biggest;
-                } else {
-                    break;
-                }
+        // Вспомогательный метод: обмен элементов
+        private void swap(int i, int j) {
+            Long temp = heap.get(i);
+            heap.set(i, heap.get(j));
+            heap.set(j, temp);
+        }
+
+        int siftDown(int i) { // просеивание вниз (после удаления корня)
+            int max = i;
+            int left = 2 * i + 1;   // индекс левого потомка
+            int right = 2 * i + 2;  // индекс правого потомка
+
+            // Если левый потомок существует и больше текущего максимума
+            if (left < heap.size() && heap.get(left) > heap.get(max)) {
+                max = left;
             }
-            heap.set(i, value);
+            // Если правый потомок существует и больше текущего максимума
+            if (right < heap.size() && heap.get(right) > heap.get(max)) {
+                max = right;
+            }
+
+            // Если максимум не в текущем узле — меняем местами и продолжаем
+            if (max != i) {
+                swap(i, max);
+                return siftDown(max);
+            }
             return i;
         }
 
-        int siftUp(int i) { //просеивание вниз
-            long value = heap.get(i);
-            while (i > 0) {
-                int parent = (i - 1) / 2;
-                if (value > heap.get(parent)) {
-                    heap.set(i, heap.get(parent));
-                    i = parent;
-                } else {
-                    break;
-                }
+        int siftUp(int i) { // просеивание вверх (после вставки)
+            // Пока не достигли корня и родитель меньше текущего элемента
+            while (i > 0 && heap.get((i - 1) / 2) < heap.get(i)) {
+                swap(i, (i - 1) / 2);  // меняем с родителем
+                i = (i - 1) / 2;        // переходим к родителю
             }
-            heap.set(i, value);
             return i;
         }
 
-        void insert(Long value) { //вставка
-            heap.add(value);
-            siftUp(heap.size() - 1);
+        void insert(Long value) { // вставка элемента
+            heap.add(value);              // добавляем в конец
+            siftUp(heap.size() - 1);      // просеиваем вверх
         }
 
-        Long extractMax() { //извлечение и удаление максимума
-            Long result = heap.get(0);
-            if (heap.size() == 1) {
-                heap.remove(0);
-                return result;
+        Long extractMax() { // извлечение и удаление максимума
+            if (heap.isEmpty()) return null;
+
+            Long result = heap.get(0);    // сохраняем корень (максимум)
+
+            // Если в куче больше одного элемента
+            if (heap.size() > 1) {
+                heap.set(0, heap.get(heap.size() - 1));  // перемещаем последний на корень
+                heap.remove(heap.size() - 1);            // удаляем последний
+                siftDown(0);                              // просеиваем вниз от корня
+            } else {
+                heap.clear();  // если был один элемент — просто очищаем
             }
-            int lastInd = heap.size() - 1;
-            long lastVal = heap.get(lastInd);
-            heap.set(0, lastVal);
-            heap.remove(lastInd);
-            siftDown(0);
+
             return result;
         }
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1!!!!!!!!!!!!!!!!!!!!!!!!1
     }
 
     // РЕМАРКА. Это задание исключительно учебное.

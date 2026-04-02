@@ -1,4 +1,4 @@
-package by.it.group551001.bondarenko.lesson03;
+package by.it.group551003.kalach.lesson03;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -55,59 +55,42 @@ public class B_Huffman {
         Scanner scanner = new Scanner(inputStream);
         Integer count = scanner.nextInt();
         Integer length = scanner.nextInt();
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-        //тут запишите ваше решение
-        Node root = new Node();
-        scanner.nextLine();
+        ///!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+//тут запишите ваше решение
+
+// Создаем массивы для хранения букв и их кодов
+        String[] codes = new String[count];
+        char[] letters = new char[count];
+
+// Считываем коды букв в формате "letter: code"
         for (int i = 0; i < count; i++) {
-            String line = scanner.nextLine();
-            char symbol = line.charAt(0);
-            String code = line.substring(3);
-            Node current = root;
-            for (int j = 0; j < code.length(); j++) {
-                char c = code.charAt(j);
-                if (c == '0') {
-                    if (current.left == null) {
-                        current.left = new Node();
-                    }
-                    current = current.left;
-                } else {
-                    if (current.right == null) {
-                        current.right = new Node();
-                    }
-                    current = current.right;
+            String letterPart = scanner.next();  // читает "a:", "b:" и т.д.
+            letters[i] = letterPart.charAt(0);    // извлекаем букву (первый символ)
+            codes[i] = scanner.next();            // читает сам код: "0", "10", "110"...
+        }
+
+// Считываем закодированную строку
+        String encoded = scanner.next();
+
+// Декодируем: идём по битам и собираем код, пока не найдём соответствие
+        StringBuilder currentCode = new StringBuilder();
+        for (char bit : encoded.toCharArray()) {
+            currentCode.append(bit);
+            String code = currentCode.toString();
+
+            // Ищем совпадение в массиве кодов (линейный поиск)
+            for (int i = 0; i < count; i++) {
+                if (codes[i].equals(code)) {
+                    result.append(letters[i]);   // добавляем расшифрованный символ
+                    currentCode.setLength(0);     // сбрасываем накопитель кода
+                    break;                        // выходим из цикла поиска
                 }
             }
-            current.symbol = symbol;
-            current.isLeaf = true;
         }
-        String encoded = scanner.next();
-        Node current = root;
-        for (int i = 0; i < encoded.length(); i++) {
-            char c = encoded.charAt(i);
-            if (c == '0') {
-                current = current.left;
-            } else {
-                current = current.right;
-            }
-            if (current.isLeaf) {
-                result.append(current.symbol);
-                current = root;
-            }
-        }
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         return result.toString(); //01001100100111
     }
 
-    private static class Node {
-        Node left;
-        Node right;
-        char symbol;
-        boolean isLeaf;
-        Node() {
-            left = null;
-            right = null;
-            isLeaf = false;
-        }
-    }
+
 }
