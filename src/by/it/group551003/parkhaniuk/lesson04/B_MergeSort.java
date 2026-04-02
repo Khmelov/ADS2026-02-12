@@ -88,7 +88,6 @@ public class B_MergeSort {
                     target[i] = r_buff[r_cur];
                     r_cur++;
                 }
-
             } else if (l_cur <= mid)
             {
                target[i] = l_buff[l_cur];
@@ -101,9 +100,5 @@ public class B_MergeSort {
             }
         }
         return target;
-
     }
-
-
-
 }
