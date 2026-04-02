@@ -68,19 +68,37 @@ public class A_Huffman {
         Map<Character, Integer> count = new HashMap<>();
         //1. переберем все символы по очереди и рассчитаем их частоту в Map count
         //для каждого символа добавим 1 если его в карте еще нет или инкремент если есть.
+        for (char c : s.toCharArray()) {
+            count.put(c, count.getOrDefault(c, 0) + 1);
+        }
 
         //2. перенесем все символы в приоритетную очередь в виде листьев
         PriorityQueue<Node> priorityQueue = new PriorityQueue<>();
+        for (Map.Entry<Character, Integer> entry : count.entrySet()) {
+            priorityQueue.add(new LeafNode(entry.getValue(), entry.getKey()));
+        }
 
         //3. вынимая по два узла из очереди (для сборки родителя)
         //и возвращая этого родителя обратно в очередь
         //построим дерево кодирования Хаффмана.
         //У родителя частоты детей складываются.
+        while (priorityQueue.size() != 1) {
+            A_Huffman.Node element1 = priorityQueue.poll();
+            A_Huffman.Node element2 = priorityQueue.poll();
+            priorityQueue.add(new InternalNode(element1, element2));
+        }
 
+        A_Huffman.Node root = priorityQueue.poll();
+        if (root != null) {
+            root.fillCodes("");
+        }
         //4. последний из родителей будет корнем этого дерева
         //это будет последний и единственный элемент оставшийся в очереди priorityQueue.
         StringBuilder sb = new StringBuilder();
-        //.....
+
+        for (char c : s.toCharArray()) {
+            sb.append(codes.get(c));
+        }
 
         return sb.toString();
         //01001100100111
@@ -95,9 +113,7 @@ public class A_Huffman {
         private final int frequence; //частота символов
 
         //конструктор по умолчанию
-        private Node(int frequence) {
-            this.frequence = frequence;
-        }
+        private Node(int frequence) { this.frequence = frequence; }
 
         //генерация кодов (вызывается на корневом узле
         //один раз в конце, т.е. после построения дерева)
@@ -106,9 +122,7 @@ public class A_Huffman {
         //метод нужен для корректной работы узла в приоритетной очереди
         //или для сортировок
         @Override
-        public int compareTo(Node o) {
-            return Integer.compare(frequence, o.frequence);
-        }
+        public int compareTo(Node o) { return Integer.compare(frequence, o.frequence); }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////

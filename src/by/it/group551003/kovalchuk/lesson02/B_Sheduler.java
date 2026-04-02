@@ -42,7 +42,7 @@ public class B_Sheduler {
                 last = event.stop;
             }
         }
-        return result;          //вернем итог
+        return result;
     }
 
     //событие у аудитории(два поля: начало и конец)
