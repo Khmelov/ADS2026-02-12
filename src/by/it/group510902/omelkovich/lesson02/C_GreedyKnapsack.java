@@ -58,6 +58,7 @@ public class C_GreedyKnapsack {
                 result += item.cost;
                 value -= item.weight;
 
+
             }
             else{
                 double fraction = (double) value / item.weight;

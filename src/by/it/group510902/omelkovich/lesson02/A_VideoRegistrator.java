@@ -44,6 +44,7 @@ public class A_VideoRegistrator {
             result.add(starttime);
             while(i < events.length && events[i] <= endtime){
                 i++;
+
             }
         }
 

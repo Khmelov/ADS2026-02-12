@@ -36,6 +36,7 @@ public class B_Sheduler {
         for(Event event : events){
             if(event.start >= from && event.stop <= to){
                 validEvents.add(event);
+
             }
         }
         validEvents.sort((e1, e2) -> Integer.compare(e1.stop,e2.stop));
