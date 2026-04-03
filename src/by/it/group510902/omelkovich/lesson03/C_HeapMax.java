@@ -75,21 +75,62 @@ public class C_HeapMax {
         private List<Long> heap = new ArrayList<>();
 
         int siftDown(int i) { //просеивание вверх
+            int size = heap.size();
+            while (true) {
+                int left = 2 * i + 1;
+                int right = 2 * i + 2;
+                int largest = i;
 
+                if (left < size && heap.get(left) > heap.get(largest)) {
+                    largest = left;
+
+                }
+                if (right < size && heap.get(right) > heap.get(largest)) {
+                    largest = right;
+                }
+                if (largest == i) {
+                    break;
+                }
+                Long temp = heap.get(i);
+                heap.set(i, heap.get(largest));
+                heap.set(largest, temp);
+            }
             return i;
         }
 
         int siftUp(int i) { //просеивание вниз
-
+            while (i > 0) {
+                int parent = (i - 1) / 2;
+                if(heap.get(i) > heap.get(parent)){
+                    Long temp = heap.get(i);
+                    heap.set(i, heap.get(parent));
+                    heap.set(parent, temp);
+                    i = parent;
+                }
+                else{
+                    break;
+                }
+            }
             return i;
         }
 
         void insert(Long value) { //вставка
+            heap.add(value);
+            siftUp(heap.size() - 1);
         }
 
         Long extractMax() { //извлечение и удаление максимума
-            Long result = null;
-
+            if(heap.isEmpty()){
+                return null;
+            }
+            Long result = heap.get(0);
+            int last = heap.size() - 1;
+            heap.set(0, heap.get(last));
+            heap.remove(last);
+            if(!heap.isEmpty()){
+                siftDown(0);
+            }
+            System.out.print(result);
             return result;
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
