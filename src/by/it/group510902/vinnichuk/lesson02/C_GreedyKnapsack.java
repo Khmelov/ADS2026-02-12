@@ -1,0 +1,113 @@
+package by.it.group510902.vinnichuk.lesson02;
+/*
+Даны
+1) объем рюкзака 4
+2) число возможных предметов 60
+3) сам набор предметов
+    100 50
+    120 30
+    100 50
+Все это указано в файле (by/it/a_khmelev/lesson02/greedyKnapsack.txt)
+
+Необходимо собрать наиболее дорогой вариант рюкзака для этого объема
+Предметы можно резать на кусочки (т.е. алгоритм будет жадным)
+ */
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.Scanner;
+import java.util.Arrays;
+
+public class C_GreedyKnapsack {
+    public static void main(String[] args) throws FileNotFoundException {
+        long startTime = System.currentTimeMillis();
+        InputStream inputStream = C_GreedyKnapsack.class.getResourceAsStream("greedyKnapsack.txt");
+        double costFinal = new C_GreedyKnapsack().calc(inputStream);
+        long finishTime = System.currentTimeMillis();
+        System.out.printf("Общая стоимость %f (время %d)", costFinal, finishTime - startTime);
+    }
+
+    double calc(InputStream inputStream) throws FileNotFoundException {
+        Scanner input = new Scanner(inputStream);
+        int n = input.nextInt();      //сколько предметов в файле
+        int W = input.nextInt();      //какой вес у рюкзака
+        Item[] items = new Item[n];   //получим список предметов
+        for (int i = 0; i < n; i++) { //создавая каждый конструктором
+            items[i] = new Item(input.nextInt(), input.nextInt());
+        }
+        //покажем предметы
+        for (Item item : items) {
+            System.out.println(item);
+        }
+        System.out.printf("Всего предметов: %d. Рюкзак вмещает %d кг.\n", n, W);
+
+        //тут необходимо реализовать решение задачи
+        //итогом является максимально возможная стоимость вещей в рюкзаке
+        //вещи можно резать на кусочки (непрерывный рюкзак)
+        // Сначала я сортирую все предметы по их удельной цене (цена/вес).
+        // Это мой главный жадный шаг: я хочу сначала брать самое дорогое "золото", а не дешевые "камни".
+        // Сортировка по убыванию будет работать благодаря моему методу compareTo в классе Item.
+        Arrays.sort(items);
+        double result = 0;// Итоговая стоимость
+        int currentWeight = 0; // Текущий вес в рюкзаке
+        //тут реализуйте алгоритм сбора рюкзака
+        //будет особенно хорошо, если с собственной сортировкой
+        //кроме того, можете описать свой компаратор в классе Item
+        //ваше решение.
+        // Теперь прохожу по отсортированным предметам и "набиваю" рюкзак
+        for (Item item : items) {
+            // Если предмет целиком влезает в оставшееся место
+            if (currentWeight + item.weight <= W) {
+                result += item.cost;
+                currentWeight += item.weight;
+            } else {
+                // Если целиком не лезет, я отрезаю кусок, который точно заполнит рюкзак доверху.
+                // Вычисляю, сколько веса еще могу взять
+                int remainingWeight = W - currentWeight;
+                // Добавляю стоимость этой части: (цена за кг) * (сколько кг влезло)
+                result += (double) item.cost / item.weight * remainingWeight;
+                currentWeight = W; // Рюкзак полон
+                break; // Больше ничего не влезет, выхожу из цикла
+            }
+        }
+
+
+
+
+        System.out.printf("Удалось собрать рюкзак на сумму %f\n", result);
+        return result;
+    }
+
+    private static class Item implements Comparable<Item> {
+        int cost;
+        int weight;
+
+        Item(int cost, int weight) {
+            this.cost = cost;
+            this.weight = weight;
+        }
+
+        @Override
+        public String toString() {
+            return "Item{" +
+                   "cost=" + cost +
+                   ", weight=" + weight +
+                   '}';
+        }
+
+        @Override
+        public int compareTo(Item o) {
+            //тут может быть ваш компаратор
+            // Чтобы рюкзак был самым дорогим, я сравниваю предметы по их удельной стоимости.
+            // Удельная стоимость = cost / weight.
+            // Сравниваю (this.cost / this.weight) и (o.cost / o.weight).
+            // Чтобы избежать проблем с делением на ноль или потерей точности, использую пропорцию:
+            // a/b > c/d  =>  a*d > c*b
+            double r1 = (double) this.cost / this.weight;
+            double r2 = (double) o.cost / o.weight;
+
+            // Сортировка по убыванию: сначала самые дорогие за кг
+            return Double.compare(r2, r1);
+        }
+    }
+}
