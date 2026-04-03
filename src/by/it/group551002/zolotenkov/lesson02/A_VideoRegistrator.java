@@ -38,7 +38,51 @@ public class A_VideoRegistrator {
         //и теперь пропустим все покрываемые события
         //за время до конца работы, увеличивая индекс
 
+        if (events != null && events.length > 0) {
+            quickSort(events, 0, events.length - 1);
+        }
+
+        int n = events.length;
+
+        // 2. Идем по отсортированному массиву событий
+        while (i < n) {
+            // Берем текущее событие как точку старта
+            double startTime = events[i];
+            result.add(startTime);
+
+            // Вычисляем время окончания работы камеры
+            double stopTime = startTime + workDuration;
+
+            // 3. Пропускаем все события, которые укладываются в этот интервал
+            // Пока событие попадает в диапазон работы [startTime, stopTime]
+            while (i < n && events[i] <= stopTime) {
+                i++;
+            }
+        }
 
         return result;                        //вернем итог
+    }
+
+    private void quickSort(double[] array, int left, int right) {
+        if (left >= right) return;
+
+        double pivot = array[left + (right - left) / 2];
+        int i = left, j = right;
+
+        while (i <= j) {
+            while (array[i] < pivot) i++;
+            while (array[j] > pivot) j--;
+
+            if (i <= j) {
+                double temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+                i++;
+                j--;
+            }
+        }
+
+        if (left < j) quickSort(array, left, j);
+        if (right > i) quickSort(array, i, right);
     }
 }

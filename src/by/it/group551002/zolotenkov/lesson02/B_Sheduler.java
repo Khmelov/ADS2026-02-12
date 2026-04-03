@@ -1,6 +1,8 @@
 package by.it.group551002.zolotenkov.lesson02;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 /*
 Даны интервальные события events
@@ -33,8 +35,47 @@ public class B_Sheduler {
         result = new ArrayList<>();
         //ваше решение.
 
+        Arrays.sort(events, Comparator.comparingInt(e -> e.stop));
+        int start = from;
+        for (Event e : events){
+            if (e.start >= start && e.stop <= to ){
+                result.add(e);
+                start = e.stop;
+            }
+        }
 
-        return result;          //вернем итог
+        return result;
+    }
+
+    private void quickSort(Event[] array, int left, int right) {
+        if (left >= right) return;
+
+        int i = left, j = right;
+        int pivot = array[left + (right - left) / 2].stop;
+
+        while (i <= j) {
+            while (array[i].stop < pivot) i++;
+            while (array[j].stop > pivot) j--;
+
+            if (i <= j) {
+                Event temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+                i++;
+                j--;
+            }
+        }
+
+        if (left < j) quickSort(array, left, j);
+        if (right > i) quickSort(array, i, right);
+    }
+
+    private int compare(Event a, Event b) {
+        if (a.stop != b.stop) {
+            return Integer.compare(a.stop, b.stop);
+        }
+        // Если время окончания одинаковое, ставим вперед то, что начинается позже (короче)
+        return Integer.compare(b.start, a.start);
     }
 
     //событие у аудитории(два поля: начало и конец)
