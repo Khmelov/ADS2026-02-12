@@ -2,7 +2,9 @@ package by.it.group551004.sharkevich.lesson03;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Map;
 
 // Lesson 3. B_Huffman.
 // Восстановите строку по её коду и беспрефиксному коду символов.
@@ -57,6 +59,28 @@ public class B_Huffman {
         Integer length = scanner.nextInt();
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         //тут запишите ваше решение
+
+        Map<String, Character> codeMap = new HashMap<>();
+        String letter, code;
+        char symbol;
+
+        for (int i = 0; i < count; i++) {
+            letter = scanner.next();
+            symbol = letter.charAt(0);
+            code = scanner.next();
+            codeMap.put(code, symbol);
+        }
+
+        String encoded = scanner.next();
+        StringBuilder current = new StringBuilder();
+
+        for (char bit : encoded.toCharArray()) {
+            current.append(bit);
+            if (codeMap.containsKey(current.toString())) {
+                result.append(codeMap.get(current.toString()));
+                current.setLength(0);
+            }
+        }
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
