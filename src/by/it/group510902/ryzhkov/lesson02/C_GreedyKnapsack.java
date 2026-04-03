@@ -75,7 +75,6 @@ public class C_GreedyKnapsack {
                 result += temp.cost * ((double) W / temp.weight);
                 W = 0;
             }
-            System.out.println(W);
         }
 
         System.out.printf("Удалось собрать рюкзак на сумму %f\n", result);

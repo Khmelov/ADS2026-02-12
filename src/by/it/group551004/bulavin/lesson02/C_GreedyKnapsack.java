@@ -1,4 +1,4 @@
-package by.it.group551004.bulavin.lesson02;
+package lesson02;
 /*
 Даны
 1) объем рюкзака 4
@@ -114,10 +114,7 @@ public class C_GreedyKnapsack {
 
         @Override
         public int compareTo(Item o) {
-            //тут может быть ваш компаратор
-
-
-            return 0;
+            return Double.compare((double) o.cost / o.weight, (double) this.cost / this.weight);
         }
     }
 }
