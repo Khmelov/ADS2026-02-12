@@ -26,7 +26,7 @@ public class A_VideoRegistrator {
         //timeWorkDuration время работы видеокамеры после старта
         List<Double> result;
         result = new ArrayList<>();
-        int i = 0;                              //i - это индекс события events[i]
+        int i = 0;                       //i - это индекс события events[i]
         double start, end;
         //Комментарии от проверочного решения сохранены для подсказки, но вы можете их удалить.
         //Подготовка к жадному поглощению массива событий

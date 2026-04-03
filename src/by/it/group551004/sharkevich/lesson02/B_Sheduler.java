@@ -47,7 +47,7 @@ public class B_Sheduler {
     }
 
     //событие у аудитории(два поля: начало и конец)
-    static class Event implements Comparable<Event> {
+    static class Event implements Comparable<Event>{
         int start;
         int stop;
 
@@ -60,7 +60,6 @@ public class B_Sheduler {
         public String toString() {
             return "(" + start + ":" + stop + ")";
         }
-
         public int compareTo(Event i) {
             return Integer.compare(this.stop, i.stop);
         }
