@@ -3,6 +3,7 @@ package by.it.group510901.nekhviadovich.lesson03;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -74,22 +75,55 @@ public class C_HeapMax {
         //Будет мало? Ну тогда можете его собрать как Generic и/или использовать в варианте B
         private List<Long> heap = new ArrayList<>();
 
-        int siftDown(int i) { //просеивание вверх
+        int siftDown(int i) { //просеивание вниз
+            int parent = i;
+            while (true){
+                int leftChild = 2 * parent + 1;
+                int rightChild = 2 * parent + 2;
+                int largest = parent;
 
-            return i;
+                if(leftChild < heap.size() && heap.get(largest) < heap.get(leftChild)){
+                    largest = leftChild;
+                }
+                if (rightChild < heap.size() && heap.get(largest) < heap.get(rightChild) ) {
+                    largest = rightChild;
+                }
+                if(largest == parent){
+                    break;
+                }
+                Collections.swap(heap, largest, parent);
+                parent = largest;
+            }
+            return parent;
         }
 
-        int siftUp(int i) { //просеивание вниз
+        int siftUp(int i) { //просеивание вверх
+            int parent;
+            int child = i;
+            while(child > 0){
+                parent = (child - 1) / 2;
+                if(heap.get(parent) < heap.get(child)) {
+                    Collections.swap(heap, child, parent);
+                    child = parent;
+                }
+                else{
+                    break;
+                }
 
-            return i;
+            }
+            return child;
         }
 
         void insert(Long value) { //вставка
+            heap.add(value);
+            siftUp(heap.size()-1);
         }
 
         Long extractMax() { //извлечение и удаление максимума
-            Long result = null;
-
+            Long result = heap.get(0);
+            heap.add(0, heap.getLast());
+            heap.removeLast();
+            siftDown(0);
             return result;
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
