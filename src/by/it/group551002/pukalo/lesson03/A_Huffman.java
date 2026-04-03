@@ -66,21 +66,40 @@ public class A_Huffman {
         //если они вам мешают их можно удалить
 
         Map<Character, Integer> count = new HashMap<>();
+        for (char c : s.toCharArray()) {
+            count.put(c, count.getOrDefault(c, 0) + 1);}
         //1. переберем все символы по очереди и рассчитаем их частоту в Map count
         //для каждого символа добавим 1 если его в карте еще нет или инкремент если есть.
 
         //2. перенесем все символы в приоритетную очередь в виде листьев
         PriorityQueue<Node> priorityQueue = new PriorityQueue<>();
-
+        for (Map.Entry<Character, Integer> entry : count.entrySet()) {
+            priorityQueue.add(new LeafNode(entry.getValue(), entry.getKey()));
+        }
         //3. вынимая по два узла из очереди (для сборки родителя)
         //и возвращая этого родителя обратно в очередь
         //построим дерево кодирования Хаффмана.
         //У родителя частоты детей складываются.
+        while (priorityQueue.size() > 1) {
+            Node left = priorityQueue.poll();
+            Node right = priorityQueue.poll();
+            Node parent = new InternalNode(left, right);
+            priorityQueue.add(parent);
+        }
 
         //4. последний из родителей будет корнем этого дерева
         //это будет последний и единственный элемент оставшийся в очереди priorityQueue.
+        Node root = priorityQueue.poll();
+        if (root instanceof LeafNode) {
+            root.fillCodes("0");
+        } else {
+            root.fillCodes("");
+        }
+
         StringBuilder sb = new StringBuilder();
-        //.....
+        for (char c : s.toCharArray()) {
+            sb.append(codes.get(c));
+        }
 
         return sb.toString();
         //01001100100111
@@ -107,6 +126,7 @@ public class A_Huffman {
         //или для сортировок
         @Override
         public int compareTo(Node o) {
+
             return Integer.compare(frequence, o.frequence);
         }
     }
