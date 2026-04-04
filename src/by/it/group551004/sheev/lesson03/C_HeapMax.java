@@ -75,20 +75,62 @@ public class C_HeapMax {
         private List<Long> heap = new ArrayList<>();
 
         int siftDown(int i) { //просеивание вверх
+            int size = heap.size();
+            int largest = i;
+            int left = 2 * i + 1;
+            int right = 2 * i + 2;
+
+            // Сравнивает с левым дочерним элементом
+            if (left < size && heap.get(left) > heap.get(largest)) {
+                largest = left;
+            }
+
+            // Сравнивает с правым дочерним
+            if (right < size && heap.get(right) > heap.get(largest)) {
+                largest = right;
+            }
+
+            // Если наибольший узел не является текущим, меняем его местами и продолжаем просеивание вниз.
+            if (largest != i) {
+                Long temp = heap.get(i);
+                heap.set(i, heap.get(largest));
+                heap.set(largest, temp);
+                return siftDown(largest);
+            }
 
             return i;
         }
 
         int siftUp(int i) { //просеивание вниз
-
+            // Пока узел не находится в корневом узле и текущий узел больше родительского.
+            while (i > 0 && heap.get(i) > heap.get((i - 1) / 2)) {
+                // Поменять местами с родителем
+                int parent = (i - 1) / 2;
+                Long temp = heap.get(i);
+                heap.set(i, heap.get(parent));
+                heap.set(parent, temp);
+                i = parent;
+            }
             return i;
         }
 
         void insert(Long value) { //вставка
+            heap.add(value); // Добавить в конец
+            siftUp(heap.size() - 1); // Сдвиг вверх для сохранения свойств кучи
         }
 
         Long extractMax() { //извлечение и удаление максимума
-            Long result = null;
+            Long result = heap.get(0);
+
+            // Перемещаю последний элемент в корневой каталог
+            int lastIndex = heap.size() - 1;
+            heap.set(0, heap.get(lastIndex));
+            heap.remove(lastIndex);
+
+            // Снижаем значение нового корневого элемента, чтобы сохранить свойства кучи.
+            if (!heap.isEmpty()) {
+                siftDown(0);
+            }
 
             return result;
         }

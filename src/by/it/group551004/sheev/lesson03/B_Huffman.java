@@ -3,6 +3,8 @@ package by.it.group551004.sheev.lesson03;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
 
 // Lesson 3. B_Huffman.
 // Восстановите строку по её коду и беспрефиксному коду символов.
@@ -55,8 +57,36 @@ public class B_Huffman {
         Scanner scanner = new Scanner(inputStream);
         Integer count = scanner.nextInt();
         Integer length = scanner.nextInt();
+        scanner.nextLine();
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         //тут запишите ваше решение
+        // Создаю карту преобразования кода в символ (обратное отображение)
+        Map<String, Character> codeToChar = new HashMap<>();
+
+        // Считываю k строк с кодами символов
+        for (int i = 0; i < count; i++) {
+            String line = scanner.nextLine();
+            // считываю "буква: код"
+            String[] parts = line.split(": ");
+            char letter = parts[0].charAt(0);
+            String code = parts[1];
+            codeToChar.put(code, letter);
+        }
+
+        // Считываю закодированную строку
+        String encoded = scanner.nextLine();
+
+        // Декодирование путем сопоставления префиксов
+        StringBuilder currentCode = new StringBuilder();
+        for (int i = 0; i < encoded.length(); i++) {
+            currentCode.append(encoded.charAt(i));
+            // Проверяем, соответствует ли currentCode какому-либо коду символа
+            if (codeToChar.containsKey(currentCode.toString())) {
+                // Найденное совпадение, добавляю в результат символ
+                result.append(codeToChar.get(currentCode.toString()));
+                currentCode.setLength(0); // Сброс для следующего символа
+            }
+        }
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
