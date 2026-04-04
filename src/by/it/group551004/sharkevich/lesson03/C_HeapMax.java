@@ -76,22 +76,22 @@ public class C_HeapMax {
 
         int siftDown(int i) { //просеивание вверх
             while (true) {
-            int left, right, largest;
-            left = i * 2 + 1;
-            right = i * 2 + 2;
-            largest = i;
-            if (left < heap.size() && heap.get(left) > heap.get(largest))
-                largest = left;
-            if (right < heap.size() && heap.get(right) > heap.get(largest))
-                largest = right;
+                int left, right, largest;
+                left = i * 2 + 1;
+                right = i * 2 + 2;
+                largest = i;
+                if (left < heap.size() && heap.get(left) > heap.get(largest))
+                    largest = left;
+                if (right < heap.size() && heap.get(right) > heap.get(largest))
+                    largest = right;
 
-            if (largest == i)
-                break;
+                if (largest == i)
+                    break;
 
-            Long temp = heap.get(i);
-            heap.set(i, heap.get(largest));
-            heap.set(largest, temp);
-            i = largest;
+                Long temp = heap.get(i);
+                heap.set(i, heap.get(largest));
+                heap.set(largest, temp);
+                i = largest;
             }
             return i;
         }
