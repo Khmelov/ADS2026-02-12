@@ -84,6 +84,7 @@ public class C_HeapMax {
             int child = 2 * i + 1;
             if (child >= heap.size())
                 return;
+
             if (child + 1 < heap.size() && heap.get(child) < heap.get(child + 1))
                 ++child;
             if (heap.get(child) > heap.get(i)) {
