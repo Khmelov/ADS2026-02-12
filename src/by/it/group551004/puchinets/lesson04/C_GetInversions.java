@@ -43,6 +43,48 @@ public class C_GetInversions {
         System.out.print(result);
     }
 
+    static int mergeAndCount(int[] arr, int left, int mid, int right) {
+        int[] firstHalf = new int[mid - left + 1];
+        int[] secondHalf = new int[right - mid];
+
+        System.arraycopy(arr, left, firstHalf, 0, mid - left + 1);
+        System.arraycopy(arr, mid + 1, secondHalf, 0, right - mid);
+
+        int i = 0, j = 0, k = left;
+        int count = 0;
+
+        while (i < firstHalf.length && j < secondHalf.length) {
+            if (firstHalf[i] <= secondHalf[j])
+                arr[k++] = firstHalf[i++];
+            else {
+                arr[k++] = secondHalf[j++];
+                count += (mid - left + 1) - i;
+            }
+        }
+
+        while (i < firstHalf.length)
+            arr[k++] = firstHalf[i++];
+
+        while (j < secondHalf.length)
+            arr[k++] = secondHalf[j++];
+
+        return count;
+    }
+
+    private static int mergeSortAndCount(int[] arr, int left, int right) {
+        int count = 0;
+
+        if (left < right) {
+            int m = (left + right) / 2;
+
+            count += mergeSortAndCount(arr, left, m);
+            count += mergeSortAndCount(arr, m + 1, right);
+            count += mergeAndCount(arr, left, m, right);
+        }
+
+        return count;
+    }
+
     int calc(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
@@ -57,6 +99,7 @@ public class C_GetInversions {
         int result = 0;
         //!!!!!!!!!!!!!!!!!!!!!!!!     тут ваше решение   !!!!!!!!!!!!!!!!!!!!!!!!
 
+        result = mergeSortAndCount(a, 0, n - 1);
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
