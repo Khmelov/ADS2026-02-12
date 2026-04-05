@@ -32,17 +32,27 @@ public class B_CountSort {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         //размер массива
         int n = scanner.nextInt();
-        int[] points = new int[n];
+        int[] count = new int[11];
+        int[] result = new int[n];
 
-        //читаем точки
         for (int i = 0; i < n; i++) {
-            points[i] = scanner.nextInt();
+            int val = scanner.nextInt();
+            count[val]++;
         }
+
+        int index = 0;
+        for (int i = 0; i < count.length; i++) {
+            while (count[i] > 0) {
+                result[index++] = i;
+                count[i]--;
+            }
+        }
+
+        return result;
         //тут реализуйте логику задачи с применением сортировки подсчетом
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return points;
     }
 
 }
