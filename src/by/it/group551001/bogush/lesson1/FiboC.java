@@ -31,21 +31,21 @@ public class FiboC {
         long x1 = 0;
         long x2 = 1;
         long x3;
-        int ox1,ox2;
+        int ox1, ox2;
         int l = 1;
         do {
-          x3 = x1 + x2;
-          l++;
-          x1 = x2;
-          ox1 = (int)(x1 % m); // Остаток члена фибоначи на m
-          x2 = x3;
-          ox2 = (int)(x2 % m);  // Остаток члена фибоначи на m
+            x3 = x1 + x2;
+            l++;
+            x1 = x2;
+            ox1 = (int) (x1 % m); // Остаток члена фибоначи на m
+            x2 = x3;
+            ox2 = (int) (x2 % m);  // Остаток члена фибоначи на m
         } while (ox1 != 0 || ox2 != 1);
         /*Период Пизано повторится,когда остатки членов последовательности Фибоначчи
         станет снова равно 0 и 1 ( так как в начале 0 mod m = 0 и 1 mod m = 1 для m > 1)*/
         int Pizano_Period = l - 1; // Сам период Пизано (Его длина)
         //Найдём номер первого числа ,стоящего на том же месте где и F(n) в периоде Пизано
-        int FiboNumber = (int)(n % Pizano_Period);
+        int FiboNumber = (int) (n % Pizano_Period);
         long[] Arr = new long[FiboNumber + 1];
         Arr[0] = 0;
         Arr[1] = 1;
@@ -55,9 +55,4 @@ public class FiboC {
         }
         return Arr[FiboNumber] % m; // Фактически возвращаем остаток от деления F(n) на m
     }
-
-    
-
-
 }
-
