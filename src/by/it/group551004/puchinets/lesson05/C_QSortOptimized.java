@@ -40,6 +40,39 @@ public class C_QSortOptimized {
         }
     }
 
+    private static int partition(Segment[] a, int l, int r) {
+        Segment x = a[l];
+        int j = l;
+
+        for (int i = l + 1; i <= r; i++) {
+            if (x.compareTo(a[i]) != -1) {
+                j++;
+                Segment temp = a[j];
+                a[j] = a[i];
+                a[i] = temp;
+            }
+        }
+
+        Segment temp = a[l];
+        a[l] = a[j];
+        a[j] = temp;
+
+        return j;
+    }
+
+
+    public static void quickSort(Segment[] a, int l, int r) {
+        if (l >= r) {
+            return;
+        }
+
+        int m = partition(a, l, r);
+
+        quickSort(a, l, m - 1);
+
+        quickSort(a, m + 1, r);
+    }
+
     int[] getAccessory2(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
@@ -61,7 +94,31 @@ public class C_QSortOptimized {
         for (int i = 0; i < m; i++) {
             points[i] = scanner.nextInt();
         }
-        //тут реализуйте логику задачи с применением быстрой сортировки
+
+        quickSort(segments, 0, n-1);
+
+        for (int i = 0; i < m; i++) {
+            int val = points[i];
+            int left = 0;
+            int right = n-1;
+            int lastPossibleIdx = -1;
+
+            while (left <= right) {
+                int mid = left + (right - left) / 2;
+                if (segments[mid].start <= val) {
+                    lastPossibleIdx = mid;
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            }
+
+            for (int j = lastPossibleIdx; j >= 0; j--) {
+                if (segments[j].stop >= val) {
+                    result[i]++;
+                }
+            }
+        }
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
 
@@ -70,7 +127,7 @@ public class C_QSortOptimized {
     }
 
     //отрезок
-    private class Segment implements Comparable {
+    private class Segment implements Comparable<C_QSortOptimized.Segment> {
         int start;
         int stop;
 
@@ -80,7 +137,16 @@ public class C_QSortOptimized {
         }
 
         @Override
-        public int compareTo(Object o) {
+        public int compareTo(C_QSortOptimized.Segment o) {
+            if (this.start < o.start){
+                return -1;
+            } else if (this.start > o.start){
+                return 1;
+            } else if (this.stop < o.stop){
+                return -1;
+            } else if (this.stop > o.stop) {
+                return 1;
+            }
             //подумайте, что должен возвращать компаратор отрезков
             return 0;
         }
