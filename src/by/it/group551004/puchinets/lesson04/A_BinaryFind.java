@@ -56,9 +56,21 @@ public class A_BinaryFind {
         for (int i = 0; i < k; i++) {
             int value = scanner.nextInt();
             //тут реализуйте бинарный поиск индекса
-
-
             result[i] = 0;
+            int m;
+            int leftBoarder = 0;
+            int rightBoarder = n - 1;
+            while (leftBoarder <= rightBoarder && result[i] == 0) {
+                m = (leftBoarder + rightBoarder) / 2;
+                if (a[m] == value)
+                    result[i] = m + 1;
+                else if (value > a[m])
+                    leftBoarder = m + 1;
+                else
+                    rightBoarder = m - 1;
+            }
+            if (result[i] == 0)
+                result[i] = -1;
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
