@@ -45,6 +45,39 @@ public class A_QSort {
         }
     }
 
+    private static int partition(Segment[] a, int l, int r) {
+        Segment x = a[l];
+        int j = l;
+
+        for (int i = l + 1; i <= r; i++) {
+            if (x.compareTo(a[i]) != -1) {
+                j++;
+                Segment temp = a[j];
+                a[j] = a[i];
+                a[i] = temp;
+            }
+        }
+
+        Segment temp = a[l];
+        a[l] = a[j];
+        a[j] = temp;
+
+        return j;
+    }
+
+
+    public static void quickSort(Segment[] a, int l, int r) {
+        if (l >= r) {
+            return;
+        }
+
+        int m = partition(a, l, r);
+
+        quickSort(a, l, m - 1);
+
+        quickSort(a, m + 1, r);
+    }
+
     int[] getAccessory(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
@@ -67,8 +100,25 @@ public class A_QSort {
             points[i] = scanner.nextInt();
         }
         //тут реализуйте логику задачи с применением быстрой сортировки
-        //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
+        quickSort(segments, 0, n-1);
+        for (int i = 0; i < n; i++){
+            System.out.println(segments[i].start + ", " + segments[i].stop + "\n");
+        }
+
+        for (int j = 0; j < m; j++){
+            int i = 0;
+
+            while (i < n){
+                if (segments[i].start <= points[j] && points[j] <= segments[i].stop){
+                    result[j]++;
+                }
+                if (segments[i].start > points[j]) {
+                    break;
+                }
+                i++;
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
@@ -88,6 +138,15 @@ public class A_QSort {
 
         @Override
         public int compareTo(Segment o) {
+            if (this.start < o.start){
+                return -1;
+            } else if (this.start > o.start){
+                return 1;
+            } else if (this.stop < o.stop){
+                return -1;
+            } else if (this.stop > o.stop) {
+                return 1;
+            }
             //подумайте, что должен возвращать компаратор отрезков
 
             return 0;
