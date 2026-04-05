@@ -57,8 +57,21 @@ public class A_BinaryFind {
             int value = scanner.nextInt();
             //тут реализуйте бинарный поиск индекса
 
+            int l = 0;
+            int r = n - 1;
+            int idx = -1;
 
-            result[i] = 0;
+            while (l <= r) {
+                int mid = (l + r) / 2;
+                if (a[mid] < value) l = mid + 1;
+                else if (a[mid] > value) r = mid - 1;
+                else {
+                    idx = mid + 1;
+                    break;
+                }
+            }
+
+            result[i] = idx;
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
