@@ -43,6 +43,32 @@ public class C_GetInversions {
         System.out.print(result);
     }
 
+    private long inversions;
+
+    private void mergeSort(int[] a, int left, int right) {
+        if (left >= right) return;
+        int mid = left + (right - left) / 2;
+        mergeSort(a, left, mid);
+        mergeSort(a, mid + 1, right);
+        merge(a, left, mid, right);
+    }
+
+    private void merge(int[] a, int left, int mid, int right) {
+        int[] tmp = new int[right - left + 1];
+        int i = left, j = mid + 1, k = 0;
+        while (i <= mid && j <= right) {
+            if (a[i] <= a[j]) {
+                tmp[k++] = a[i++];
+            } else {
+                inversions += (mid - i + 1);
+                tmp[k++] = a[j++];
+            }
+        }
+        while (i <= mid) tmp[k++] = a[i++];
+        while (j <= right) tmp[k++] = a[j++];
+        System.arraycopy(tmp, 0, a, left, tmp.length);
+    }
+
     int calc(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
@@ -56,8 +82,9 @@ public class C_GetInversions {
         }
         int result = 0;
         //!!!!!!!!!!!!!!!!!!!!!!!!     тут ваше решение   !!!!!!!!!!!!!!!!!!!!!!!!
-
-
+        inversions = 0;
+        mergeSort(a, 0, n - 1);
+        result = (int) inversions;
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
