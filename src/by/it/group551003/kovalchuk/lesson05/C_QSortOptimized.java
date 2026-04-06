@@ -63,7 +63,74 @@ public class C_QSortOptimized {
         }
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
+        int[] stack = new int[n * 2];
+        int top = -1;
+        stack[++top] = 0;
+        stack[++top] = n - 1;
 
+        while (top >= 0) {
+            int hi = stack[top--];
+            int lo = stack[top--];
+
+            if (lo >= hi) continue;
+
+            int lt = lo, gt = hi;
+            Segment pivot = segments[lo];
+            int i = lo + 1;
+
+            while (i <= gt) {
+                int cmp = segments[i].compareTo(pivot);
+                if (cmp < 0) {
+                    Segment tmp = segments[lt];
+                    segments[lt] = segments[i];
+                    segments[i] = tmp;
+                    lt++;
+                    i++;
+                } else if (cmp > 0) {
+                    Segment tmp = segments[i];
+                    segments[i] = segments[gt];
+                    segments[gt] = tmp;
+                    gt--;
+                } else {
+                    i++;
+                }
+            }
+
+            if (lt - lo < hi - gt) {
+                stack[++top] = gt + 1;
+                stack[++top] = hi;
+                stack[++top] = lo;
+                stack[++top] = lt - 1;
+            } else {
+                stack[++top] = lo;
+                stack[++top] = lt - 1;
+                stack[++top] = gt + 1;
+                stack[++top] = hi;
+            }
+        }
+
+        for (int i = 0; i < m; i++) {
+            int point = points[i];
+
+            int left = 0, right = n;
+            while (left < right) {
+                int mid = left + (right - left) / 2;
+                if (segments[mid].start <= point) {
+                    left = mid + 1;
+                } else {
+                    right = mid;
+                }
+            }
+
+            int count = 0;
+            for (int j = 0; j < left; j++) {
+                if (segments[j].stop >= point) {
+                    count++;
+                }
+            }
+
+            result[i] = count;
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
@@ -82,7 +149,11 @@ public class C_QSortOptimized {
         @Override
         public int compareTo(Object o) {
             //подумайте, что должен возвращать компаратор отрезков
-            return 0;
+            Segment other = (Segment) o;
+            if (this.start != other.start) {
+                return this.start - other.start;
+            }
+            return this.stop - other.stop;
         }
     }
 

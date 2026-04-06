@@ -68,7 +68,18 @@ public class A_QSort {
         }
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
+        java.util.Arrays.sort(segments);
 
+        for (int i = 0; i < m; i++) {
+            int count = 0;
+            for (Segment segment : segments) {
+                if (points[i] < segment.start) break;
+                if (points[i] >= segment.start && points[i] <= segment.stop) {
+                    count++;
+                }
+            }
+            result[i] = count;
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
@@ -84,13 +95,20 @@ public class A_QSort {
             this.stop = stop;
             //тут вообще-то лучше доделать конструктор на случай если
             //концы отрезков придут в обратном порядке
+            if (this.start > this.stop) {
+                int temp = this.start;
+                this.start = this.stop;
+                this.stop = temp;
+            }
         }
 
         @Override
         public int compareTo(Segment o) {
             //подумайте, что должен возвращать компаратор отрезков
-
-            return 0;
+            if (this.start != o.start) {
+                return Integer.compare(this.start, o.start);
+            }
+            return Integer.compare(this.stop, o.stop);
         }
     }
 
