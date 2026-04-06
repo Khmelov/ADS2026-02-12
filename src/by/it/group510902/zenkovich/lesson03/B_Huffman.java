@@ -2,6 +2,8 @@ package by.it.group510902.zenkovich.lesson03;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 // Lesson 3. B_Huffman.
@@ -57,7 +59,33 @@ public class B_Huffman {
         Integer length = scanner.nextInt();
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         //тут запишите ваше решение
+        scanner.nextLine();
 
+        // создаем карту для быстрого поиска символа по его коду
+        Map<String, Character> codeToChar = new HashMap<>();
+
+        for (int i = 0; i < count; i++) {
+            String line = scanner.nextLine();
+            // формат: "a: 0" - разделитель ": "
+            String[] parts = line.split(": ");
+            char symbol = parts[0].charAt(0);
+            String code = parts[1];
+            codeToChar.put(code, symbol);
+        }
+
+        String encoded = scanner.nextLine();
+
+        StringBuilder currentCode = new StringBuilder();
+        for (int i = 0; i < encoded.length(); i++) {
+            currentCode.append(encoded.charAt(i));
+            // если текущий префикс это код какого-то символа
+            if (codeToChar.containsKey(currentCode.toString())) {
+                // добавляем символ в result
+                result.append(codeToChar.get(currentCode.toString()));
+                // сбрасываем текущий код для следующего символа
+                currentCode.setLength(0);
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         return result.toString(); //01001100100111

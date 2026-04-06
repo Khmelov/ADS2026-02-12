@@ -74,24 +74,74 @@ public class C_HeapMax {
         //Будет мало? Ну тогда можете его собрать как Generic и/или использовать в варианте B
         private List<Long> heap = new ArrayList<>();
 
-        int siftDown(int i) { //просеивание вверх
+        int siftDown(int i) { //просеивание вниз
+            int leftChild = 2 * i + 1;
+            int rightChild = 2 * i + 2;
+            int largest = i;
 
+            // Сравниваем с левым ребенком
+            if (leftChild < heap.size() && heap.get(leftChild) > heap.get(largest)) {
+                largest = leftChild;
+            }
+
+            // Сравниваем с правым ребенком
+            if (rightChild < heap.size() && heap.get(rightChild) > heap.get(largest)) {
+                largest = rightChild;
+            }
+
+            // Если нашли больший элемент среди детей, меняем местами и продолжаем просеивание
+            if (largest != i) {
+                swap(i, largest);
+                siftDown(largest);
+            }
             return i;
         }
 
-        int siftUp(int i) { //просеивание вниз
-
+        int siftUp(int i) { //просеивание вверх
+            while (i > 0) {
+                int parent = (i - 1) / 2;
+                // если текущий элемент больше родителя то меняем местами
+                if (heap.get(i) > heap.get(parent)) {
+                    swap(i, parent);
+                    i = parent;
+                } else {
+                    break;
+                }
+            }
             return i;
         }
 
-        void insert(Long value) { //вставка
+        void insert(Long value) {//вставка
+            heap.add(value);
+            siftUp(heap.size() - 1);
+
         }
 
         Long extractMax() { //извлечение и удаление максимума
-            Long result = null;
+            if (heap.isEmpty()) {
+                return null;
+            }
+
+            Long result = heap.get(0); // максимальный элемент (корень)
+
+            // перемещаем последний элемент в корень
+            heap.set(0, heap.get(heap.size() - 1));
+            heap.remove(heap.size() - 1); //- дубликат
+
+
+            if (!heap.isEmpty()) {
+                siftDown(0);
+            }
 
             return result;
         }
+
+        private void swap(int i, int j) {
+            Long temp = heap.get(i);
+            heap.set(i, heap.get(j));
+            heap.set(j, temp);
+        }
+
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
     }
 
