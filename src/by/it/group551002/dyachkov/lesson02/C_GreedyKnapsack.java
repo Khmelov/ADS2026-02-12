@@ -49,10 +49,56 @@ public class C_GreedyKnapsack {
         //кроме того, можете описать свой компаратор в классе Item
 
         //ваше решение.
+        quickSort(items,0, items.length - 1);
+
+        int currentWeight = 0;
+        int i = 0;
+
+        while (currentWeight < W) {
+            if (items[i].weight < (W - currentWeight)) {
+                currentWeight += items[i].weight;
+                result += (double) items[i].cost;
+            } else {
+                result += (double) items[i].cost / items[i].weight * (W - currentWeight);
+                currentWeight = W;
+            }
+            i++;
+        }
 
 
         System.out.printf("Удалось собрать рюкзак на сумму %f\n", result);
         return result;
+    }
+
+    int partition(Item[] arr, int low, int high) {
+        int pivot = arr[high].cost / arr[high].weight;
+
+        int i = low - 1;
+
+        for (int j = low; j < high; j++) {
+            if ((arr[j].cost / arr[j].weight) > pivot) {
+                i++;
+
+                Item temp = arr[j];
+                arr[j] = arr[i];
+                arr[i] = temp;
+            }
+        }
+
+        Item temp = arr[i + 1];
+        arr[i + 1] = arr[high];
+        arr[high] = temp;
+
+        return i + 1;
+    }
+
+    void quickSort(Item[] arr, int low, int high) {
+        if (low < high) {
+            int pi = partition(arr, low, high);
+
+            quickSort(arr, pi + 1, high);
+            quickSort(arr, low, pi - 1);
+        }
     }
 
     private static class Item implements Comparable<Item> {
