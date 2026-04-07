@@ -63,10 +63,61 @@ public class C_QSortOptimized {
         }
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
-
-
+        qsort3way(segments, 0, n - 1);
+        for (int i = 0; i < m; i++) {
+            result[i] = countSegments(segments, points[i]);
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
+    }
+
+    private void qsort3way(Segment[] arr, int lo, int hi) {
+        while (lo < hi) {
+            int lt = lo, gt = hi, i = lo + 1;
+            Segment pivot = arr[lo];
+            while (i <= gt) {
+                int cmp = arr[i].compareTo(pivot);
+                if (cmp < 0) {
+                    swap(arr, lt++, i++);
+                } else if (cmp > 0) {
+                    swap(arr, i, gt--);
+                } else {
+                    i++;
+                }
+            }
+            if (lt - 1 - lo < hi - (gt + 1)) {
+                qsort3way(arr, lo, lt - 1);
+                lo = gt + 1;
+            } else {
+                qsort3way(arr, gt + 1, hi);
+                hi = lt - 1;
+            }
+        }
+    }
+
+    private void swap(Segment[] arr, int i, int j) {
+        Segment tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+    }
+
+    private int countSegments(Segment[] segments, int point) {
+        int lo = 0, hi = segments.length;
+        while (lo < hi) {
+            int mid = (lo + hi) / 2;
+            if (segments[mid].start <= point) {
+                lo = mid + 1;
+            } else {
+                hi = mid;
+            }
+        }
+        int count = 0;
+        for (int i = 0; i < lo; i++) {
+            if (segments[i].stop >= point) {
+                count++;
+            }
+        }
+        return count;
     }
 
     //отрезок
@@ -75,14 +126,18 @@ public class C_QSortOptimized {
         int stop;
 
         Segment(int start, int stop) {
-            this.start = start;
-            this.stop = stop;
+            this.start = Math.min(start, stop);
+            this.stop = Math.max(start, stop);
         }
 
         @Override
         public int compareTo(Object o) {
             //подумайте, что должен возвращать компаратор отрезков
-            return 0;
+            Segment other = (Segment) o;
+            if (this.start != other.start) {
+                return Integer.compare(this.start, other.start);
+            }
+            return Integer.compare(this.stop, other.stop);
         }
     }
 

@@ -68,10 +68,37 @@ public class A_QSort {
         }
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
-
-
+        quickSort(segments, 0, n - 1);
+        for (int i = 0; i < m; i++) {
+            int count = 0;
+            for (Segment seg : segments) {
+                if (seg.start <= points[i] && points[i] <= seg.stop) {
+                    count++;
+                }
+            }
+            result[i] = count;
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
+    }
+
+    private void quickSort(Segment[] arr, int left, int right) {
+        if (left >= right) return;
+        Segment pivot = arr[left + (right - left) / 2];
+        int i = left, j = right;
+        while (i <= j) {
+            while (arr[i].compareTo(pivot) < 0) i++;
+            while (arr[j].compareTo(pivot) > 0) j--;
+            if (i <= j) {
+                Segment tmp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = tmp;
+                i++;
+                j--;
+            }
+        }
+        quickSort(arr, left, j);
+        quickSort(arr, i, right);
     }
 
     //отрезок
@@ -80,8 +107,8 @@ public class A_QSort {
         int stop;
 
         Segment(int start, int stop) {
-            this.start = start;
-            this.stop = stop;
+            this.start = Math.min(start, stop);
+            this.stop = Math.max(start, stop);
             //тут вообще-то лучше доделать конструктор на случай если
             //концы отрезков придут в обратном порядке
         }
@@ -89,8 +116,10 @@ public class A_QSort {
         @Override
         public int compareTo(Segment o) {
             //подумайте, что должен возвращать компаратор отрезков
-
-            return 0;
+            if (this.start != o.start) {
+                return Integer.compare(this.start, o.start);
+            }
+            return Integer.compare(this.stop, o.stop);
         }
     }
 
