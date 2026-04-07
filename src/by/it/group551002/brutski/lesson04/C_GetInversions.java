@@ -86,7 +86,7 @@ public class C_GetInversions {
             }
             else {
                 merged[i++] = arr[right_curr];
-                inversions++;
+                inversions += mid - left_curr + 1;
                 right_curr++;
             }
         }
