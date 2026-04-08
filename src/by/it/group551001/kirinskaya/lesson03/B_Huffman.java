@@ -40,6 +40,7 @@ import java.util.Scanner;
 //        Sample Output 2:
 //        abacabad
 
+
 public class B_Huffman {
 
     public static void main(String[] args) throws FileNotFoundException {
@@ -50,18 +51,64 @@ public class B_Huffman {
     }
 
     String decode(InputStream inputStream) throws FileNotFoundException {
-        StringBuilder result = new StringBuilder();
         //прочитаем строку для кодирования из тестового файла
         Scanner scanner = new Scanner(inputStream);
         Integer count = scanner.nextInt();
         Integer length = scanner.nextInt();
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         //тут запишите ваше решение
+        scanner.nextLine();
 
+        Node root = new Node();
+        for (int i =0; i<count; i++){
+            String line = scanner.nextLine();
+            char letter = line.charAt(0);
+            String code = line.substring(3);
+            Node current = root;
+            for (int j =0; j<code.length(); j++){
+                char bit = code.charAt(j);
+                if (bit == '0'){
+                    if (current.left == null){
+                        current.left = new Node();
+                    }
+                    current = current.left;
+                } else {
+                    if (current.right == null){
+                        current.right = new Node();
+                    }
+                    current = current.right;
+                }
+            }
+            current.letter = letter;
+        }
+        String encodedString = scanner.nextLine();
+        StringBuilder result = new StringBuilder();
+        Node current = root;
+        for (int i =0; i<encodedString.length(); i++){
+            char bit = encodedString.charAt(i);
+            if (bit == '0') {
+                current = current.left;
+            } else {
+                current = current.right;
+            }
+
+            if (current.left == null && current.right ==null){
+                result.append(current.letter);
+                current = root;
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         return result.toString(); //01001100100111
+    }private static class Node{
+        Node left;
+        Node right;
+        char letter;
+        Node(){
+            this.left = null;
+            this.right = null;
+            this.letter = '\0';
+        }
     }
-
 
 }
