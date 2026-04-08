@@ -1,4 +1,4 @@
-package by.it.group551004.ateeq.lesson01;
+package by.it.group551004.khalyavkina.lesson01;
 
 import org.junit.Test;
 
