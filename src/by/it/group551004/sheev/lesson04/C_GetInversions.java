@@ -54,11 +54,54 @@ public class C_GetInversions {
         for (int i = 0; i < n; i++) {
             a[i] = scanner.nextInt();
         }
-        int result = 0;
         //!!!!!!!!!!!!!!!!!!!!!!!!     тут ваше решение   !!!!!!!!!!!!!!!!!!!!!!!!
+        // Создаем временный массив для сортировки
+        int[] temp = new int[n];
 
+        int result = mergeSortAndCount(a, temp, 0, n - 1);
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
+    }
+    // arr - исходный масс., temp - временный масс., left - левая граница, right - правая граница
+    private int mergeSortAndCount(int[] arr, int[] temp, int left, int right) {
+        int inversions = 0;
+
+        if (left < right) {
+            int mid = left + (right - left) / 2;
+
+            inversions += mergeSortAndCount(arr, temp, left, mid);// Считаем инверсии в левт
+            inversions += mergeSortAndCount(arr, temp, mid + 1, right);// Считаем инверсии в прав
+
+            inversions += mergeAndCount(arr, temp, left, mid, right);// Считаем инверсии
+        }
+        return inversions;
+    }
+
+    // arr - исходный масс., temp - временный масс., left - начало левого подмассива, mid - конец левого подмассива, right - конец правого подмассива
+    private int mergeAndCount(int[] arr, int[] temp, int left, int mid, int right) {
+        int i = left;
+        int j = mid + 1;
+        int k = left;
+        int inversions = 0;
+
+        while (i <= mid && j <= right) { // Слияние
+            if (arr[i] <= arr[j]) {
+                temp[k++] = arr[i++];
+            } else { // Если arr[i] > arr[j], то все элементы от i до mid образуют инверсии с arr[j]
+                temp[k++] = arr[j++];
+                inversions += (mid - i + 1);
+            }
+        }
+        while (i <= mid) {// Копи левт
+            temp[k++] = arr[i++];
+        }
+        while (j <= right) {// Копи райт
+            temp[k++] = arr[j++];
+        }
+        for (i = left; i <= right; i++) {
+            arr[i] = temp[i];
+        }
+        return inversions;
     }
 }

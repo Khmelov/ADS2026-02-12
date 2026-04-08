@@ -44,14 +44,61 @@ public class B_MergeSort {
             a[i] = scanner.nextInt();
             System.out.println(a[i]);
         }
-
         // тут ваше решение (реализуйте сортировку слиянием)
         // https://ru.wikipedia.org/wiki/Сортировка_слиянием
-
+        mergeSort(a, 0, n - 1);
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return a;
     }
+    // Рекурсия
+    private void mergeSort(int[] array, int left, int right) {
+        if (left < right) {
+            int mid = left + (right - left) / 2;// Находим середину
+            mergeSort(array, left, mid);// Рекурсивно сортируем левую
+            mergeSort(array, mid + 1, right);// Сортируем правую
+            merge(array, left, mid, right);// Сливаю отсортированные половины
+        }
+    }
+    // Слияния двух подмассивов
+    private void merge(int[] array, int left, int mid, int right) {
+        int leftSize = mid - left + 1;// Размеры массивов
+        int rightSize = right - mid;
 
+        int[] leftArray = new int[leftSize]; // Создаю временные массивы
+        int[] rightArray = new int[rightSize];
+
+        for (int i = 0; i < leftSize; i++) {// Копирую данные
+            leftArray[i] = array[left + i];
+        }
+        for (int j = 0; j < rightSize; j++) {
+            rightArray[j] = array[mid + 1 + j];
+        }
+        // Слияние
+        int i = 0;
+        int j = 0;
+        int k = left;
+
+        while (i < leftSize && j < rightSize) {// Сравниваю элементы и вставляю мин
+            if (leftArray[i] <= rightArray[j]) {
+                array[k] = leftArray[i];
+                i++;
+            } else {
+                array[k] = rightArray[j];
+                j++;
+            }
+            k++;
+        }
+        while (i < leftSize) {// Копи левт
+            array[k] = leftArray[i];
+            i++;
+            k++;
+        }
+        while (j < rightSize) {// Копи райт
+            array[k] = rightArray[j];
+            j++;
+            k++;
+        }
+    }
 
 }
