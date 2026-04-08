@@ -60,6 +60,24 @@ public class C_QSortOptimized {
         return left;
     }
 
+    private int findLastSegment(Segment[] segments, int point) {
+        int left = 0;
+        int right = segments.length - 1;
+        int answer = -1;
+
+        while (left <= right) {
+            int mid = (left + right) / 2;
+
+            if (segments[mid].start <= point) {
+                answer = mid;
+                left = mid + 1; // идём вправо
+            } else {
+                right = mid - 1;
+            }
+        }
+        return answer;
+    }
+
     public void QuickSort(Segment[] arr, int left, int right){
         // с учетом элиминации хвостовой рекурсии
         while (left < right){
@@ -93,15 +111,17 @@ public class C_QSortOptimized {
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
         QuickSort(segments,0, segments.length - 1);
-        int start = 0;
-        int end = 0;
-        for (Segment segment : segments){
-            start = segment.start;
-            end = segment.stop;
-            for (int i = 0; i < points.length; i++){
-                if (end < points[i])
-                    break;
-                if (start <= points[i])
+
+        for (int i = 0; i < m; i++) {
+            int point = points[i];
+
+            int index = findLastSegment(segments, point);
+
+            for (int j = index; j >= 0; j--) {
+                if (segments[j].start > point)
+                    continue;
+
+                if (segments[j].stop >= point)
                     result[i]++;
             }
         }
