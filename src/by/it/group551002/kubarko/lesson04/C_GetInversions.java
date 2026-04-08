@@ -57,8 +57,72 @@ public class C_GetInversions {
         int result = 0;
         //!!!!!!!!!!!!!!!!!!!!!!!!     тут ваше решение   !!!!!!!!!!!!!!!!!!!!!!!!
 
-
+        result = mergeCount(a, 0, a.length-1);
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
+    }
+
+    int mergeCount(int arr[], int l, int r)
+    {
+        int inv = 0;
+        if (l < r)
+        {
+            int m = l + (r - l) / 2;
+
+            inv += mergeCount(arr, l, m);
+            inv += mergeCount(arr, m + 1, r);
+
+            inv += merge(arr, l, m, r);
+        }
+        return inv;
+    }
+
+    int merge(int arr[], int l, int m, int r)
+    {
+        int sizeL = m-l+1;
+        int sizeR = r-m;
+
+        int[] L = new int[sizeL];
+        int[] R = new int[sizeR];
+
+
+        for (int i = 0; i < sizeL; ++i)
+            L[i] = arr[l + i];
+        for (int j = 0; j < sizeR; ++j)
+            R[j] = arr[m + 1 + j];
+
+        int i = 0, j = 0;
+        int write = l;
+        int inv = 0;
+        while (i < sizeL && j < sizeR)
+        {
+            if(L[i] <= R[j])
+            {
+                arr[write] = L[i];
+                i++;
+            }
+            else
+            {
+                arr[write] = R[j];
+                j++;
+                inv+=(sizeL-i);
+            }
+            write++;
+        }
+
+        while(i < sizeL)
+        {
+            arr[write] = L[i];
+            i++;
+            write++;
+        }
+
+        while(j < sizeR)
+        {
+            arr[write] = R[j];
+            j++;
+            write++;
+        }
+        return inv;
     }
 }
