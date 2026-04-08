@@ -38,41 +38,39 @@ public class A_BinaryFind {
     }
 
     public int[] findIndex(InputStream stream) throws FileNotFoundException {
-        //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
 
-        //размер отсортированного массива
         int n = scanner.nextInt();
-        //сам отсортированный массива
         int[] a = new int[n];
-        for (int i = 1; i <= n; i++) {
-            a[i - 1] = scanner.nextInt();
+
+        for (int i = 0; i < n; i++) {
+            a[i] = scanner.nextInt();
         }
 
-        //размер массива индексов
         int k = scanner.nextInt();
         int[] result = new int[k];
+
         for (int i = 0; i < k; i++) {
             int value = scanner.nextInt();
+
             int left = 0;
-            int right = n;
-            int middle = 0;
-            while ((left < right - 1) || (a[middle] == value)){
-                middle = (right + left) / 2;
-                if (a[middle] <= value ) {
-                    left = middle ;
+            int right = n - 1;
+            int index = -1;
+
+            while (left <= right) {
+                int middle = (left + right) / 2;
+
+                if (a[middle] == value) {
+                    index = middle + 1; // +1 из-за условия задачи
+                    break;
+                } else if (a[middle] < value) {
+                    left = middle + 1;
+                } else {
+                    right = middle - 1;
                 }
-                else {
-                    right = middle;
-                }
             }
-            if (a[left] != value){
-                result[i]= -1;
-            }
-            else {
-                result[i] = middle;
-            }
+
+            result[i] = index;
         }
 
         return result;
