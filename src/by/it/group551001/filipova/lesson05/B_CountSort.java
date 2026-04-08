@@ -38,8 +38,28 @@ public class B_CountSort {
         for (int i = 0; i < n; i++) {
             points[i] = scanner.nextInt();
         }
+
         //тут реализуйте логику задачи с применением сортировки подсчетом
 
+        int max = 0;
+        for (int i = 0; i < n; i++) {
+            if (points[i] > max) {
+                max = points[i];
+            }
+        }
+
+        int[] count = new int[max + 1];
+
+        for (int i = 0; i < n; i++) {
+            count[points[i]]++;
+        }
+
+        int index = 0;
+        for (int i = 0; i <= max; i++) {
+            for (int j = 0; j < count[i]; j++) {
+                points[index++] = i;
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return points;

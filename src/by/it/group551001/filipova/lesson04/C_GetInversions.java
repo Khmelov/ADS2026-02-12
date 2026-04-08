@@ -54,11 +54,59 @@ public class C_GetInversions {
         for (int i = 0; i < n; i++) {
             a[i] = scanner.nextInt();
         }
-        int result = 0;
-        //!!!!!!!!!!!!!!!!!!!!!!!!     тут ваше решение   !!!!!!!!!!!!!!!!!!!!!!!!
 
+        //!!!!!!!!!!!!!!!!!!!!!!!!     тут ваше решение   !!!!!!!!!!!!!!!!!!!!!!!!
+        // Используем модифицированную сортировку слиянием для подсчета инверсий
+        int[] temp = new int[n];
+        int result = mergeSortAndCount(a, temp, 0, n - 1);
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
+    }
+
+    // Функция для сортировки и подсчета инверсий
+    private int mergeSortAndCount(int[] arr, int[] temp, int left, int right) {
+        int invCount = 0;
+
+        if (left < right) {
+            int mid = left + (right - left) / 2;
+
+            invCount += mergeSortAndCount(arr, temp, left, mid);
+            invCount += mergeSortAndCount(arr, temp, mid + 1, right);
+
+            invCount += mergeAndCount(arr, temp, left, mid, right);
+        }
+
+        return invCount;
+    }
+
+    // Функция для слияния и подсчета инверсий
+    private int mergeAndCount(int[] arr, int[] temp, int left, int mid, int right) {
+        int invCount = 0;
+
+        for (int i = left; i <= right; i++) {
+            temp[i] = arr[i];
+        }
+
+        int i = left;     // Индекс для левой части
+        int j = mid + 1;  // Индекс для правой части
+        int k = left;     // Индекс для основного массива
+
+        while (i <= mid && j <= right) {
+            if (temp[i] <= temp[j]) {
+                arr[k++] = temp[i++];
+            } else {
+                // Если элемент из правой части меньше, то это инверсия
+                // для всех оставшихся элементов в левой части
+                arr[k++] = temp[j++];
+                invCount += (mid - i + 1);
+            }
+        }
+
+        while (i <= mid) {
+            arr[k++] = temp[i++];
+        }
+
+        return invCount;
     }
 }

@@ -66,12 +66,59 @@ public class A_QSort {
         for (int i = 0; i < m; i++) {
             points[i] = scanner.nextInt();
         }
+
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
+        quickSort(segments, 0, n - 1);
+
+        for (int i = 0; i < m; i++) {
+            int point = points[i];
+            int count = 0;
+
+            for (Segment segment : segments) {
+                if (segment.start <= point && point <= segment.stop) {
+                    count++;
+                }
+            }
+
+            result[i] = count;
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
+    }
+
+    // Быстрая сортировка для массива отрезков
+    private void quickSort(Segment[] arr, int low, int high) {
+        if (low < high) {
+            int pivotIndex = partition(arr, low, high);
+
+            quickSort(arr, low, pivotIndex - 1);
+            quickSort(arr, pivotIndex + 1, high);
+        }
+    }
+
+    private int partition(Segment[] arr, int low, int high) {
+        Segment pivot = arr[high];
+
+        int i = low - 1;
+
+        for (int j = low; j < high; j++) {
+            if (arr[j].compareTo(pivot) <= 0) {
+                i++;
+
+                Segment temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+
+        Segment temp = arr[i + 1];
+        arr[i + 1] = arr[high];
+        arr[high] = temp;
+
+        return i + 1;
     }
 
     //отрезок
@@ -80,17 +127,18 @@ public class A_QSort {
         int stop;
 
         Segment(int start, int stop) {
-            this.start = start;
-            this.stop = stop;
-            //тут вообще-то лучше доделать конструктор на случай если
-            //концы отрезков придут в обратном порядке
+            if (start <= stop) {
+                this.start = start;
+                this.stop = stop;
+            } else {
+                this.start = stop;
+                this.stop = start;
+            }
         }
 
         @Override
         public int compareTo(Segment o) {
-            //подумайте, что должен возвращать компаратор отрезков
-
-            return 0;
+            return Integer.compare(this.start, o.start);
         }
     }
 

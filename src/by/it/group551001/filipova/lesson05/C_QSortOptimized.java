@@ -61,28 +61,120 @@ public class C_QSortOptimized {
         for (int i = 0; i < m; i++) {
             points[i] = scanner.nextInt();
         }
+
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
+        qSortOptimized(segments, 0, n - 1);
+
+        // Для каждой точки находим количество отрезков, которые ее содержат
+        for (int i = 0; i < m; i++) {
+            int point = points[i];
+
+            // Используем бинарный поиск для нахождения первого подходящего отрезка
+            int count = countSegmentsContainingPoint(segments, point);
+
+            result[i] = count;
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
+    // Метод для подсчета отрезков, содержащих точку
+    private int countSegmentsContainingPoint(Segment[] segments, int point) {
+        int count = 0;
+
+        for (Segment segment : segments) {
+            if (segment.start <= point && point <= segment.stop) {
+                count++;
+            } else if (segment.start > point) {
+                // Если начало отрезка больше точки, то все последующие отрезки
+                // (т.к. они отсортированы по началу) тоже будут начинаться после точки
+                break;
+            }
+        }
+
+        return count;
+    }
+
+    // Оптимизированная быстрая сортировка с элиминацией хвостовой рекурсии
+    private void qSortOptimized(Segment[] arr, int low, int high) {
+        while (low < high) {
+            int[] pivots = partition3(arr, low, high);
+
+            if (pivots[0] - low < high - pivots[1]) {
+                qSortOptimized(arr, low, pivots[0] - 1);
+                low = pivots[1] + 1; // Элиминация хвостовой рекурсии для большей части
+            } else {
+                qSortOptimized(arr, pivots[1] + 1, high);
+                high = pivots[0] - 1; // Элиминация хвостовой рекурсии для меньшей части
+            }
+        }
+    }
+
+    // Разбиение массива на три части: меньше опорного, равные опорному, больше опорного
+    private int[] partition3(Segment[] arr, int low, int high) {
+        int mid = low + (high - low) / 2;
+        Segment pivot = medianOfThree(arr[low], arr[mid], arr[high]);
+
+        int i = low;
+        int lt = low;
+        int gt = high;
+
+        while (i <= gt) {
+            int cmp = arr[i].compareTo(pivot);
+
+            if (cmp < 0) {
+                swap(arr, lt++, i++);
+            } else if (cmp > 0) {
+                swap(arr, i, gt--);
+            } else {
+                i++;
+            }
+        }
+
+        return new int[] {lt, gt};
+    }
+
+    // Выбор медианы из трех элементов
+    private Segment medianOfThree(Segment a, Segment b, Segment c) {
+        if (a.compareTo(b) < 0) {
+            if (b.compareTo(c) < 0) return b;
+            else if (a.compareTo(c) < 0) return c;
+            else return a;
+        } else {
+            if (a.compareTo(c) < 0) return a;
+            else if (b.compareTo(c) < 0) return c;
+            else return b;
+        }
+    }
+
+    // Обмен элементов массива
+    private void swap(Segment[] arr, int i, int j) {
+        Segment temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
     //отрезок
-    private class Segment implements Comparable {
+    private class Segment implements Comparable<Segment> {
         int start;
         int stop;
 
         Segment(int start, int stop) {
-            this.start = start;
-            this.stop = stop;
+            if (start <= stop) {
+                this.start = start;
+                this.stop = stop;
+            } else {
+                this.start = stop;
+                this.stop = start;
+            }
         }
 
         @Override
-        public int compareTo(Object o) {
-            //подумайте, что должен возвращать компаратор отрезков
-            return 0;
+        public int compareTo(Segment o) {
+            return Integer.compare(this.start, o.start);
         }
     }
 
