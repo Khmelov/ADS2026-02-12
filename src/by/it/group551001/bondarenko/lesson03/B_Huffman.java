@@ -57,11 +57,57 @@ public class B_Huffman {
         Integer length = scanner.nextInt();
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         //тут запишите ваше решение
-
-
+        Node root = new Node();
+        scanner.nextLine();
+        for (int i = 0; i < count; i++) {
+            String line = scanner.nextLine();
+            char symbol = line.charAt(0);
+            String code = line.substring(3);
+            Node current = root;
+            for (int j = 0; j < code.length(); j++) {
+                char c = code.charAt(j);
+                if (c == '0') {
+                    if (current.left == null) {
+                        current.left = new Node();
+                    }
+                    current = current.left;
+                } else {
+                    if (current.right == null) {
+                        current.right = new Node();
+                    }
+                    current = current.right;
+                }
+            }
+            current.symbol = symbol;
+            current.isLeaf = true;
+        }
+        String encoded = scanner.next();
+        Node current = root;
+        for (int i = 0; i < encoded.length(); i++) {
+            char c = encoded.charAt(i);
+            if (c == '0') {
+                current = current.left;
+            } else {
+                current = current.right;
+            }
+            if (current.isLeaf) {
+                result.append(current.symbol);
+                current = root;
+            }
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         return result.toString(); //01001100100111
     }
 
-
+    private static class Node {
+        Node left;
+        Node right;
+        char symbol;
+        boolean isLeaf;
+        Node() {
+            left = null;
+            right = null;
+            isLeaf = false;
+        }
+    }
 }

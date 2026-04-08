@@ -43,9 +43,10 @@ public class A_VideoRegistrator {
 
         while (next_event_index < events.length) {
             result.add(events[next_event_index]);
-            for (i = 0; i < events.length; i++) {
+            for (i = next_event_index; i < events.length; i++) {
                 if (i == events.length - 1) {
                     next_event_index = events.length;
+                    break;
                 } else if (events[i] > events[next_event_index] + workDuration) {
                     next_event_index = i;
                     break;
