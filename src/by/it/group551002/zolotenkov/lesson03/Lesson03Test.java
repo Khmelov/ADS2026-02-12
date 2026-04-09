@@ -1,4 +1,4 @@
-package by.it.group551002.zolotenkov;
+package by.it.group551002.zolotenkov.lesson03;
 
 import org.junit.Test;
 
