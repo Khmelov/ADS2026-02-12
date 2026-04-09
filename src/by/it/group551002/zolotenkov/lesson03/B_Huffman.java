@@ -56,7 +56,40 @@ public class B_Huffman {
         Integer count = scanner.nextInt();
         Integer length = scanner.nextInt();
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-        //тут запишите ваше решение
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+
+        // 1. Создаем карту для быстрого поиска символа по его коду.
+        // Используем HashMap для эффективности O(1).
+        java.util.Map<String, Character> codesMap = new java.util.HashMap<>();
+
+        for (int i = 0; i < count; i++) {
+            // Читаем строку "a:", берем первый символ
+            String letterPart = scanner.next();
+            char letter = letterPart.charAt(0);
+            // Читаем соответствующий код "0"
+            String code = scanner.next();
+            codesMap.put(code, letter);
+        }
+
+        // 2. Читаем саму закодированную строку
+        if (scanner.hasNext()) {
+            String encodedString = scanner.next();
+
+            // 3. Проходим по строке бит за битом
+            StringBuilder currentSequence = new StringBuilder();
+            for (int i = 0; i < encodedString.length(); i++) {
+                currentSequence.append(encodedString.charAt(i));
+
+                // Если накопленная последовательность битов есть в нашей карте —
+                // значит мы нашли символ. Добавляем его в результат и сбрасываем поиск.
+                if (codesMap.containsKey(currentSequence.toString())) {
+                    result.append(codesMap.get(currentSequence.toString()));
+                    currentSequence.setLength(0); // Очистка буфера для следующего символа
+                }
+            }
+        }
+
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1

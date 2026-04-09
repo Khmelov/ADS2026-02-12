@@ -70,31 +70,74 @@ public class C_HeapMax {
 
     private class MaxHeap {
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-        //тут запишите ваше решение.
-        //Будет мало? Ну тогда можете его собрать как Generic и/или использовать в варианте B
         private List<Long> heap = new ArrayList<>();
 
-        int siftDown(int i) { //просеивание вверх
+        // Просеивание вниз (используется при извлечении максимума)
+        int siftDown(int i) {
+            while (2 * i + 1 < heap.size()) {
+                int leftChild = 2 * i + 1;
+                int rightChild = 2 * i + 2;
+                int j = leftChild;
 
+                // Выбираем наибольшего из детей
+                if (rightChild < heap.size() && heap.get(rightChild) > heap.get(leftChild)) {
+                    j = rightChild;
+                }
+
+                // Если текущий элемент уже больше или равен самому большому ребенку — стоп
+                if (heap.get(i) >= heap.get(j)) {
+                    break;
+                }
+
+                swap(i, j);
+                i = j;
+            }
             return i;
         }
 
-        int siftUp(int i) { //просеивание вниз
-
+        // Просеивание вверх (используется при вставке нового элемента)
+        int siftUp(int i) {
+            while (i > 0) {
+                int parent = (i - 1) / 2;
+                // Если текущий элемент не больше родителя — куча в порядке
+                if (heap.get(i) <= heap.get(parent)) {
+                    break;
+                }
+                swap(i, parent);
+                i = parent;
+            }
             return i;
         }
 
-        void insert(Long value) { //вставка
+        void insert(Long value) {
+            // Добавляем элемент в конец массива и заставляем его "всплыть"
+            heap.add(value);
+            siftUp(heap.size() - 1);
         }
 
-        Long extractMax() { //извлечение и удаление максимума
-            Long result = null;
+        Long extractMax() {
+            if (heap.isEmpty()) return null;
+
+            Long result = heap.get(0); // Корень кучи — это максимум
+
+            // Берем последний элемент и ставим его на место корня
+            Long lastElement = heap.remove(heap.size() - 1);
+            if (!heap.isEmpty()) {
+                heap.set(0, lastElement);
+                siftDown(0); // Просеиваем его вниз, чтобы восстановить свойства кучи
+            }
 
             return result;
         }
+
+        // Вспомогательный метод для обмена элементов
+        private void swap(int i, int j) {
+            Long temp = heap.get(i);
+            heap.set(i, heap.get(j));
+            heap.set(j, temp);
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
     }
-
     // РЕМАРКА. Это задание исключительно учебное.
     // Свои собственные кучи нужны довольно редко.
     // В реальном приложении все иначе. Изучите и используйте коллекции
