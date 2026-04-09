@@ -40,14 +40,14 @@ public class A_BinaryFind {
     public int[] findIndex(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
 
         //размер отсортированного массива
         int n = scanner.nextInt();
         //сам отсортированный массива
         int[] a = new int[n];
-        for (int i = 1; i <= n; i++) {
-            a[i - 1] = scanner.nextInt();
+        for (int i = 0; i < n; i++) {
+            a[i] = scanner.nextInt();
         }
 
         //размер массива индексов
@@ -55,10 +55,28 @@ public class A_BinaryFind {
         int[] result = new int[k];
         for (int i = 0; i < k; i++) {
             int value = scanner.nextInt();
-            //тут реализуйте бинарный поиск индекса
 
+            // Реализация бинарного поиска
+            int left = 0;
+            int right = n - 1;
+            int foundIndex = -1; // По умолчанию -1, если не найдено
 
-            result[i] = 0;
+            while (left <= right) {
+                // Вычисляем середину так, чтобы избежать переполнения int
+                int mid = left + (right - left) / 2;
+
+                if (a[mid] == value) {
+                    // Условие задачи требует индекс 1..n, поэтому прибавляем 1
+                    foundIndex = mid + 1;
+                    break;
+                } else if (a[mid] < value) {
+                    left = mid + 1; // Искомое число в правой части
+                } else {
+                    right = mid - 1; // Искомое число в левой части
+                }
+            }
+
+            result[i] = foundIndex;
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;

@@ -54,11 +54,50 @@ public class C_GetInversions {
         for (int i = 0; i < n; i++) {
             a[i] = scanner.nextInt();
         }
-        int result = 0;
-        //!!!!!!!!!!!!!!!!!!!!!!!!     тут ваше решение   !!!!!!!!!!!!!!!!!!!!!!!!
 
+        // Вызываем рекурсивный метод, который вернет количество инверсий
+        int result = mergeSortAndCount(a, 0, n - 1);
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
+    }
+
+    private int mergeSortAndCount(int[] a, int left, int right) {
+        int count = 0;
+        if (left < right) {
+            int mid = left + (right - left) / 2;
+
+            // Считаем инверсии в левой и правой половинах
+            count += mergeSortAndCount(a, left, mid);
+            count += mergeSortAndCount(a, mid + 1, right);
+
+            // Считаем инверсии при слиянии этих половин
+            count += mergeAndCount(a, left, mid, right);
+        }
+        return count;
+    }
+
+    private int mergeAndCount(int[] a, int left, int mid, int right) {
+        int[] leftArr = java.util.Arrays.copyOfRange(a, left, mid + 1);
+        int[] rightArr = java.util.Arrays.copyOfRange(a, mid + 1, right + 1);
+
+        int i = 0, j = 0, k = left, swaps = 0;
+
+        while (i < leftArr.length && j < rightArr.length) {
+            if (leftArr[i] <= rightArr[j]) {
+                a[k++] = leftArr[i++];
+            } else {
+                // Если элемент из правой части меньше элемента из левой — это инверсия!
+                // Он меньше текущего leftArr[i] и ВСЕХ последующих элементов в leftArr
+                a[k++] = rightArr[j++];
+                swaps += (mid + 1) - (left + i);
+            }
+        }
+
+        // Дописываем остатки
+        while (i < leftArr.length) a[k++] = leftArr[i++];
+        while (j < rightArr.length) a[k++] = rightArr[j++];
+
+        return swaps;
     }
 }
