@@ -60,7 +60,7 @@ public class A_VideoRegistrator {
             }
         }
 
-        return result;                        //вернем итог
+        return result;                        //
     }
 
     private void quickSort(double[] array, int left, int right) {
