@@ -47,15 +47,14 @@ public class C_GreedyKnapsack {
         Arrays.sort(items);
 
         for(Item it: items) {
-            if (remaining <= 0) break;  // рюкзак полон
+            if (remaining <= 0) break;
 
             if (it.weight <= remaining) {
                 result += it.cost;
                 remaining -= it.weight;
             } else {
                 result += it.cost * (double) remaining / it.weight;
-                remaining = 0;  // рюкзак заполнен
-                break;
+                remaining = 0;
             }
         }
         System.out.printf("Удалось собрать рюкзак на сумму %f\n", result);
