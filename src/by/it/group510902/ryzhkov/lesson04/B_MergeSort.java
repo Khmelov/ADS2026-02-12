@@ -31,6 +31,52 @@ public class B_MergeSort {
         }
     }
 
+    private static void mergeSort(int[] arr, int l, int r) {
+        if (l < r) {
+            mergeSort(arr, (l + r) / 2 + 1, r);
+            mergeSort(arr, l, (l + r) / 2);
+
+            merge(arr, l, (l + r) / 2, r);
+        }
+    }
+
+    private static void merge(int[] arr, int l, int mid, int r) {
+        int n1 = mid - l + 1;
+        int n2 = r - mid;
+
+        int[] LArr = new int[n1];
+        int[] RArr = new int[n2];
+
+        System.arraycopy(arr, l, LArr, 0, n1);
+        System.arraycopy(arr, mid + 1, RArr, 0, n2);
+
+        int i = 0;
+        int j = 0;
+        int k = l;
+
+        while (i < n1 && j < n2) {
+            if (LArr[i] <= RArr[j]) {
+                arr[k] = LArr[i];
+                i++;
+            } else {
+                arr[k] = RArr[j];
+                j++;
+            }
+            k++;
+        }
+
+        while (i < n1) {
+            arr[k] = LArr[i];
+            i++;
+            k++;
+        }
+        while (j < n2) {
+            arr[k] = RArr[j];
+            j++;
+            k++;
+        }
+    }
+
     int[] getMergeSort(InputStream stream) throws FileNotFoundException {
         // подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
@@ -47,7 +93,7 @@ public class B_MergeSort {
 
         // тут ваше решение (реализуйте сортировку слиянием)
         // https://ru.wikipedia.org/wiki/Сортировка_слиянием
-
+        mergeSort(a, 0, n - 1);
         // !!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!
         return a;
     }
