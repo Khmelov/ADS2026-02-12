@@ -57,32 +57,23 @@ public class B_Huffman {
         Integer length = scanner.nextInt();
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
 
-		// Создаем словарь для обратного поиска: код -> буква
 		Map<String, Character> map = new HashMap<>();
 
-		// Читаем словарь из файла
 		for (int i = 0; i < count; i++) {
-			String letterWithColon = scanner.next(); // читает, например, "a:"
-			char letter = letterWithColon.charAt(0); // забираем саму букву 'a'
-			String code = scanner.next();            // читает код, например, "0"
+			String letterWithColon = scanner.next();
+			char letter = letterWithColon.charAt(0);
+			String code = scanner.next();
 			map.put(code, letter);
 		}
 
-		// Читаем саму закодированную строку (последняя строчка в файле)
 		String encodedString = scanner.next();
 
-		// Буфер для накопления текущего кода
 		StringBuilder tempCode = new StringBuilder();
-
-		// Проходим по закодированной строке
 		for (int i = 0; i < length; i++) {
-			tempCode.append(encodedString.charAt(i)); // добавляем очередной нолик или единичку
+			tempCode.append(encodedString.charAt(i));
 
-			// Если накопленный код есть в нашем словаре
 			if (map.containsKey(tempCode.toString())) {
-				// Добавляем раскодированную букву в итоговый результат
 				result.append(map.get(tempCode.toString()));
-				// Очищаем буфер для поиска следующей буквы
 				tempCode.setLength(0);
 			}
 		}

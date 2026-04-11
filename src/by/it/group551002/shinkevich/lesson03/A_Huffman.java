@@ -61,19 +61,16 @@ public class A_Huffman {
 		Scanner scanner = new Scanner(inputStream);
 		String s = scanner.next();
 
-		// 1. Подсчет частот символов
 		Map<Character, Integer> count = new HashMap<>();
 		for (char c : s.toCharArray()) {
 			count.put(c, count.getOrDefault(c, 0) + 1);
 		}
 
-		// 2. Переносим все символы в приоритетную очередь в виде листьев
 		PriorityQueue<Node> priorityQueue = new PriorityQueue<>();
 		for (Map.Entry<Character, Integer> entry : count.entrySet()) {
 			priorityQueue.add(new LeafNode(entry.getValue(), entry.getKey()));
 		}
 
-		// 3. Построение дерева кодирования
 		while (priorityQueue.size() > 1) {
 			Node left = priorityQueue.poll();
 			Node right = priorityQueue.poll();
@@ -81,17 +78,13 @@ public class A_Huffman {
 			priorityQueue.add(parent);
 		}
 
-		// 4. Извлекаем корень и генерируем коды
 		Node root = priorityQueue.poll();
 		if (count.size() == 1) {
-			// Краевой случай: если в строке только один вид символов (например, "aaaa")
 			root.fillCodes("0");
 		} else if (root != null) {
-			// Обычный случай запускаем генерацию кодов с пустой строки
 			root.fillCodes("");
 		}
 
-		// 5. Собираем итоговую закодированную строку
 		StringBuilder sb = new StringBuilder();
 		for (char c : s.toCharArray()) {
 			sb.append(codes.get(c));
