@@ -1,4 +1,4 @@
-package by.it.group510902.Makaruk.lesson01;
+package by.it.group510902.makaruk.lesson01;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package by.it.group510902.Makaruk.lesson01;
+package by.it.group510902.makaruk.lesson01;
 
 import java.math.BigInteger;
 
@@ -50,8 +50,9 @@ public class FiboA {
         }
 
         return slowA(n - 1).add(slowA(n - 2));
+
     }
-
-
 }
+
+
 
