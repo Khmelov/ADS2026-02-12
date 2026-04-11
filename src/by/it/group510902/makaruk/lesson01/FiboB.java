@@ -1,4 +1,4 @@
-package by.it.group510902.Makaruk.lesson01;
+package by.it.group510902.makaruk.lesson01;
 
 import java.math.BigInteger;
 
@@ -22,7 +22,8 @@ public class FiboB {
         return System.currentTimeMillis() - startTime;
     }
 
-    BigInteger fastB(Integer n) { if (n <= 1) return BigInteger.valueOf(n);
+    BigInteger fastB(Integer n) {
+        if (n <= 1) return BigInteger.valueOf(n);
 
         BigInteger prev = BigInteger.ZERO; // 0
         BigInteger curr = BigInteger.ONE;  // 1
