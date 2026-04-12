@@ -75,19 +75,19 @@ public class C_HeapMax {
 
         int siftDown(int i) { //просеивание вниз
             int size = heap.size();
-            boolean swapped = true;
+            boolean notSwapped = true;
 
-            while(swapped)
+            while(notSwapped)
             {
-                swapped = false;
                 int left = i * 2 + 1;
                 int right = left + 1;
                 int largest = i;
 
-                if (left < size && heap.get(left) > heap.get(i)){
+                if (left < size && heap.get(left) > heap.get(largest)){
                     largest = left;
                 }
-                else if (right < size && heap.get(right) > heap.get(i)){
+
+                if (right < size && heap.get(right) > heap.get(largest)){
                     largest = right;
                 }
 
@@ -98,7 +98,8 @@ public class C_HeapMax {
 
                     i = largest;
                 }
-
+                else
+                    notSwapped = false;
             }
             return i;
         }
@@ -128,11 +129,11 @@ public class C_HeapMax {
             Long result = null;
 
             if (!heap.isEmpty()) {
-                result = heap.get(0); // максимальный элемент = корень
-                Long last = heap.remove(heap.size() - 1); // последний элемент
+                result = heap.get(0);
+                Long last = heap.remove(heap.size() - 1);
                 if (!heap.isEmpty()) {
-                    heap.set(0, last);   // ставим последний на место корня
-                    siftDown(0);         // просеиваем вниз
+                    heap.set(0, last);
+                    siftDown(0);
                 }
             }
 
