@@ -87,13 +87,13 @@ public class C_GetInversions {
         int inversions = 0;
 
         while (i < lenL && j < lenR) {
-            if (arrL[i] < arrR[j]) {
+            if (arrL[i] <= arrR[j]) {
                 arr[k] = arrL[i];
                 i++;
             } else {
                 arr[k] = arrR[j];
                 j++;
-                inversions++;
+                inversions += mid - i + 1;
             }
             k++;
         }
