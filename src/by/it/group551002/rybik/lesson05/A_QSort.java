@@ -1,5 +1,7 @@
 package by.it.group551002.rybik.lesson05;
 
+
+
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -70,27 +72,26 @@ public class A_QSort {
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
+        int[] startArr = new int[n];
+        int[] stopArr = new int[n];
 
-        Arrays.sort(segments);
-        int b = 0;
         for (int i = 0; i < n; i++){
-            for (int j = b; j < m; j++){
-                if (points[j] <= segments[i].stop){
-                    if ( points[j] >= segments[i].start){
-                        result[j]++;
-                    } else{
-                        b++;
-                    }
-                } else {
-                    break;
-                }
-            }
+            startArr[i] = segments[i].start;
+            stopArr[i] = segments[i].stop;
+        }
 
+        for (int i = 0; i < m; i++){
+            result[i] = partitionStart(startArr, 0, n-1, points[i]) - partitionEnd(stopArr, 0, n-1, points[i]);
         }
 
 
-        for (int i = 0; i < m; i++){
-            System.out.println(result[i]);
+        for (int i = 0; i < n; i++){
+            System.out.println(startArr[i]);
+            //System.out.println(result[i]);
+        }
+        for (int i = 0; i < n; i++){
+            System.out.println(stopArr[i]);
+            //System.out.println(result[i]);
         }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
@@ -117,8 +118,43 @@ public class A_QSort {
         @Override
         public int compareTo(Segment o) {
             //подумайте, что должен возвращать компаратор отрезков
-            return Integer.compare(this.stop, o.stop);
+            return Integer.compare(this.start, o.start);
         }
     }
 
+    int partitionEnd(int[] arr, int low, int high, int pi ){
+        int i = low;
+        for(int j = low; j<high; j++){
+            if (arr[j] < pi){
+                int temp = arr[j];
+                arr[j] = arr[i];
+                arr[i] = temp;
+                i++;
+            }
+        }
+        return i;
+    }
+
+    int partitionStart(int[] arr, int low, int high, int pi ){
+        int i = low;
+        for(int j = low; j<high; j++){
+            if (arr[j] <= pi){
+                int temp = arr[j];
+                arr[j] = arr[i];
+                arr[i] = temp;
+                i++;
+            }
+        }
+        return i;
+    }
+
+    /* void sort(int[] arr, int low, int high){
+        if (low < high){
+            int  pi = partition(arr, low, high);
+            sort(arr, pi+1, high);
+            sort(arr, low, pi-1);
+        }
+    }
+
+     */
 }

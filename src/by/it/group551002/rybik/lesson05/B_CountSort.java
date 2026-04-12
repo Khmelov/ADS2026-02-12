@@ -40,6 +40,38 @@ public class B_CountSort {
         }
         //тут реализуйте логику задачи с применением сортировки подсчетом
 
+        int min, max = min = points[0];
+        for (int i = 1; i < n; i++){
+            if (points[i] < min) min = points[i];
+            if (points[i] > max) max = points[i];
+        }
+
+
+        int[] numbers = new int[max-min+1];
+        for(int i = 0; i < n; i++){
+            numbers[points[i]-min]++;
+        }
+
+        for (int i = 0; i < n; i++){
+            System.out.print(points[i]);
+        }
+        System.out.println("  ");
+        for (int i = 0; i < max-min+1; i++){
+            System.out.print(numbers[i]);
+        }
+        System.out.println("  ");
+
+
+        int i = 0;
+        int j = 0;
+        while (numbers[max-min] != 0){
+            if (numbers[j] != 0){
+                points[i++] = min+j;
+                numbers[j]--;
+            } else {
+                j++;
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return points;

@@ -64,13 +64,32 @@ public class C_QSortOptimized {
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
+        sort(segments, 0 ,n-1);
+
+        for (int i = 0; i < m; i++ ){
+            int a = binaryFind(segments, points[i]);
+            while (a >= 0){
+                if (segments[a].stop >=  points[i]) result[i]++;
+                a--;
+            }
+        }
+
+
+
+
+
+
+
+
+
+
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
     //отрезок
-    private class Segment implements Comparable {
+    private class Segment implements Comparable<Segment> {
         int start;
         int stop;
 
@@ -80,10 +99,70 @@ public class C_QSortOptimized {
         }
 
         @Override
-        public int compareTo(Object o) {
+        public int compareTo(Segment o) {
             //подумайте, что должен возвращать компаратор отрезков
-            return 0;
+            return Integer.compare(this.start, o.start);
         }
     }
+
+    int[] partition(Segment[] arr, int low, int high) {
+        Segment pivot = arr[high];
+
+        int lt = low;
+        int i = low;
+        int gt = high;
+
+        while (i <= gt) {
+            if (arr[i].compareTo(pivot) < 0) {
+                Segment temp = arr[lt];
+                arr[lt] = arr[i];
+                arr[i] = temp;
+
+                lt++;
+                i++;
+            } else if (arr[i].compareTo(pivot) > 0) {
+                Segment temp = arr[i];
+                arr[i] = arr[gt];
+                arr[gt] = temp;
+
+                gt--;
+            } else {
+                i++;
+            }
+        }
+        return new int[]{lt, gt};
+    }
+
+    void sort(Segment[] arr, int low, int high) {
+        while (low < high) {
+            int[] mid = partition(arr, low, high);
+
+            sort(arr, low, mid[0] - 1);
+
+            low = mid[1] + 1;
+        }
+    }
+
+    int binaryFind(Segment[] arr, int value){
+        int left  = 0;
+        int right = arr.length-1;
+
+
+        while (left <= right ){
+            int mid = (left+right) /2;
+            if (arr[mid].start == value ){
+                return mid;
+            } else if (arr[mid].start > value){
+                right = mid-1;
+            } else {
+                left = mid+1;
+            }
+        }
+
+        return right;
+    }
+
+
+
 
 }
