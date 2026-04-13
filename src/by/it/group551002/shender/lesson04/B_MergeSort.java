@@ -1,4 +1,4 @@
-package by.it.a_khmelev.lesson04;
+package by.it.group551002.shender.lesson04;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -44,14 +44,64 @@ public class B_MergeSort {
             a[i] = scanner.nextInt();
             System.out.println(a[i]);
         }
-
-        // тут ваше решение (реализуйте сортировку слиянием)
-        // https://ru.wikipedia.org/wiki/Сортировка_слиянием
-
+        a = mergeSort(a, 0, n-1);
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return a;
     }
 
+    private int[] mergeSort(int[] a, int left, int right) {
+        if (left < right) {
+            int mid = (left + right) / 2;
 
+            // Рекурсивно делим левую и правую части
+            mergeSort(a, left, mid);
+            mergeSort(a, mid + 1, right);
+
+            // Сливаем отсортированные части
+            merge(a, left, mid, right);
+        }
+        return a;
+    }
+
+    // Метод слияния двух отсортированных подмассивов
+    private void merge(int[] a, int left, int mid, int right) {
+        // Создаем временные массивы для копирования данных
+        int n1 = mid - left + 1;
+        int n2 = right - mid;
+
+        int[] L = new int[n1];
+        int[] R = new int[n2];
+
+        for (int i = 0; i < n1; i++) L[i] = a[left + i];
+        for (int j = 0; j < n2; j++) R[j] = a[mid + 1 + j];
+
+        // Индексы для прохода по подмассивам и основному массиву
+        int i = 0, j = 0;
+        int k = left;
+
+        // Основной цикл слияния
+        while (i < n1 && j < n2) {
+            if (L[i] <= R[j]) {
+                a[k] = L[i];
+                i++;
+            } else {
+                a[k] = R[j];
+                j++;
+            }
+            k++;
+        }
+
+        // Докопируем оставшиеся элементы, если они есть
+        while (i < n1) {
+            a[k] = L[i];
+            i++;
+            k++;
+        }
+        while (j < n2) {
+            a[k] = R[j];
+            j++;
+            k++;
+        }
+    }
 }

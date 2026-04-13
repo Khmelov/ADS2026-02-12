@@ -1,4 +1,4 @@
-package by.it.a_khmelev.lesson04;
+package by.it.group551002.shender.lesson04;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -55,6 +55,13 @@ public class C_GetInversions {
             a[i] = scanner.nextInt();
         }
         int result = 0;
+        for (int i = 0; i < n - 1; i++) {
+            int j = i + 1;
+            while (j < n) {
+                if (a[i] > a[j]) result++;
+                j++;
+            }
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!     тут ваше решение   !!!!!!!!!!!!!!!!!!!!!!!!
 
 
