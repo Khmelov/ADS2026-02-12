@@ -64,6 +64,31 @@ public class C_QSortOptimized {
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
+        quickSort(segments, 0, n - 1);
+        for (int i = 0; i < m; i++) {
+            int p = points[i];
+            int count = 0;
+
+            int left = 0, right = n - 1;
+            int firstIdx = -1;
+            while (left <= right) {
+                int mid = (left + right) / 2;
+                if (segments[mid].start <= p) {
+                    firstIdx = mid;
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            }
+            if (firstIdx != -1) {
+                for (int j = 0; j <= firstIdx; j++) {
+                    if (segments[j].stop >= p) {
+                        count++;
+                    }
+                }
+            }
+            result[i] = count;
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
@@ -86,4 +111,32 @@ public class C_QSortOptimized {
         }
     }
 
+    private void quickSort(Segment[] a, int left, int right) {
+        while (left < right) {
+            // 3-разбиение (Dutch National Flag logic)
+            int lt = left, gt = right;
+            Segment pivot = a[left];
+            int i = left + 1;
+            while (i <= gt) {
+                int cmp = a[i].compareTo(pivot);
+                if (cmp < 0) swap(a, lt++, i++);
+                else if (cmp > 0) swap(a, i, gt--);
+                else i++;
+            }
+            // Рекурсия для меньшей части, цикл для большей (элиминация хвоста)
+            if (lt - left < right - gt) {
+                quickSort(a, left, lt - 1);
+                left = gt + 1;
+            } else {
+                quickSort(a, gt + 1, right);
+                right = lt - 1;
+            }
+        }
+    }
+
+    private void swap(Segment[] a, int i, int j) {
+        Segment temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
+    }
 }

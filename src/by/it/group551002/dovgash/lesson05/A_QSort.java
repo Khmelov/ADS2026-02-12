@@ -2,6 +2,7 @@ package by.it.group551002.dovgash.lesson05;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /*
@@ -69,6 +70,44 @@ public class A_QSort {
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
+        int[] starts = new int[n];
+        int[] stops = new int[n];
+        for (int i = 0; i < n; i++) {
+            starts[i] = segments[i].start;
+            stops[i] = segments[i].stop;
+        }
+
+        Arrays.sort(starts);
+        Arrays.sort(stops);
+        for (int i = 0; i < m; i++) {
+            int p = points[i];
+
+            int s_count = 0;
+            int l = 0, r = n - 1;
+            while (l <= r) {
+                int mid = (l + r) / 2;
+                if (starts[mid] <= p) {
+                    s_count = mid + 1;
+                    l = mid + 1;
+                } else {
+                    r = mid - 1;
+                }
+            }
+
+            int e_count = 0;
+            l = 0; r = n - 1;
+            while (l <= r) {
+                int mid = (l + r) / 2;
+                if (stops[mid] < p) {
+                    e_count = mid + 1;
+                    l = mid + 1;
+                } else {
+                    r = mid - 1;
+                }
+            }
+
+            result[i] = s_count - e_count;
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
@@ -89,8 +128,10 @@ public class A_QSort {
         @Override
         public int compareTo(Segment o) {
             //подумайте, что должен возвращать компаратор отрезков
-
-            return 0;
+            if (this.start != o.start) {
+                return Integer.compare(this.start, o.start);
+            }
+            return Integer.compare(this.stop, o.stop);
         }
     }
 
