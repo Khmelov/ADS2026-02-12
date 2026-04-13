@@ -74,21 +74,71 @@ public class C_HeapMax {
         //Будет мало? Ну тогда можете его собрать как Generic и/или использовать в варианте B
         private List<Long> heap = new ArrayList<>();
 
-        int siftDown(int i) { //просеивание вверх
+        int siftDown(int i) { //просеивание вниз
+            int largest = i;
+            int leftChild = 2 * i + 1;
+            int rightChild = 2 * i + 2;
+
+            if (leftChild < heap.size() && heap.get(leftChild) > heap.get(largest)) {
+                largest = leftChild;
+            }
+
+            if (rightChild < heap.size() && heap.get(rightChild) > heap.get(largest)) {
+                largest = rightChild;
+            }
+
+            // Если самый большой элемент не корень
+            if (largest != i) {
+                // Меняем местами корень и наибольший элемент
+                Long temp = heap.get(i);
+                heap.set(i, heap.get(largest));
+                heap.set(largest, temp);
+
+                siftDown(largest);
+            }
 
             return i;
         }
 
-        int siftUp(int i) { //просеивание вниз
+        int siftUp(int i) { //просеивание вверх
+            while (i > 0) {
+                int parentIndex = (i - 1) / 2;
+
+                if (heap.get(parentIndex) >= heap.get(i)) {
+                    break;
+                }
+
+                Long temp = heap.get(i);
+                heap.set(i, heap.get(parentIndex));
+                heap.set(parentIndex, temp);
+
+                i = parentIndex;
+            }
 
             return i;
         }
 
-        void insert(Long value) { //вставка
+        void insert(Long value) {
+            heap.add(value);
+
+            siftUp(heap.size() - 1);
         }
 
-        Long extractMax() { //извлечение и удаление максимума
-            Long result = null;
+        Long extractMax() {
+            if (heap.isEmpty()) {
+                return null;
+            }
+
+            Long result = heap.get(0);
+
+            if (heap.size() == 1) {
+                heap.remove(0);
+                return result;
+            }
+
+            heap.set(0, heap.remove(heap.size() - 1));
+
+            siftDown(0);
 
             return result;
         }
