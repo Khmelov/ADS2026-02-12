@@ -44,21 +44,56 @@ public class C_GetInversions {
     }
 
     int calc(InputStream stream) throws FileNotFoundException {
-        //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!
-        //размер массива
+
         int n = scanner.nextInt();
-        //сам массив
         int[] a = new int[n];
         for (int i = 0; i < n; i++) {
             a[i] = scanner.nextInt();
         }
-        int result = 0;
-        //!!!!!!!!!!!!!!!!!!!!!!!!     тут ваше решение   !!!!!!!!!!!!!!!!!!!!!!!!
 
+        int[] temp = new int[n];
+        int result = mergeSortAndCount(a, temp, 0, n - 1);
 
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
-}
+    private int mergeSortAndCount(int[] a, int[] temp, int left, int right) {
+        int inversions = 0;
+
+        if (left < right) {
+            int mid = left + (right - left) / 2;
+            inversions += mergeSortAndCount(a, temp, left, mid);
+            inversions += mergeSortAndCount(a, temp, mid + 1, right);
+            inversions += mergeAndCount(a, temp, left, mid, right);
+        }
+
+        return inversions;
+    }
+    private int mergeAndCount(int[] a, int[] temp, int left, int mid, int right) {
+        for (int i = left; i <= right; i++) {
+            temp[i] = a[i];
+        }
+
+        int i = left;
+        int j = mid + 1;
+        int k = left;
+        int inversions = 0;
+
+        while (i <= mid && j <= right) {
+            if (temp[i] <= temp[j]) {
+                a[k] = temp[i];
+                i++;
+            } else {
+                inversions += (mid - i + 1);
+                a[k] = temp[j];
+                j++;
+            }
+            k++;
+        }
+        while (i <= mid) {
+            a[k] = temp[i];
+            i++;
+            k++;
+        }
+        return inversions;
+    }}

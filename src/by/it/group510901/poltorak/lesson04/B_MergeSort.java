@@ -42,16 +42,60 @@ public class B_MergeSort {
         int[] a = new int[n];
         for (int i = 0; i < n; i++) {
             a[i] = scanner.nextInt();
-            System.out.println(a[i]);
+
         }
 
         // тут ваше решение (реализуйте сортировку слиянием)
         // https://ru.wikipedia.org/wiki/Сортировка_слиянием
-
+        mergeSort(a, 0, n - 1);
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return a;
     }
+    private void mergeSort(int[] a, int left, int right) {
+        if (left < right) {
+            int mid = left + (right - left) / 2;
 
+            mergeSort(a, left, mid);
+            mergeSort(a, mid + 1, right);
 
-}
+            merge(a, left, mid, right);
+        }
+    }
+    private void merge(int[] a, int left, int mid, int right) {
+
+        int leftSize = mid - left + 1;
+        int rightSize = right - mid;
+        int[] leftArray = new int[leftSize];
+        int[] rightArray = new int[rightSize];
+        for (int i = 0; i < leftSize; i++) {
+            leftArray[i] = a[left + i];
+        }
+        for (int j = 0; j < rightSize; j++) {
+            rightArray[j] = a[mid + 1 + j];
+        }
+        int i = 0;
+        int j = 0;
+        int k = left;
+
+        while (i < leftSize && j < rightSize) {
+            if (leftArray[i] <= rightArray[j]) {
+                a[k] = leftArray[i];
+                i++;
+            } else {
+                a[k] = rightArray[j];
+                j++;
+            }
+            k++;
+        }
+        while (i < leftSize) {
+            a[k] = leftArray[i];
+            i++;
+            k++;
+        }
+        while (j < rightSize) {
+            a[k] = rightArray[j];
+            j++;
+            k++;
+        }
+    }}
