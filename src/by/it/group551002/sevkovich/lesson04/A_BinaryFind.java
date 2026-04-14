@@ -63,7 +63,7 @@ public class A_BinaryFind {
                 int mid = (left+right)/2;
 
                 if (a[mid] > value){
-                    right = mid-1;
+                    right = mid;
                 }
                 else if (a[mid] < value){
                     left = mid+1;
