@@ -32,7 +32,7 @@ public class Lesson05Test {
     public void checkC() throws Exception {
         InputStream inputStream = C_QSortOptimized.class.getResourceAsStream("dataC.txt");
         C_QSortOptimized instance = new C_QSortOptimized();
-        int[] result = instance.getAccessory2(inputStream);
+        int[] result = instance.getAccessory(inputStream);
         boolean ok = Arrays.equals(result, new int[]{1, 0, 0});
         assertTrue("C failed", ok);
     }
