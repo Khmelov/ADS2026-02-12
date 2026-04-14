@@ -150,7 +150,6 @@ public class A_Huffman {
             left.fillCodes(code + "0");
             right.fillCodes(code + "1");
         }
-
     }
     //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
 
