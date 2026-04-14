@@ -58,7 +58,5 @@ public class FiboC {
 
         return b;
     }
-
-
 }
 
