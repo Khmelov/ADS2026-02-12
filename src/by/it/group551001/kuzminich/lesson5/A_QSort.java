@@ -2,6 +2,7 @@ package by.it.group551001.kuzminich.lesson5;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /*
@@ -44,6 +45,21 @@ public class A_QSort {
             System.out.print(index + " ");
         }
     }
+    int find_first_greater(int[] arr, int x){
+        int l = 0;
+        int r = arr.length -1;
+        int res = arr.length;
+        while (l<=r){
+            int mid = l + (r-l)/2;
+            if (arr[mid] > x){
+                res = mid;
+                r = mid-1;
+            }else{
+                l = mid+1;
+            }
+        }
+        return res;
+    }
 
     int[] getAccessory(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
@@ -66,8 +82,21 @@ public class A_QSort {
         for (int i = 0; i < m; i++) {
             points[i] = scanner.nextInt();
         }
-        //тут реализуйте логику задачи с применением быстрой сортировки
-        //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
+        int[] starts = new int[n];
+        int[] stops = new int[n];
+
+        for (int i=0;i<n;i++){
+            starts[i] = segments[i].start;
+            stops[i] = segments[i].stop;
+        }
+
+        Arrays.sort(starts);
+        Arrays.sort(stops);
+        for (int i= 0; i<m;i++){
+            int after_start = find_first_greater(starts, points[i]);
+            int after_stop = find_first_greater(stops, points[i]);
+            result[i] = after_start-after_stop;
+        }
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
@@ -80,18 +109,19 @@ public class A_QSort {
         int stop;
 
         Segment(int start, int stop) {
-            this.start = start;
-            this.stop = stop;
-            //тут вообще-то лучше доделать конструктор на случай если
-            //концы отрезков придут в обратном порядке
+            this.start = Math.min(start, stop);
+            this.stop = Math.max(start, stop);
+
         }
 
         @Override
         public int compareTo(Segment o) {
-            //подумайте, что должен возвращать компаратор отрезков
+            // отрицательно число, если this<other
 
-            return 0;
+            return this.start-o.start;
         }
     }
+
+
 
 }
