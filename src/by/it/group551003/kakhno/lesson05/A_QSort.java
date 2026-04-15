@@ -2,6 +2,7 @@ package by.it.group551003.kakhno.lesson05;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /*
@@ -60,7 +61,9 @@ public class A_QSort {
         //читаем сами отрезки
         for (int i = 0; i < n; i++) {
             //читаем начало и конец каждого отрезка
-            segments[i] = new Segment(scanner.nextInt(), scanner.nextInt());
+            int start = scanner.nextInt();
+            int stop = scanner.nextInt();
+            segments[i] = new Segment(start, stop);
         }
         //читаем точки
         for (int i = 0; i < m; i++) {
@@ -68,8 +71,20 @@ public class A_QSort {
         }
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
+        Arrays.sort(segments);
 
+        for (int i = 0; i < m; i++) {
+            int point = points[i];
+            int count = 0;
 
+            for (int j = 0; j < n; j++) {
+                if (segments[j].start <= point && point <= segments[j].stop) {
+                    count++;
+                }
+            }
+
+            result[i] = count;
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
@@ -84,13 +99,20 @@ public class A_QSort {
             this.stop = stop;
             //тут вообще-то лучше доделать конструктор на случай если
             //концы отрезков придут в обратном порядке
+            if (this.start > this.stop) {
+                int temp = this.start;
+                this.start = this.stop;
+                this.stop = temp;
+            }
         }
 
         @Override
         public int compareTo(Segment o) {
             //подумайте, что должен возвращать компаратор отрезков
-
-            return 0;
+            if (this.start != o.start)
+                return Integer.compare(this.start, o.start);
+            else
+                return Integer.compare(this.stop, o.stop);
         }
     }
 

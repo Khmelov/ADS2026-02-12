@@ -39,7 +39,20 @@ public class B_CountSort {
             points[i] = scanner.nextInt();
         }
         //тут реализуйте логику задачи с применением сортировки подсчетом
+        int maxValue = 10;
+        int minValue = 1;
+        int[] count = new int[maxValue - minValue + 1];
 
+        for (int i = 0; i < n; i++)
+            count[points[i] - minValue]++;
+
+        int insertPosition = 0;
+        for (int value = minValue; value <= maxValue; value++) {
+            int frequency = count[value - minValue];
+            for (int j = 0; j < frequency; j++) {
+                points[insertPosition++] = value;
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return points;
