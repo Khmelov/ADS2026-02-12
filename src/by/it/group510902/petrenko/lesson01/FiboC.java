@@ -6,6 +6,7 @@ package by.it.group510902.petrenko.lesson01;
  * время расчета должно быть не более 2 секунд
  */
 
+
 public class FiboC {
 
     private long startTime = System.currentTimeMillis();

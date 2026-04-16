@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 import static org.junit.Assert.assertTrue;
 
+
 public class Lesson04Test {
     @Test
     public void checkA() throws Exception {

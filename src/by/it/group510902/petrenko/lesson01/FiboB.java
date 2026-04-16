@@ -7,6 +7,7 @@ import java.math.BigInteger;
  * без ограничений на размер результата (BigInteger)
  */
 
+
 public class FiboB {
 
     private long startTime = System.currentTimeMillis();

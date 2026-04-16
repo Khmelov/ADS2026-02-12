@@ -38,6 +38,7 @@ import java.util.*;
 //        d: 111
 //        01001100100111
 
+
 public class A_Huffman {
 
     //индекс данных из листьев

@@ -6,6 +6,7 @@ import java.math.BigInteger;
 
 import static org.junit.Assert.assertTrue;
 
+
 @SuppressWarnings("all")
 public class Lesson01Test {
     /*
