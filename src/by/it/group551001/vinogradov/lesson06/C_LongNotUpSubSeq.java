@@ -2,7 +2,10 @@ package by.it.group551001.vinogradov.lesson06;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Scanner;
+
+import static java.lang.Math.max;
 
 /*
 Задача на программирование: наибольшая невозростающая подпоследовательность
@@ -51,16 +54,31 @@ public class C_LongNotUpSubSeq {
         //общая длина последовательности
         int n = scanner.nextInt();
         int[] m = new int[n];
-        //читаем всю последовательность
+        ArrayList<Integer>[] dp = new ArrayList[n];
         for (int i = 0; i < n; i++) {
             m[i] = scanner.nextInt();
+            dp[i] = new ArrayList<>();
+            dp[i].add(1); dp[i].add(i+1);
+
         }
-        //тут реализуйте логику задачи методами динамического программирования (!!!)
-        int result = 0;
 
+        for (int i = n-1; i >= 0; i--) {
+            for (int j = i+1; j < n; j++) {
+                if(m[i] >= m[j]) {
+                    if (dp[i].getFirst() < dp[j].getFirst() + 1) {
+                        dp[i] = new ArrayList<>(dp[j]);
+                        dp[i].set(0, dp[j].getFirst() + 1);
+                        dp[i].add(i+1);
+                    }
+                }
+            }
+        }
+        for (int i = dp[0].getFirst(); i > 0; i--) {
+            System.out.print(dp[0].get(i) + " ");
+        }
 
+        return dp[0].getFirst();
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
     }
 
 }
