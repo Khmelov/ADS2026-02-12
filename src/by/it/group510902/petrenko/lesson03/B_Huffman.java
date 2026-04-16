@@ -30,7 +30,6 @@ import java.util.Map;
 //        Sample Output 1:
 //        a
 
-
 //        Sample Input 2:
 //        4 14
 //        a: 0

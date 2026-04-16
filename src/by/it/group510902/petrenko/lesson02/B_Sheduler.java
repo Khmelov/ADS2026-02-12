@@ -9,7 +9,6 @@ import java.util.List;
 Алгоритм жадный. Для реализации обдумайте надежный шаг.
 */
 
-
 public class B_Sheduler {
     public static void main(String[] args) {
         B_Sheduler instance = new B_Sheduler();

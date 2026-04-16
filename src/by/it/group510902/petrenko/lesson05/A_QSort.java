@@ -106,7 +106,6 @@ public class A_QSort {
         return result;
     }
 
-
     private class Segment implements Comparable<Segment> {
         int start;
         int stop;

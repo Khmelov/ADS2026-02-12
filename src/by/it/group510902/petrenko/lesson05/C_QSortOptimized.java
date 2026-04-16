@@ -124,7 +124,6 @@ public class C_QSortOptimized {
             result[i] = count;
         }
 
-
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }

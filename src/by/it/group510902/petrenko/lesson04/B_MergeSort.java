@@ -45,7 +45,6 @@ public class B_MergeSort {
         int j = mid + 1;
         int k = 0;
 
-
         while (i <= mid && j <= right) {
             if (arr[i] <= arr[j]) {
                 temp[k++] = arr[i++];

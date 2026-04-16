@@ -59,7 +59,6 @@ public class C_GetInversions {
         int k = left;
         long invCount = 0;
 
-
         while (i <= mid && j <= right) {
             if (arr[i] <= arr[j]) {
                 temp[k++] = arr[i++];

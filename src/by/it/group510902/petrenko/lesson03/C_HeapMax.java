@@ -33,7 +33,6 @@ import java.util.Scanner;
 //      200
 //      500
 
-
 public class C_HeapMax {
 
     public static void main(String[] args) throws FileNotFoundException {

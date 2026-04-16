@@ -54,7 +54,6 @@ public class A_BinaryFind {
         return -1;
     }
 
-
     public int[] findIndex(InputStream stream) throws FileNotFoundException {
         Scanner scanner = new Scanner(stream);
 
