@@ -42,8 +42,37 @@ public class B_EditDist {
     int getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
 
+        int m = one.length();
+        int n = two.length();
 
-        int result = 0;
+        int[][] dp = new int[m + 1][n + 1];
+
+        // Если вторая строка пуста, нужно удалить все символы первой строки
+        for (int i = 0; i <= m; i++) {
+            dp[i][0] = i;
+        }
+
+        // Если первая строка пуста, нужно вставить все символы второй строки
+        for (int j = 0; j <= n; j++) {
+            dp[0][j] = j;
+        }
+
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (one.charAt(i - 1) == two.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    int insert = dp[i][j - 1];
+                    int delete = dp[i - 1][j];
+                    int replace = dp[i - 1][j - 1];
+
+                    dp[i][j] = 1 + Math.min(Math.min(insert, delete), replace);
+                }
+            }
+        }
+
+        int result = dp[m][n];
+
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }

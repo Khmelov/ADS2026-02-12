@@ -2,6 +2,8 @@ package by.it.group551001.filipova.lesson06;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /*
@@ -38,7 +40,7 @@ import java.util.Scanner;
 public class C_LongNotUpSubSeq {
 
     public static void main(String[] args) throws FileNotFoundException {
-        InputStream stream = B_LongDivComSubSeq.class.getResourceAsStream("dataC.txt");
+        InputStream stream = C_LongNotUpSubSeq.class.getResourceAsStream("dataC.txt");
         C_LongNotUpSubSeq instance = new C_LongNotUpSubSeq();
         int result = instance.getNotUpSeqSize(stream);
         System.out.print(result);
@@ -55,12 +57,50 @@ public class C_LongNotUpSubSeq {
         for (int i = 0; i < n; i++) {
             m[i] = scanner.nextInt();
         }
-        //тут реализуйте логику задачи методами динамического программирования (!!!)
-        int result = 0;
 
+        //тут реализуйте логику задачи методами динамического программирования (!!!)
+
+        int[] dp = new int[n];
+        // prev[i] - индекс предыдущего элемента в оптимальной подпоследовательности для элемента i
+        int[] prev = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            dp[i] = 1;
+            prev[i] = -1;
+        }
+
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (m[j] >= m[i] && dp[j] + 1 > dp[i]) {
+                    dp[i] = dp[j] + 1;
+                    prev[i] = j;
+                }
+            }
+        }
+
+        int maxIndex = 0;
+        for (int i = 1; i < n; i++) {
+            if (dp[i] > dp[maxIndex]) {
+                maxIndex = i;
+            }
+        }
+
+        // Восстанавливаем подпоследовательность
+        List<Integer> sequence = new ArrayList<>();
+        int currentIndex = maxIndex;
+        while (currentIndex != -1) {
+            sequence.add(0, currentIndex + 1);
+            currentIndex = prev[currentIndex];
+        }
+
+        System.out.println();
+        for (int index : sequence) {
+            System.out.print(index + " ");
+        }
+
+        int result = dp[maxIndex];
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
-
 }

@@ -32,7 +32,6 @@ Sample Output 3:
 */
 
 public class C_Stairs {
-
     int getMaxSum(InputStream stream ) {
         Scanner scanner = new Scanner(stream);
         int n=scanner.nextInt();
@@ -41,9 +40,17 @@ public class C_Stairs {
             stairs[i]=scanner.nextInt();
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        int result = 0;
+        int[] dp = new int[n + 1];
 
+        if (n > 0) {
+            dp[1] = stairs[0];
+        }
 
+        for (int i = 2; i <= n; i++) {
+            dp[i] = stairs[i - 1] + Math.max(dp[i - 1], dp[i - 2]);
+        }
+
+        int result = (n > 0) ? dp[n] : 0;
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
@@ -57,5 +64,5 @@ public class C_Stairs {
         int res=instance.getMaxSum(stream);
         System.out.println(res);
     }
-
 }
+

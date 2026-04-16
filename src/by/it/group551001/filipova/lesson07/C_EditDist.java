@@ -1,5 +1,6 @@
 package by.it.group551001.filipova.lesson07;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
@@ -51,10 +52,68 @@ public class C_EditDist {
     String getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
 
+        int m = one.length();
+        int n = two.length();
 
-        String result = "";
+        int[][] dp = new int[m + 1][n + 1];
+
+        for (int i = 0; i <= m; i++) {
+            dp[i][0] = i;
+        }
+
+        for (int j = 0; j <= n; j++) {
+            dp[0][j] = j;
+        }
+
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (one.charAt(i - 1) == two.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    int insert = dp[i][j - 1];
+                    int delete = dp[i - 1][j];
+                    int replace = dp[i - 1][j - 1];
+
+                    dp[i][j] = 1 + Math.min(Math.min(insert, delete), replace);
+                }
+            }
+        }
+
+        // Восстанавливаем редакционное предписание
+        StringBuilder result = new StringBuilder();
+        int i = m, j = n;
+
+        while (i > 0 || j > 0) {
+            if (i > 0 && j > 0 && one.charAt(i - 1) == two.charAt(j - 1)) {
+                // Совпадение
+                result.insert(0, ",");
+                result.insert(0, "#");
+                i--;
+                j--;
+            } else if (j > 0 && (i == 0 || dp[i][j] == dp[i][j - 1] + 1)) {
+                // Вставка
+                result.insert(0, ",");
+                result.insert(0, two.charAt(j - 1));
+                result.insert(0, "+");
+                j--;
+            } else if (i > 0 && (j == 0 || dp[i][j] == dp[i - 1][j] + 1)) {
+                // Удаление
+                result.insert(0, ",");
+                result.insert(0, one.charAt(i - 1));
+                result.insert(0, "-");
+                i--;
+            } else {
+                // Замена
+                result.insert(0, ",");
+                result.insert(0, two.charAt(j - 1));
+                result.insert(0, "~");
+                i--;
+                j--;
+            }
+        }
+
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        return result.toString();
     }
 
 
