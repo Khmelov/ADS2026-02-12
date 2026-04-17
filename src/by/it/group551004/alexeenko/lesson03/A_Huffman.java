@@ -56,7 +56,6 @@ public class A_Huffman {
         System.out.println(result);
     }
 
-    //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
     String encode(InputStream inputStream) throws FileNotFoundException {
         Scanner scanner = new Scanner(inputStream);
         String s = scanner.next();
@@ -123,7 +122,6 @@ public class A_Huffman {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////
     //расширение базового класса до внутреннего узла дерева
     private class InternalNode extends Node {
         //внутренный узел дерева
@@ -145,8 +143,6 @@ public class A_Huffman {
         }
 
     }
-    //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-
     ////////////////////////////////////////////////////////////////////////////////////
     //расширение базового класса до листа дерева
     private class LeafNode extends Node {
