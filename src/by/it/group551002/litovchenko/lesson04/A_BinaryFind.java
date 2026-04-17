@@ -29,38 +29,53 @@ public class A_BinaryFind {
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = A_BinaryFind.class.getResourceAsStream("dataA.txt");
         A_BinaryFind instance = new A_BinaryFind();
-        //long startTime = System.currentTimeMillis();
+        // long startTime = System.currentTimeMillis();
         int[] result = instance.findIndex(stream);
-        //long finishTime = System.currentTimeMillis();
+        // long finishTime = System.currentTimeMillis();
         for (int index : result) {
             System.out.print(index + " ");
         }
     }
 
     public int[] findIndex(InputStream stream) throws FileNotFoundException {
-        //подготовка к чтению данных
+        // подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        // !!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!
 
-        //размер отсортированного массива
+        // размер отсортированного массива
         int n = scanner.nextInt();
-        //сам отсортированный массива
+        // сам отсортированный массива
         int[] a = new int[n];
         for (int i = 1; i <= n; i++) {
             a[i - 1] = scanner.nextInt();
         }
 
-        //размер массива индексов
+        // размер массива индексов
         int k = scanner.nextInt();
         int[] result = new int[k];
         for (int i = 0; i < k; i++) {
             int value = scanner.nextInt();
-            //тут реализуйте бинарный поиск индекса
+            // тут реализуйте бинарный поиск индекса
+            int ind = -2;
 
+            int left = 0, right = n - 1;
 
-            result[i] = 0;
+            while (left <= right) {
+                int mid = (left + right) / 2;
+
+                if (a[mid] == value) {
+                    ind = mid;
+                    left = right + 1;
+                } else if (a[mid] > value) {
+                    right = mid - 1;
+                } else
+                    left = mid + 1;
+
+            }
+
+            result[i] = ind + 1;
         }
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        // !!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
