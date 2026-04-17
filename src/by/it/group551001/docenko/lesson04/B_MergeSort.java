@@ -1,4 +1,4 @@
-package lesson04;
+package by.it.group551001.docenko.lesson04;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -45,13 +45,51 @@ public class B_MergeSort {
             System.out.println(a[i]);
         }
 
-        // тут ваше решение (реализуйте сортировку слиянием)
-        // https://ru.wikipedia.org/wiki/Сортировка_слиянием
-
+        this.mergeSort(a, 0, a.length-1);
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return a;
     }
 
+    void mergeSort(int[] arr, int l, int r) {
+        if (r == l) {
+            return;
+        }
+
+        int m = (l + r) / 2;
+
+        this.mergeSort(arr, l, m);
+        this.mergeSort(arr, m+1, r);
+
+        int[] temp = arr.clone();
+
+        int l_cur = l, r_cur = m + 1;
+        for (int i = l; i <= r; i++) {
+            if (l_cur <= m && r_cur <= r)
+            {
+                if (temp[l_cur] <= temp[r_cur])
+                {
+                    arr[i] = temp[l_cur];
+                    l_cur++;
+                }
+                else
+                {
+                    arr[i] = temp[r_cur];
+                    r_cur++;
+                }
+            }
+            else if (l_cur <= m)
+            {
+                arr[i] = temp[l_cur];
+                l_cur++;
+            }
+            else
+            {
+                arr[i] = temp[r_cur];
+                r_cur++;
+            }
+        }
+
+    }
 
 }
