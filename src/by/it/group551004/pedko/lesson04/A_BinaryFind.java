@@ -37,6 +37,31 @@ public class A_BinaryFind {
         }
     }
 
+    public int binaryFind(int[] arr, int target) {
+        int left;
+        int right;
+        int mid;
+        int val;
+
+        left = 0;
+        right = arr.length - 1;
+
+        while (left <= right) {
+            mid = (left + right) / 2;
+            val = arr[mid];
+
+            if (val == target) {
+                return mid + 1;
+            }
+
+            if (val < target)
+                left = mid + 1;
+            else
+                right = mid - 1;
+        }
+        return -1;
+    }
+
     public int[] findIndex(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
@@ -57,8 +82,7 @@ public class A_BinaryFind {
             int value = scanner.nextInt();
             //тут реализуйте бинарный поиск индекса
 
-
-            result[i] = 0;
+            result[i] = binaryFind(a, value);
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;

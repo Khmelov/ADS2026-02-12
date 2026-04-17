@@ -43,6 +43,81 @@ public class C_GetInversions {
         System.out.print(result);
     }
 
+    private int inversionCount = 0;
+
+    public int[] merge(int[] array1, int[] array2) {
+        int i;
+        int j;
+        int index;
+        int size1;
+        int size2;
+        int answerSize;
+        int[] answerArray;
+
+        i = 0;
+        j = 0;
+        index = 0;
+        size1 = 0;
+        size2 = 0;
+        answerSize = 0;
+
+        size1 = array1.length;
+        size2 = array2.length;
+
+        answerSize = size1 + size2;
+        answerArray = new int[answerSize];
+
+        while (i < size1 && j < size2) {
+            if (array1[i] <= array2[j]) {
+                answerArray[index] = array1[i];
+                i++;
+            } else {
+                answerArray[index] = array2[j];
+                j++;
+                inversionCount += (size1 - i);
+            }
+            index++;
+        }
+
+        while (i < size1) {
+            answerArray[index] = array1[i];
+            i++;
+            index++;
+        }
+
+        while (j < size2) {
+            answerArray[index] = array2[j];
+            j++;
+            index++;
+        }
+
+        return answerArray;
+    }
+
+    public int[] mergesort(int[] up, int[] down, int left, int right) {
+
+        if (left == right) {
+            down[left] = up[left];
+            down = new int[1];
+            down[0] = up[left];
+            return down;
+        }
+
+        int middle = left + (right - left) / 2;
+
+        int[] leftBuffer = mergesort(up, down, left, middle);
+        int[] rightBuffer = mergesort(up, down, middle + 1, right);
+
+        int[] target;
+        if (leftBuffer == up) {
+            target = down;
+        } else {
+            target = up;
+        }
+
+        return merge(leftBuffer, rightBuffer);
+    }
+
     int calc(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
@@ -57,6 +132,10 @@ public class C_GetInversions {
         int result = 0;
         //!!!!!!!!!!!!!!!!!!!!!!!!     тут ваше решение   !!!!!!!!!!!!!!!!!!!!!!!!
 
+        int[] buff;
+        buff = new int[a.length];
+        mergesort(a, buff, 0, a.length - 1);
+        result = inversionCount;
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
