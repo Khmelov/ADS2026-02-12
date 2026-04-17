@@ -47,6 +47,34 @@ public class B_MergeSort {
 
         // тут ваше решение (реализуйте сортировку слиянием)
         // https://ru.wikipedia.org/wiki/Сортировка_слиянием
+        int[] temp = new int[n];
+        for (int size = 1; size < n; size *= 2) {
+            for (int left = 0; left < n - size; left += 2 * size) {
+                int mid = left + size - 1;
+                int right = Math.min(left + 2 * size - 1, n - 1);
+
+                int i = left;
+                int j = mid + 1;
+                int k = left;
+
+                while (i <= mid && j <= right) {
+                    if (a[i] <= a[j]) {
+                        temp[k++] = a[i++];
+                    } else {
+                        temp[k++] = a[j++];
+                    }
+                }
+                while (i <= mid) {
+                    temp[k++] = a[i++];
+                }
+                while (j <= right) {
+                    temp[k++] = a[j++];
+                }
+                for (int t = left; t <= right; t++) {
+                    a[t] = temp[t];
+                }
+            }
+        }
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
