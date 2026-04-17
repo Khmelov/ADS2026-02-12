@@ -68,7 +68,7 @@ public class B_Huffman {
 
         Map<String, Character> chars = new HashMap<>();
 
-        for (int i = 0; i < count; ++i) {
+        for (int i = 0; i < count; ++i) {https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments
             c = scanner.next().charAt(0);
             code = scanner.next();
             chars.put(code, c);
