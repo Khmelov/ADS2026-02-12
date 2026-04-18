@@ -10,13 +10,9 @@ public class C_EditDist {
         int n = one.length();
         int m = two.length();
 
-        // Таблица для хранения минимальных расстояний
         int[][] dp = new int[n + 1][m + 1];
-
-        // Таблица для хранения операций (для восстановления пути)
         char[][] op = new char[n + 1][m + 1];
 
-        // Инициализация базовых случаев
         for (int i = 0; i <= n; i++) {
             dp[i][0] = i;
             if (i > 0) op[i][0] = '-';  // удаление
@@ -63,21 +59,19 @@ public class C_EditDist {
 
         while (i > 0 || j > 0) {
             if (i > 0 && j > 0 && op[i][j] == '#') {
-                // Копирование - символы совпали
+
                 result.insert(0, "#,");
                 i--;
                 j--;
             } else if (i > 0 && j > 0 && op[i][j] == '~') {
-                // Замена
                 result.insert(0, "~" + two.charAt(j - 1) + ",");
                 i--;
                 j--;
-            } else if (i > 0 && (j == 0 || op[i][j] == '-')) {
-                // Удаление
+            } else
+                if (i > 0 && (j == 0 || op[i][j] == '-')) {
                 result.insert(0, "-" + one.charAt(i - 1) + ",");
                 i--;
             } else if (j > 0 && (i == 0 || op[i][j] == '+')) {
-                // Вставка
                 result.insert(0, "+" + two.charAt(j - 1) + ",");
                 j--;
             }

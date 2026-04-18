@@ -60,21 +60,21 @@ public class A_BinaryFind {
 
             // Бинарный поиск
             int left = 0;
-            int right = n - 1;  // Исправлено: последний индекс = n-1
+            int right = n - 1;
             int foundIndex = -1;
 
             while (left <= right) {
                 int mid = left + (right - left) / 2;
 
                 if (a[mid] == value) {
-                    foundIndex = mid + 1;  // +1 потому что в задаче индексация с 1
-                    break;  // нашли элемент, выходим из цикла
+                    foundIndex = mid + 1;
+                    break;
                 }
                 else if (a[mid] < value) {
-                    left = mid + 1;  // ищем в правой половине
+                    left = mid + 1;
                 }
                 else {
-                    right = mid - 1;  // ищем в левой половине
+                    right = mid - 1;
                 }
             }
 
