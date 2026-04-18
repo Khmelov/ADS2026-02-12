@@ -75,21 +75,70 @@ public class C_HeapMax {
         private List<Long> heap = new ArrayList<>();
 
         int siftDown(int i) { //просеивание вверх
+            int left = 2 * i + 1;
 
+            while (left < heap.size()) {
+                int maxChild = left;
+                int right = left + 1;
+
+                if (right < heap.size() && heap.get(right) > heap.get(left)) {
+                    maxChild = right;
+                }
+
+                if (heap.get(i) >= heap.get(maxChild)) {
+                    break;
+                }
+
+                Long temp = heap.get(i);
+                heap.set(i, heap.get(maxChild));
+                heap.set(maxChild, temp);
+
+                i = maxChild;
+                left = 2 * i + 1;
+            }
             return i;
         }
 
         int siftUp(int i) { //просеивание вниз
+            while (i > 0) {
+                int parent = (i - 1) / 2;
 
+                if (heap.get(i) <= heap.get(parent)) {
+                    break;
+                }
+
+                Long temp = heap.get(i);
+                heap.set(i, heap.get(parent));
+                heap.set(parent, temp);
+
+                i = parent;
+            }
             return i;
         }
 
         void insert(Long value) { //вставка
+            heap.add(value);
+            siftUp(heap.size() - 1);
         }
 
         Long extractMax() { //извлечение и удаление максимума
-            Long result = null;
+            if (heap.isEmpty()) {
+                return null;
+            }
 
+            // Максимальный элемент всегда находится в корне дерева (индекс 0)
+            Long result = heap.get(0);
+
+            // Забираем самый последний элемент массива
+            Long lastVal = heap.remove(heap.size() - 1);
+
+            // Если после удаления куча не стала пустой (то есть мы не удалили единственный элемент)
+            if (!heap.isEmpty()) {
+                // Ставим последний элемент на место корня
+                heap.set(0, lastVal);
+                // И "опускаем" его вниз, чтобы восстановить свойство кучи
+                siftDown(0);
+            }
             return result;
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
