@@ -63,12 +63,99 @@ public class C_QSortOptimized {
         }
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
+        quickSort(segments, 0, n - 1);
 
-
+        // Для каждой точки находим количество отрезков, содержащих ее
+        for (int i = 0; i < m; i++) {
+            int point = points[i];
+            result[i] = countSegmentsContainingPoint(segments, point);
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
+    // Оптимизированная быстрая сортировка с элиминацией хвостовой рекурсии
+    private void quickSort(Segment[] arr, int low, int high) {
+        while (low < high) {
+            // Используем 3-разбиение
+            int[] partitionIndices = threeWayPartition(arr, low, high);
+            int lt = partitionIndices[0]; // конец левой части
+            int gt = partitionIndices[1]; // начало правой части
+
+            // Рекурсивно сортируем меньшую часть, а большую обрабатываем итеративно
+            if (lt - low < high - gt) {
+                quickSort(arr, low, lt - 1);
+                low = gt + 1; // хвостовая рекурсия для правой части
+            } else {
+                quickSort(arr, gt + 1, high);
+                high = lt - 1; // хвостовая рекурсия для левой части
+            }
+        }
+    }
+
+    // 3-разбиение (Dutch National Flag algorithm)
+    private int[] threeWayPartition(Segment[] arr, int low, int high) {
+        Segment pivot = arr[low + (high - low) / 2]; // выбираем средний элемент как опорный
+        int lt = low;     // граница элементов < pivot
+        int i = low;      // текущий элемент
+        int gt = high;    // граница элементов > pivot
+
+        while (i <= gt) {
+            int cmp = arr[i].compareTo(pivot);
+            if (cmp < 0) {
+                swap(arr, lt, i);
+                lt++;
+                i++;
+            } else if (cmp > 0) {
+                swap(arr, i, gt);
+                gt--;
+            } else {
+                i++;
+            }
+        }
+        return new int[]{lt, gt};
+    }
+
+    // Бинарный поиск первого отрезка, который может содержать точку
+    private int findFirstSegment(Segment[] segments, int point) {
+        int left = 0;
+        int right = segments.length - 1;
+        int result = segments.length;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (segments[mid].stop >= point) {
+                result = mid;
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return result;
+    }
+
+    // Подсчет количества отрезков, содержащих точку
+    private int countSegmentsContainingPoint(Segment[] segments, int point) {
+        // Находим первый потенциально подходящий отрезок
+        int startIdx = findFirstSegment(segments, point);
+        int count = 0;
+
+        // Считаем все подходящие отрезки от найденного индекса
+        for (int i = startIdx; i < segments.length; i++) {
+            if (segments[i].start <= point) {
+                count++;
+            } else {
+                break; // отрезки отсортированы, дальше start будет только больше
+            }
+        }
+        return count;
+    }
+
+    private void swap(Segment[] arr, int i, int j) {
+        Segment temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
     //отрезок
     private class Segment implements Comparable {
         int start;
