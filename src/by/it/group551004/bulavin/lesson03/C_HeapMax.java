@@ -1,4 +1,4 @@
-package lesson03;
+package by.it.group551004.bulavin.lesson03;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
