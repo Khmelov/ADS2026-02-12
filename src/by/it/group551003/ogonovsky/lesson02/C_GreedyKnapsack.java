@@ -1,4 +1,4 @@
-package by.it.group551003.ogonovsky.lesson01.lesson02;
+package by.it.group551003.ogonovsky.lesson02;
 /*
 Даны
 1) объем рюкзака 4

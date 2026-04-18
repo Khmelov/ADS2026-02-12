@@ -1,4 +1,4 @@
-package by.it.group551003.ogonovsky.lesson01.lesson02;
+package by.it.group551003.ogonovsky.lesson02;
 
 import java.util.ArrayList;
 import java.util.Arrays;
