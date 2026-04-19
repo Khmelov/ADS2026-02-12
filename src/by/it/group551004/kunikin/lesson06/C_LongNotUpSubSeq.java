@@ -45,21 +45,59 @@ public class C_LongNotUpSubSeq {
     }
 
     int getNotUpSeqSize(InputStream stream) throws FileNotFoundException {
-        //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        //общая длина последовательности
         int n = scanner.nextInt();
         int[] m = new int[n];
-        //читаем всю последовательность
         for (int i = 0; i < n; i++) {
             m[i] = scanner.nextInt();
         }
-        //тут реализуйте логику задачи методами динамического программирования (!!!)
-        int result = 0;
 
+        int[] tails = new int[n];
+        int[] tailsIndices = new int[n];
+        int[] prev = new int[n];
+        int len = 0;
 
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        for (int i = 0; i < n; i++) {
+            int x = m[i];
+            int low = 0;
+            int high = len - 1;
+            int replaceIdx = -1;
+
+            while (low <= high) {
+                int mid = low + (high - low) / 2;
+                if (tails[mid] < x) {
+                    replaceIdx = mid;
+                    high = mid - 1;
+                } else {
+                    low = mid + 1;
+                }
+            }
+
+            if (replaceIdx == -1) {
+                tails[len] = x;
+                tailsIndices[len] = i;
+                prev[i] = (len > 0) ? tailsIndices[len - 1] : -1;
+                len++;
+            } else {
+                tails[replaceIdx] = x;
+                tailsIndices[replaceIdx] = i;
+                prev[i] = (replaceIdx > 0) ? tailsIndices[replaceIdx - 1] : -1;
+            }
+        }
+
+        int[] resultIndices = new int[len];
+        int curr = tailsIndices[len - 1];
+        for (int i = len - 1; i >= 0; i--) {
+            resultIndices[i] = curr + 1;
+            curr = prev[curr];
+        }
+
+        System.out.println(len);
+        for (int i = 0; i < len; i++) {
+            System.out.print(resultIndices[i] + (i == len - 1 ? "" : " "));
+        }
+        System.out.println();
+        int result = len;
         return result;
     }
 

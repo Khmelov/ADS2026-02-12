@@ -38,14 +38,37 @@ import java.util.Scanner;
 
 public class A_EditDist {
 
+    int[][] memo;
 
     int getDistanceEdinting(String one, String two) {
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        int n = one.length();
+        int m = two.length();
+        memo = new int[n + 1][m + 1];
 
+        for (int i = 0; i <= n; i++) {
+            for (int j = 0; j <= m; j++) {
+                memo[i][j] = -1;
+            }
+        }
 
-        int result = 0;
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        return editDistance(one, two, n, m);
+    }
+
+    private int editDistance(String s1, String s2, int i, int j) {
+        if (memo[i][j] != -1) return memo[i][j];
+
+        if (i == 0) return memo[i][j] = j;
+        if (j == 0) return memo[i][j] = i;
+
+        int cost = (s1.charAt(i - 1) == s2.charAt(j - 1)) ? 0 : 1;
+
+        int res = Math.min(
+                Math.min(editDistance(s1, s2, i - 1, j) + 1,
+                        editDistance(s1, s2, i, j - 1) + 1),
+                editDistance(s1, s2, i - 1, j - 1) + cost
+        );
+
+        return memo[i][j] = res;
     }
 
 
