@@ -68,6 +68,20 @@ public class A_QSort {
         }
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
+        Segment[] segments_sorted_by_start = new Segment[n];
+        segments_sorted_by_start = segments.clone();
+        Segment[] segments_sorted_by_stop = new Segment[n];
+        segments_sorted_by_stop = segments.clone();
+
+        QuickSort(segments_sorted_by_start,0, n - 1,1);
+        QuickSort(segments_sorted_by_stop,0,n - 1,2);
+
+        for (int i = 0; i < points.length; i++) {
+            int c1 = lower_board(segments_sorted_by_start,points[i],1);
+            int c2 = lower_board(segments_sorted_by_stop,points[i],2);
+            result[i] = c1 - c2;
+        }
+
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
@@ -90,8 +104,84 @@ public class A_QSort {
         public int compareTo(Segment o) {
             //подумайте, что должен возвращать компаратор отрезков
 
-            return 0;
+            return this.start - o.start;
         }
+
+        public int comp_stop(Segment o){
+            return this.stop - o.stop;
+        }
+
+    }
+
+    void QuickSort(Segment[] segments,int left,int right,int type) {
+        int mid = (left + right) / 2;
+        Segment pivot = segments[mid];
+
+        int i = left;
+        int j = right;
+
+        while (i <= j) {
+            switch (type) {
+                case 1:
+                    while(segments[i].compareTo(pivot) < 0) {
+                        i++;
+                    }
+                    while(segments[j].compareTo(pivot) > 0) {
+                        j--;
+                    }
+                    break;
+                case 2:
+                    while(segments[i].comp_stop(pivot) < 0) {
+                        i++;
+                    }
+                    while(segments[j].comp_stop(pivot) > 0) {
+                        j--;
+                    }
+                    break;
+            }
+            if (i <= j) {
+                Segment temp = segments[i];
+                segments[i] = segments[j];
+                segments[j] = temp;
+                i++;
+                j--;
+            }
+        }
+
+        if (left < right)
+            QuickSort(segments,left,j,type);
+        if (left < right)
+            QuickSort(segments,i,right,type);
+
+    }
+
+    int lower_board (Segment[] segments,int point,int type) {
+        int left = 0;
+        int right = segments.length;
+        int mid = (left + right) / 2;
+        switch (type) {
+            case 1:
+                while (left < right) {
+                    if (point < segments[mid].start) {
+                        right = mid;
+                    } else {
+                        left = mid + 1;
+                    }
+                    mid = (left + right) / 2;
+                }
+                break;
+            case 2:
+                while (left < right) {
+                    if (point < segments[mid].stop) {
+                        right = mid;
+                    } else {
+                        left = mid + 1;
+                    }
+                    mid = (left + right) / 2;
+                }
+                break;
+        }
+        return left;
     }
 
 }
