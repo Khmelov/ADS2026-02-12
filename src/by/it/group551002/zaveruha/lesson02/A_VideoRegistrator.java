@@ -2,6 +2,7 @@ package by.it.group551002.zaveruha.lesson02;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 /*
 Даны события events
 реализуйте метод calcStartTimes, так, чтобы число включений регистратора на
@@ -25,11 +26,23 @@ public class A_VideoRegistrator {
         //timeWorkDuration время работы видеокамеры после старта
         List<Double> result;
         result = new ArrayList<>();
+
         int i = 0;                              //i - это индекс события events[i]
         //Комментарии от проверочного решения сохранены для подсказки, но вы можете их удалить.
         //Подготовка к жадному поглощению массива событий
         //hint: сортировка Arrays.sort обеспечит скорость алгоритма
         //C*(n log n) + C1*n = O(n log n)
+        Arrays.sort(events);
+        while (i < events.length) {
+            double start = events[i];
+            result.add(start);
+
+            double end = start + workDuration;
+
+            while (i < events.length && events[i] <= end) {
+                i++;
+            }
+        }
 
         //пока есть незарегистрированные события
         //получим одно событие по левому краю
@@ -38,6 +51,16 @@ public class A_VideoRegistrator {
         //и теперь пропустим все покрываемые события
         //за время до конца работы, увеличивая индекс
 
+        java.util.Arrays.sort(events);
+        int n = events.length;
+        while (i < n) {
+            double start = events[i];
+            double end = start + workDuration;
+            result.add(start);
+            while (i < n && events[i] <= end) {
+                i++;
+            }
+        }
 
         return result;                        //вернем итог
     }
