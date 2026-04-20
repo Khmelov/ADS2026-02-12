@@ -56,11 +56,7 @@ public class C_EditDist {
         int m = two.length() + 1;
         int[][] matrix = new int[n][m];
 
-        int cost = -1;
-        int D = -1;
-        int I = -1;
-        int R = -1;
-
+        int cost, D, I, R;
 
         StringBuilder temp = new StringBuilder();
 
@@ -79,6 +75,7 @@ public class C_EditDist {
                     matrix[i][j] = Math.min(Math.min(D, I) + 1, R);
                 }
             }
+
         int i = n - 1;
         int j = m - 1;
 
