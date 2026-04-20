@@ -84,25 +84,23 @@ public class C_EditDist {
 
         while (i > 0 || j > 0) {
             temp.append(",");
-            if (i == 0 || (j > 0 && matrix[i][j] == matrix[i][j - 1] + 1)) {
-                temp.append(two.charAt(j - 1) + "+");
-                j--;
-            } else if (j == 0 || (i > 0 && matrix[i][j] == matrix[i - 1][j] + 1)) {
-                temp.append(one.charAt(i - 1) + "-");
-                i--;
-            } else if (matrix[i][j] == matrix[i - 1][j - 1]) {
+            if (i > 0 && j > 0 && one.charAt(i - 1) == two.charAt(j - 1)) {
                 temp.append("#");
-
+                i--; j--;
+            }
+            else if (i > 0 && j > 0 && matrix[i][j] == matrix[i - 1][j - 1] + 1) {
+                temp.append(two.charAt(j - 1)).append("~");
+                i--; j--;
+            }
+            else if (i > 0 && (j == 0 || matrix[i][j] == matrix[i - 1][j] + 1)) {
+                temp.append(one.charAt(i - 1)).append("-");
                 i--;
-                j--;
-            } else if (matrix[i][j] == matrix[i - 1][j - 1] + 1) {
-                temp.append(one.charAt(i - 1) + "~");
-
-                i--;
+            }
+            else if (j > 0) {
+                temp.append(two.charAt(j - 1)).append("+");
                 j--;
             }
         }
-
 
         String result = new StringBuilder(temp).reverse().toString();
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
