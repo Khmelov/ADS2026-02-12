@@ -37,8 +37,31 @@ public class B_Knapsack {
             gold[i]=scanner.nextInt();
         }
 
+        int rows = n;
+        int cols = w + 1;
 
-        int result = 0;
+        int[][] matrix = new int[rows][cols];
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (i == 0) {
+                    if (j >= gold[i]) {
+                        matrix[i][j] = gold[i];
+                    } else {
+                        matrix[i][j] = 0;
+                    }
+                } else if (j < gold[i]) {
+                    matrix[i][j] = matrix[i - 1][j];
+                } else if (j - gold[i] > 0) {
+                    matrix[i][j] = Math.max(matrix[i - 1][j],gold[i] + matrix[i - 1][(j - gold[i])]);
+                } else {
+                    matrix[i][j] = Math.max(matrix[i - 1][j],gold[i]);
+                }
+            }
+        }
+
+
+        int result = matrix[rows - 1][cols - 1];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
