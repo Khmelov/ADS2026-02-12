@@ -57,10 +57,19 @@ public class A_QSort {
         int[] points = new int[m];
         int[] result = new int[m];
 
+        int[] starts = new int[n];
+        int[] stops = new int[n];
+
         //читаем сами отрезки
         for (int i = 0; i < n; i++) {
             //читаем начало и конец каждого отрезка
             segments[i] = new Segment(scanner.nextInt(), scanner.nextInt());
+        }
+        // Разделение отрезков
+        for (int i = 0; i < n; i++)
+        {
+            starts[i] = segments[i].start;
+            stops[i] = segments[i].stop;
         }
         //читаем точки
         for (int i = 0; i < m; i++) {
@@ -69,9 +78,64 @@ public class A_QSort {
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
+        quickSort(starts, 0, starts.length - 1);
+        quickSort(stops, 0, stops.length - 1);
+        int count = 0;
+        for(int i = 0; i < m; i++)
+        {
+            int low = 0, high = starts.length;
+            while (low < high)
+            {
+                int mid = (low + high) / 2;
+                if (starts[mid] <= points[i]) low = mid + 1;
+                else high = mid;
+            }
+            int start = low;
+
+            low = 0;
+            high = stops.length;
+            while (low < high)
+            {
+                int mid = (low + high) / 2;
+                if (stops[mid] < points[i]) low = mid + 1;
+                else high = mid;
+            }
+            int finish = low;
+
+            result[i] = start-finish;
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
+    }
+    static int partition(int[] arr, int low, int high) {
+        int pivot = arr[high];
+        int i = low - 1;
+
+        for (int j = low; j <= high - 1; j++) {
+            if (arr[j] < pivot) {
+                i++;
+                swap(arr, i, j);
+            }
+        }
+        swap(arr, i + 1, high);
+        return i + 1;
+    }
+
+    static void swap(int[] arr, int i, int j) {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
+    static void quickSort(int[] arr, int low, int high) {
+        if (low < high) {
+
+            int m = partition(arr, low, high);
+
+            quickSort(arr, low, m - 1);
+            quickSort(arr, m + 1, high);
+        }
     }
 
     //отрезок
@@ -80,10 +144,17 @@ public class A_QSort {
         int stop;
 
         Segment(int start, int stop) {
-            this.start = start;
-            this.stop = stop;
-            //тут вообще-то лучше доделать конструктор на случай если
-            //концы отрезков придут в обратном порядке
+            if(start <= stop)
+            {
+                this.start = start;
+                this.stop = stop;
+            }
+            else
+            {
+                this.start = stop;
+                this.stop = start;
+            }
+
         }
 
         @Override
