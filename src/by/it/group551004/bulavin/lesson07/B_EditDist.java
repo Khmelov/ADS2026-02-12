@@ -41,9 +41,33 @@ public class B_EditDist {
 
     int getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-        int result = 0;
+        int n = one.length(), m = two.length();
+        int[][] dp = new int[n + 1][m + 1];
+        for(int i = 0; i <= n; i++){
+            for(int j = 0; j <= m; j++){
+                dp[i][j] = (int)2e9;
+            }
+        }
+        dp[n][m] = 0;
+        for(int i = n; i >= 0; i--){
+            for(int j = m; j >= 0; j--) {
+                if(n == i && m == j){
+                    continue;
+                }
+                if(n == i){
+                    dp[i][j] = dp[i][j + 1] + 1;
+                    continue;
+                }
+                if(m == j){
+                    dp[i][j] = dp[i + 1][j] + 1;
+                    continue;
+                }
+                dp[i][j] = (dp[i + 1][j] < dp[i][j + 1] ? dp[i + 1][j] : dp[i][j + 1]) + 1;
+                int x = dp[i + 1][j + 1] + (one.charAt(i) != two.charAt(j) ? 1 : 0);
+                dp[i][j] = (dp[i][j] < x ? dp[i][j] : x);
+            }
+        }
+        int result = dp[0][0];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
