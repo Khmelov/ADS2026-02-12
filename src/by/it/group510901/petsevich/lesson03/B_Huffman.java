@@ -1,7 +1,10 @@
 package by.it.group510901.petsevich.lesson03;
 
+import java.io.Console;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 // Lesson 3. B_Huffman.
@@ -58,6 +61,22 @@ public class B_Huffman {
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         //тут запишите ваше решение
 
+        Map<String, Character> codes = new HashMap<>();
+        for(int i = 0; i < count; i++) {
+            Character symbol = scanner.next().charAt(0);
+            String code = scanner.next();
+            codes.put(code, symbol);
+        }
+
+        String stringToEncode = scanner.next();
+        StringBuilder code = new StringBuilder();
+        for(int i = 0; i < stringToEncode.length(); i++) {
+            code.append(stringToEncode.charAt(i));
+            if(stringToEncode.charAt(i) == '0' || i == stringToEncode.length() - 1) {
+                result.append(codes.get(code.toString()));
+                code.setLength(0);
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         return result.toString(); //01001100100111
