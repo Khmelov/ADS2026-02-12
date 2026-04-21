@@ -45,83 +45,82 @@ public class A_QSort {
             System.out.print(index + " ");
         }
     }
-    int find_first_greater(int[] arr, int x){
+
+    // Поиск первого элемента строго большего x
+    int find_first_greater(int[] arr, int x) {
         int l = 0;
-        int r = arr.length -1;
+        int r = arr.length - 1;
         int res = arr.length;
-        while (l<=r){
-            int mid = l + (r-l)/2;
-            if (arr[mid] > x){
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+            if (arr[mid] > x) {
                 res = mid;
-                r = mid-1;
-            }else{
-                l = mid+1;
+                r = mid - 1;
+            } else {
+                l = mid + 1;
             }
         }
         return res;
     }
 
     int[] getAccessory(InputStream stream) throws FileNotFoundException {
-        //подготовка к чтению данных
+        // подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        //число отрезков отсортированного массива
+        // число отрезков отсортированного массива
         int n = scanner.nextInt();
         Segment[] segments = new Segment[n];
-        //число точек
+        // число точек
         int m = scanner.nextInt();
         int[] points = new int[m];
         int[] result = new int[m];
 
-        //читаем сами отрезки
+        // читаем сами отрезки
         for (int i = 0; i < n; i++) {
-            //читаем начало и конец каждого отрезка
+            // читаем начало и конец каждого отрезка
             segments[i] = new Segment(scanner.nextInt(), scanner.nextInt());
         }
-        //читаем точки
+        // читаем точки
         for (int i = 0; i < m; i++) {
             points[i] = scanner.nextInt();
         }
+
         int[] starts = new int[n];
         int[] stops = new int[n];
 
-        for (int i=0;i<n;i++){
+        for (int i = 0; i < n; i++) {
             starts[i] = segments[i].start;
             stops[i] = segments[i].stop;
         }
 
         Arrays.sort(starts);
         Arrays.sort(stops);
-        for (int i= 0; i<m;i++){
-            int after_start = find_first_greater(starts, points[i]);
-            int after_stop = find_first_greater(stops, points[i]);
-            result[i] = after_start-after_stop;
-        }
 
+        for (int i = 0; i < m; i++) {
+            int after_start = find_first_greater(starts, points[i]);  // сколько отрезков началось <= точки
+            int after_stop = find_first_greater(stops, points[i]);    // сколько отрезков закончилось < точки
+            result[i] = after_start - after_stop;
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
-    //отрезок
+    // отрезок
     private class Segment implements Comparable<Segment> {
         int start;
         int stop;
 
         Segment(int start, int stop) {
+            // Нормализуем отрезок: начало должно быть меньше или равно конца
             this.start = Math.min(start, stop);
             this.stop = Math.max(start, stop);
-
         }
 
         @Override
         public int compareTo(Segment o) {
-            // отрицательно число, если this<other
-
-            return this.start-o.start;
+            // Сравниваем по началу отрезка
+            return this.start - o.start;
         }
     }
-
-
-
 }

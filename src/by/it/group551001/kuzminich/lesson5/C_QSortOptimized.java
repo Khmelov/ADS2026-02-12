@@ -2,14 +2,13 @@ package by.it.group551001.kuzminich.lesson5;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.Scanner;
 
 /*
 Видеорегистраторы и площадь 2.
 Условие то же что и в задаче А.
 
-        По сравнению с задачей A доработайте алгоритм так, чтобы
+        По сравнению с задачей A доработайте алгоритм так, чтобы:
         1) он оптимально использовал время и память:
             - за стек отвечает элиминация хвостовой рекурсии
             - за сам массив отрезков - сортировка на месте
@@ -26,9 +25,7 @@ import java.util.Scanner;
     1 6 11
     Sample Output:
     1 0 0
-
 */
-
 
 public class C_QSortOptimized {
 
@@ -40,127 +37,156 @@ public class C_QSortOptimized {
             System.out.print(index + " ");
         }
     }
-    private int find_first_greater(int[] arr, int x){
-        int left = 0;
-        int right = arr.length -1;
-        int res = arr.length;
 
-        while (left<=right){
+    // Бинарный поиск первого отрезка, чей start > x
+    private int findFirstGreater(int[] starts, int x) {
+        int left = 0;
+        int right = starts.length - 1;
+        int result = starts.length;
+
+        while (left <= right) {
             int mid = left + (right - left) / 2;
-            if (arr[mid] > x){
-                res = mid;
-                right = mid-1;
-            }else{
-                left = mid+1;
+            if (starts[mid] > x) {
+                result = mid;
+                right = mid - 1;
+            } else {
+                left = mid + 1;
             }
         }
-        return res;
+        return result;
     }
-    private void swap(Segment[] arr, int i, int j){
+
+    // Бинарный поиск последнего отрезка, чей stop < x
+    private int findLastLess(int[] stops, int x) {
+        int left = 0;
+        int right = stops.length - 1;
+        int result = -1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (stops[mid] < x) {
+                result = mid;
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return result;
+    }
+
+    // Обмен элементов
+    private void swap(Segment[] arr, int i, int j) {
         Segment temp = arr[i];
         arr[i] = arr[j];
         arr[j] = temp;
     }
 
-    private void quick_sort_3_steps(Segment[] arr, int left, int right){
-        //base case: (otrezok empty or contains 1 elem)
-        if (left>=right) return;
-        //oporny element
-        while (left<right) {
-            Segment opora = arr[left];
-            int small = left; // элементы до arr[small] меньше опорного
-            int i = left + 1; //текущий элемент для проверки
-            int big = right; // элементы после индекса big больше опорного
+    // Быстрая сортировка с 3-разбиением и элиминацией хвостовой рекурсии
+    private void quickSort3Way(Segment[] arr, int left, int right) {
+        while (left < right) {
+            // Выбираем опорный элемент (медиана из трех для улучшения)
+            int mid = left + (right - left) / 2;
+            Segment pivot = arr[mid];
 
+            // 3-разбиение: [left, lt] < pivot, [lt+1, gt-1] = pivot, [gt, right] > pivot
+            int lt = left;
+            int gt = right;
+            int i = left;
 
-            while (i <= big) {
-                int cmp = arr[i].compareTo(opora);
-
-                if (cmp < 0) { // текущий элемент меньше опорного, отправляем опорный в левую часть
-                    swap(arr, small, i);
-                    small++;
+            while (i <= gt) {
+                int cmp = arr[i].compareTo(pivot);
+                if (cmp < 0) {
+                    swap(arr, lt, i);
+                    lt++;
                     i++;
-                } else if (cmp > 0) { //в правую часть отправка
-                    swap(arr, i, big);
-                    big--;
-                } else { // текущий элемент равен опорному
+                } else if (cmp > 0) {
+                    swap(arr, i, gt);
+                    gt--;
+                } else {
                     i++;
                 }
-
-                // Элиминация хвостовой рекурсии:
-
-
             }
-            if (small - left < right - big) {
-                quick_sort_3_steps(arr, left, small - 1);
-                left = big + 1;
+
+            // Элиминация хвостовой рекурсии - рекурсивно сортируем меньшую часть
+            // и продолжаем итеративно для большей
+            if (lt - left < right - gt) {
+                quickSort3Way(arr, left, lt - 1);
+                left = gt + 1;
             } else {
-                quick_sort_3_steps(arr, big + 1, right);
-                right = small - 1;
+                quickSort3Way(arr, gt + 1, right);
+                right = lt - 1;
             }
         }
-
-
     }
+
     int[] getAccessory2(InputStream stream) throws FileNotFoundException {
-        //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
         //!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!
-        //число отрезков отсортированного массива
+
         int n = scanner.nextInt();
         Segment[] segments = new Segment[n];
-        //число точек
         int m = scanner.nextInt();
         int[] points = new int[m];
         int[] result = new int[m];
 
-        //читаем сами отрезки
+        // Читаем отрезки
         for (int i = 0; i < n; i++) {
-            //читаем начало и конец каждого отрезка
             segments[i] = new Segment(scanner.nextInt(), scanner.nextInt());
         }
-        //читаем точки
+
+        // Читаем точки
         for (int i = 0; i < m; i++) {
             points[i] = scanner.nextInt();
         }
-        //тут реализуйте логику задачи с применением быстрой сортировки
-        //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
-        quick_sort_3_steps(segments, 0, n-1);
 
+        // Сортируем отрезки на месте с помощью 3-разбиения и элиминацией хвостовой рекурсии
+        quickSort3Way(segments, 0, n - 1);
+
+        // Создаем массивы начал и концов
         int[] starts = new int[n];
         int[] stops = new int[n];
         for (int i = 0; i < n; i++) {
             starts[i] = segments[i].start;
             stops[i] = segments[i].stop;
         }
-        Arrays.sort(stops);
 
-        for (int i = 0; i<m; i++){
-            int after_start = find_first_greater(starts, points[i]);
-            int after_stop = find_first_greater(stops, points[i]-1);
-            result[i] = after_start-after_stop;
+        // Для каждой точки находим количество покрывающих отрезков
+        for (int i = 0; i < m; i++) {
+            int point = points[i];
+
+            // Находим первый отрезок, чье начало > point
+            int firstGreater = findFirstGreater(starts, point);
+
+            // Находим последний отрезок, чей конец < point
+            int lastLess = findLastLess(stops, point);
+
+            // Количество отрезков, которые начались <= point и закончились >= point
+            // = (количество отрезков с start <= point) - (количество отрезков с stop < point)
+            result[i] = firstGreater - (lastLess + 1);
         }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
-    //отрезок
+    // Отрезок с компаратором
     private class Segment implements Comparable<Segment> {
         int start;
         int stop;
 
         Segment(int start, int stop) {
+            // Нормализуем отрезок
             this.start = Math.min(start, stop);
-            this.stop = Math.max(start, stop);;
+            this.stop = Math.max(start, stop);
         }
 
         @Override
         public int compareTo(Segment o) {
-            //подумайте, что должен возвращать компаратор отрезков
-            if (this.start != o.start) return this.start-o.start;
-            else return this.stop-o.stop;
+            // Сначала сравниваем по началу, потом по концу
+            if (this.start != o.start) {
+                return this.start - o.start;
+            }
+            return this.stop - o.stop;
         }
     }
-
 }

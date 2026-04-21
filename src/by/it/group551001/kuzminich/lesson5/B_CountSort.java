@@ -16,7 +16,6 @@ import java.util.Scanner;
 
 public class B_CountSort {
 
-
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = B_CountSort.class.getResourceAsStream("dataB.txt");
         B_CountSort instance = new B_CountSort();
@@ -25,49 +24,38 @@ public class B_CountSort {
             System.out.print(index + " ");
         }
     }
-    static int[] sort(int[] arr, int min, int max){
-        int[] count = new int[max-min+1];
-        for (int i=0; i<arr.length;i++){
-            count[arr[i]-min]++;
-        }
-        int idx = 0;
-        for (int i=0;i<count.length;i++){
-            for (int j = 0; j<count[i];j++){
-                arr[idx] = i+min;
-                idx++;
-            }
-        }
-        return arr;
 
-
-    }
     int[] countSort(InputStream stream) throws FileNotFoundException {
-        //подготовка к чтению данных
+        // подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        //размер массива
+        // размер массива
         int n = scanner.nextInt();
         int[] points = new int[n];
 
-        //читаем точки
+        // читаем точки
         for (int i = 0; i < n; i++) {
             points[i] = scanner.nextInt();
         }
 
-        //тут реализуйте логику задачи с применением сортировки подсчетом
-        int max = points[0];
-        int min = points[0];
-        for (int i=1; i<n;i++){
-            if (max < points[i]){
-                max = points[i];
-            }
-            if (min > points[i]){
-                min = points[i];
+        // Сортировка подсчетом (Counting Sort)
+        // Так как числа не превышают 10, создаем массив счетчиков размером 11 (от 0 до 10)
+        int[] count = new int[11]; // индексы 0..10
+
+        // Подсчитываем количество вхождений каждого числа
+        for (int i = 0; i < n; i++) {
+            count[points[i]]++;
+        }
+
+        // Восстанавливаем отсортированный массив
+        int index = 0;
+        for (int i = 0; i <= 10; i++) {
+            for (int j = 0; j < count[i]; j++) {
+                points[index++] = i;
             }
         }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return sort(points, min, max);
+        return points;
     }
-
 }
