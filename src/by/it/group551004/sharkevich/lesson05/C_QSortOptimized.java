@@ -2,6 +2,7 @@ package by.it.group551004.sharkevich.lesson05;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.lang.foreign.SegmentAllocator;
 import java.util.Scanner;
 
 /*
@@ -63,14 +64,67 @@ public class C_QSortOptimized {
         }
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
+        quickSort(segments, 0, n - 1);
 
+        for (int i = 0; i < m; i++){
+            int point, left, right, mid;
+            point = points[i];
+            left = 0;
+            right = n;
+            while (left < right) {
+                mid = (left + right) / 2;
+                if (segments[mid].start <= point)
+                    left = mid + 1;
+                else
+                    right = mid;
+            }
+            int firstExceeding, count;
+            firstExceeding = left;
+            count = 0;
+            for (int j = 0; j < firstExceeding; j++)
+                if (segments[j].stop >= point)
+                    count++;
+            result[i] = count;
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
+    private void quickSort(Segment[] arr, int low, int high) {
+        int gt, lt, i, cmp;
+        while (low < high) {
+            Segment pivot = arr[low];
+            lt = low;
+            gt = high;
+            i = low + 1;
+            while (i <= gt) {
+                cmp = arr[i].compareTo(pivot);
+                if (cmp < 0)
+                    swap(arr, lt++, i++);
+                else if (cmp > 0)
+                    swap(arr, i, gt--);
+                else
+                    i++;
+            }
+            if (lt - low < high - gt) {
+                quickSort(arr, low, lt - 1);
+                low = gt + 1;
+            } else {
+                quickSort(arr, gt + 1, high);
+                high = lt - 1;
+            }
+        }
+    }
+
+    private void swap(Segment[] arr, int i, int j) {
+        Segment temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
     //отрезок
-    private class Segment implements Comparable {
+    private class Segment implements Comparable<Segment> {
         int start;
         int stop;
 
@@ -80,9 +134,9 @@ public class C_QSortOptimized {
         }
 
         @Override
-        public int compareTo(Object o) {
+        public int compareTo(Segment o) {
             //подумайте, что должен возвращать компаратор отрезков
-            return 0;
+            return Integer.compare(this.start, o.start);
         }
     }
 

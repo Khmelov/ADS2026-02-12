@@ -2,6 +2,7 @@ package by.it.group551004.sharkevich.lesson05;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /*
@@ -49,6 +50,7 @@ public class A_QSort {
         //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        int a, b;
         //число отрезков отсортированного массива
         int n = scanner.nextInt();
         Segment[] segments = new Segment[n];
@@ -60,7 +62,9 @@ public class A_QSort {
         //читаем сами отрезки
         for (int i = 0; i < n; i++) {
             //читаем начало и конец каждого отрезка
-            segments[i] = new Segment(scanner.nextInt(), scanner.nextInt());
+            a = scanner.nextInt();
+            b = scanner.nextInt();
+            segments[i] = new Segment(Math.min(a, b), Math.max(a, b));
         }
         //читаем точки
         for (int i = 0; i < m; i++) {
@@ -68,8 +72,40 @@ public class A_QSort {
         }
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
+        Point[] sortedPoints;
+        sortedPoints = new Point[m];
+        for (int i = 0; i < m; i++)
+            sortedPoints[i] = new Point(points[i], i);
+        Arrays.sort(segments);
+        Arrays.sort(sortedPoints);
+        int segIndex, activeCount, endCount, end, pos;
+        int[] ends;
+        segIndex = 0;
+        activeCount = 0;
+        endCount = 0;
+        ends = new int[n];
 
-
+        for (Point p : sortedPoints) {
+            while (segIndex < n && segments[segIndex].start <= p.value) {
+                end = segments[segIndex].stop;
+                pos = endCount;
+                while (pos > 0 && ends[pos - 1] > end) {
+                    ends[pos] = ends[pos - 1];
+                    pos--;
+                }
+                ends[pos] = end;
+                endCount++;
+                segIndex++;
+                activeCount++;
+            }
+            while (endCount > 0 && ends[0] < p.value) {
+                for (int i = 0; i < endCount - 1; i++)
+                    ends[i] = ends[i + 1];
+                endCount--;
+                activeCount--;
+            }
+            result[p.index] = activeCount;
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
@@ -89,8 +125,21 @@ public class A_QSort {
         @Override
         public int compareTo(Segment o) {
             //подумайте, что должен возвращать компаратор отрезков
+            return Integer.compare(this.start, o.start);
+        }
+    }
 
-            return 0;
+    private class Point implements Comparable<Point> {
+        int value, index;
+
+        Point(int value, int index) {
+            this.value = value;
+            this.index = index;
+        }
+
+        @Override
+        public int compareTo(Point o) {
+            return Integer.compare(this.value, o.value);
         }
     }
 
