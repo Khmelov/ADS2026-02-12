@@ -45,10 +45,20 @@ public class A_Knapsack {
             gold[i]=scanner.nextInt();
         }
 
+        int[][] dp = new int[n + 1][w + 1];
 
-        int result = 0;
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= w; j++) {
+                if (gold[i - 1] <= j) { //если вес текущего слитка (gold[i - 1]
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - gold[i - 1]] + gold[i - 1]); //Взять текущий слиток
+                } else {
+                    dp[i][j] = dp[i - 1][j]; //Не брать текущий слиток.
+                }
+            }
+        }
+
+        return dp[n][w];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
     }
 
 

@@ -48,11 +48,65 @@ import java.util.Scanner;
 
 public class C_EditDist {
 
+    static int Minimum(int a, int b, int c) {
+        return Math.min(a, Math.min(b, c));
+    }
+
+    String LevenshteinDistance(String str1, String str2) {
+        int n = str1.length() + 1;
+        int m = str2.length() + 1;
+        int[][] matrixD = new int[n][m];
+
+        for (int i = 0; i < n; i++) {
+            matrixD[i][0] = i;
+        }
+
+        for (int j = 0; j < m; j++) {
+            matrixD[0][j] = j;
+        }
+
+        for (int i = 1; i < n; i++) {
+            for (int j = 1; j < m; j++) {
+                if (str1.charAt(i - 1) == str2.charAt(j - 1)) {
+                    matrixD[i][j] = matrixD[i - 1][j - 1];
+                } else {
+                    int deletion = matrixD[i - 1][j] + 1;
+                    int insertion = matrixD[i][j - 1] + 1;
+                    int substitution = matrixD[i - 1][j - 1] + 1;
+                    matrixD[i][j] = Minimum(deletion, insertion, substitution);
+                }
+            }
+        }
+
+        StringBuilder actionsBuilder = new StringBuilder();
+        int i = n - 1;
+        int j = m - 1;
+        while (i > 0 || j > 0) {
+            if (i > 0 && j > 0 && str1.charAt(i - 1) == str2.charAt(j - 1)) {
+                actionsBuilder.insert(0, "#,");
+                i--;
+                j--;
+            } else if (i > 0 && matrixD[i][j] == matrixD[i - 1][j] + 1) {
+                actionsBuilder.insert(0, "-").insert(0, str1.charAt(i - 1)).insert(0, ",");
+                i--;
+            } else if (j > 0 && matrixD[i][j] == matrixD[i][j - 1] + 1) {
+                actionsBuilder.insert(0, "+").insert(0, str2.charAt(j - 1)).insert(0, ",");
+                j--;
+            } else if (i > 0 && j > 0 && matrixD[i][j] == matrixD[i - 1][j - 1] + 1) {
+                actionsBuilder.insert(0, "~").insert(0, str2.charAt(j - 1)).insert(0, ",");
+                i--;
+                j--;
+            }
+        }
+
+        return actionsBuilder.toString();
+    }
+
     String getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
 
 
-        String result = "";
+        String result = LevenshteinDistance(one, two);
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
