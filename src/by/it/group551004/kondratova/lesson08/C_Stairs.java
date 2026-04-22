@@ -1,6 +1,5 @@
 package by.it.group551004.kondratova.lesson08;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
@@ -42,13 +41,14 @@ public class C_Stairs {
             stairs[i]=scanner.nextInt();
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        int result = 0;
-
-
-
-
+        int[] sumValue = new int[n + 1];
+        sumValue[0] = 0;
+        sumValue[1] = stairs[0];
+        for (int i = 2; i <= n; i++) {
+            sumValue[i] = stairs[i - 1] + Math.max(sumValue[i - 1], sumValue[i - 2]);
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        return sumValue[n];
     }
 
 

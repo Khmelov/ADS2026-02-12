@@ -16,7 +16,6 @@ public class Lesson06Test {
         assertTrue("A failed", ok);
     }
 
-
     @Test
     public void checkB() throws Exception {
         InputStream inputStream = B_LongDivComSubSeq.class.getResourceAsStream("dataB.txt");
@@ -30,9 +29,8 @@ public class Lesson06Test {
     public void checkC() throws Exception {
         InputStream inputStream = C_LongNotUpSubSeq.class.getResourceAsStream("dataC.txt");
         C_LongNotUpSubSeq instance = new C_LongNotUpSubSeq();
-        int result = instance.getNotUpSeqSize(inputStream);
-        boolean ok = (result == 4);
+        int[] result = instance.getNotUpSeqSize(inputStream);
+        boolean ok = (result[0] == 4);  // ← сравниваем длину, а не весь массив
         assertTrue("C failed", ok);
     }
-
 }

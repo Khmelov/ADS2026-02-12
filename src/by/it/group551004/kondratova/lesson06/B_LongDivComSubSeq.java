@@ -2,6 +2,7 @@ package by.it.group551004.kondratova.lesson06;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /*
@@ -25,10 +26,18 @@ import java.util.Scanner;
 
     Sample Output:
     3
+Наибольшая кратная подпоследовательность
+Чтение данных — считывается размер массива и сам массив натуральных чисел.
+Инициализация — создаётся массив dp длиной n, заполненный единицами (каждый элемент сам по себе — последовательность длины 1).
+Внешний цикл (по i от 1 до n-1) — текущий элемент как потенциальный конец подпоследовательности.
+Внутренний цикл (по j от 0 до i-1) — перебирает все предыдущие элементы.
+Проверка делимости — если m[i] делится нацело на m[j] (m[i] % m[j] == 0), то последовательность можно продолжить.
+Обновление dp[i] — dp[i] = max(dp[i], dp[j] + 1).
+Обновление максимума — отслеживается наибольшее значение в dp.
+Возврат результата — максимальное значение в dp — длина наибольшей кратной подпоследовательности.
 */
 
 public class B_LongDivComSubSeq {
-
 
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = B_LongDivComSubSeq.class.getResourceAsStream("dataB.txt");
@@ -38,22 +47,29 @@ public class B_LongDivComSubSeq {
     }
 
     int getDivSeqSize(InputStream stream) throws FileNotFoundException {
-        //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        //общая длина последовательности
         int n = scanner.nextInt();
         int[] m = new int[n];
-        //читаем всю последовательность
         for (int i = 0; i < n; i++) {
             m[i] = scanner.nextInt();
         }
-        //тут реализуйте логику задачи методами динамического программирования (!!!)
-        int result = 0;
 
+        // dp[i] - длина наибольшей кратной подпоследовательности, заканчивающейся на m[i]
+        int[] dp = new int[n];
+        Arrays.fill(dp, 1); // каждый элемент сам по себе образует последовательность длины 1
 
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        int maxLength = 1; // минимальная длина = 1
+
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                // условие: m[i] делится на m[j] (m[i] % m[j] == 0)
+                if (m[i] % m[j] == 0) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+            maxLength = Math.max(maxLength, dp[i]);
+        }
+
+        return maxLength;
     }
-
 }

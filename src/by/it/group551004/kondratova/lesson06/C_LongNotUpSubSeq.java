@@ -32,35 +32,78 @@ import java.util.Scanner;
     Sample Output:
     4
     1 3 4 5
-*/
+ C_LongNotUpSubSeq — Наибольшая невозрастающая подпоследовательность
+Чтение данных — считывается размер массива и сам массив чисел.
+Инициализация — создаются два массива: dp (длины подпоследовательностей) и prev (индексы предыдущих элементов). dp заполняется единицами, prev — значениями -1 (означает, что предыдущего элемента нет).
+Внешний цикл (по i от 1 до n-1) — текущий элемент как конец подпоследовательности.
+Внутренний цикл (по j от 0 до i-1) — перебирает все предыдущие элементы.
+Проверка условия — если m[j] >= m[i] (элемент не больше предыдущего) и dp[j] + 1 > dp[i] (новая последовательность длиннее текущей), то условие выполняется.
+Обновление dp[i] и prev[i] — dp[i] = dp[j] + 1, prev[i] = j (запоминаем индекс предыдущего элемента для восстановления пути).
+Отслеживание максимума — запоминаются максимальная длина и индекс последнего элемента этой подпоследовательности.
+Восстановление индексов — начиная с последнего элемента, по цепочке prev восстанавливаются все индексы подпоследовательности в обратном порядке.
+Корректировка индексов — к каждому индексу прибавляется 1, так как в условии задачи нумерация элементов начинается с 1, а в массиве — с 0.
+Вывод результата — сначала выводится длина, затем индексы элементов в порядке возрастания.
 
+*/
 
 public class C_LongNotUpSubSeq {
 
     public static void main(String[] args) throws FileNotFoundException {
-        InputStream stream = B_LongDivComSubSeq.class.getResourceAsStream("dataC.txt");
+        InputStream stream = C_LongNotUpSubSeq.class.getResourceAsStream("dataC.txt");
         C_LongNotUpSubSeq instance = new C_LongNotUpSubSeq();
-        int result = instance.getNotUpSeqSize(stream);
-        System.out.print(result);
+        int[] result = instance.getNotUpSeqSize(stream);  // ← исправлено: int[] result
+        System.out.println(result[0]);
+        for (int i = 1; i <= result[0]; i++) {
+            System.out.print(result[i] + " ");
+        }
     }
 
-    int getNotUpSeqSize(InputStream stream) throws FileNotFoundException {
-        //подготовка к чтению данных
+    int[] getNotUpSeqSize(InputStream stream) throws FileNotFoundException {
         Scanner scanner = new Scanner(stream);
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        //общая длина последовательности
         int n = scanner.nextInt();
         int[] m = new int[n];
-        //читаем всю последовательность
         for (int i = 0; i < n; i++) {
             m[i] = scanner.nextInt();
         }
-        //тут реализуйте логику задачи методами динамического программирования (!!!)
-        int result = 0;
 
+        // dp[i] - длина наибольшей невозрастающей подпоследовательности,
+        // заканчивающейся на m[i]
+        int[] dp = new int[n];
+        // prev[i] - индекс предыдущего элемента в подпоследовательности
+        int[] prev = new int[n];
 
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        for (int i = 0; i < n; i++) {
+            dp[i] = 1;
+            prev[i] = -1;
+            for (int j = 0; j < i; j++) {
+                if (m[j] >= m[i] && dp[j] + 1 > dp[i]) {
+                    dp[i] = dp[j] + 1;
+                    prev[i] = j;
+                }
+            }
+        }
+
+        // Находим максимальную длину и последний элемент
+        int maxLength = 0;
+        int lastIndex = -1;
+        for (int i = 0; i < n; i++) {
+            if (dp[i] > maxLength) {
+                maxLength = dp[i];
+                lastIndex = i;
+            }
+        }
+
+        // Восстанавливаем индексы
+        int[] result = new int[maxLength + 1];
+        result[0] = maxLength;
+        int index = maxLength;
+        int current = lastIndex;
+        while (current != -1) {
+            result[index] = current + 1; // +1 потому что индексы в задаче с 1
+            index--;
+            current = prev[current];
+        }
+
         return result;
     }
-
 }

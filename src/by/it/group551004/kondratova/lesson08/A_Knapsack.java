@@ -1,10 +1,8 @@
 package by.it.group551004.kondratova.lesson08;
 
-import by.it.a_khmelev.lesson07.A_EditDist;
-
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /*
@@ -48,8 +46,17 @@ public class A_Knapsack {
             gold[i]=scanner.nextInt();
         }
 
-
         int result = 0;
+        int pos = n - 1;
+        Arrays.sort(gold);
+
+        while (pos > -1 && w != 0) {
+            if (gold[pos] <= w) {
+                w -= gold[pos];
+                result += gold[pos];
+            } else
+                pos--;
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }

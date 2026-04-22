@@ -33,21 +33,42 @@ import java.util.Scanner;
     editing
     Sample Output 3:
     5
-
 */
 
 public class B_EditDist {
 
-
     int getDistanceEdinting(String one, String two) {
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        int m = one.length();
+        int n = two.length();
 
+        // Создаём таблицу DP размером (m+1) x (n+1)
+        int[][] dp = new int[m + 1][n + 1];
 
-        int result = 0;
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        // Инициализация первой строки и первого столбца
+        for (int i = 0; i <= m; i++) {
+            dp[i][0] = i; // удалить i символов из one
+        }
+        for (int j = 0; j <= n; j++) {
+            dp[0][j] = j; // вставить j символов в one
+        }
+
+        // Заполняем таблицу
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (one.charAt(i - 1) == two.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1]; // символы совпадают
+                } else {
+                    // Минимум из трёх операций:
+                    int insert = dp[i][j - 1] + 1;     // вставка
+                    int delete = dp[i - 1][j] + 1;     // удаление
+                    int replace = dp[i - 1][j - 1] + 1; // замена
+                    dp[i][j] = Math.min(Math.min(insert, delete), replace);
+                }
+            }
+        }
+
+        return dp[m][n];
     }
-
 
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = B_EditDist.class.getResourceAsStream("dataABC.txt");
@@ -57,5 +78,4 @@ public class B_EditDist {
         System.out.println(instance.getDistanceEdinting(scanner.nextLine(), scanner.nextLine()));
         System.out.println(instance.getDistanceEdinting(scanner.nextLine(), scanner.nextLine()));
     }
-
 }
