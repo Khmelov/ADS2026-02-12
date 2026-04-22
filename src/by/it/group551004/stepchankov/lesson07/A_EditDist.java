@@ -41,13 +41,39 @@ public class A_EditDist {
 
     int getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        int n = one.length(), m = two.length();
+        int[][] memo = new int[n + 1][m + 1];
+        for(int i = 0; i <= n; i++){
+            for(int j = 0; j <= m; j++){
+                memo[i][j] = -1;
+            }
+        }
+        int result = editDistRecursive(one, two, 0, 0, memo);
 
-
-        int result = 0;
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
-
+    int editDistRecursive(String one, String two, int i, int j, int[][] memo) {
+        int n = one.length(), m = two.length();
+        if(i == n){
+            return m - j;
+        }
+        if(j == m){
+            return n - i;
+        }
+        if(memo[i][j] != -1){
+            return memo[i][j];
+        }
+        if(one.charAt(i) == two.charAt(j)){
+            memo[i][j] = editDistRecursive(one, two, i + 1, j + 1, memo);
+        } else {
+            int insert = editDistRecursive(one, two, i, j + 1, memo);
+            int delete = editDistRecursive(one, two, i + 1, j, memo);
+            int replace = editDistRecursive(one, two, i + 1, j + 1, memo);
+            memo[i][j] = 1 + Math.min(insert, Math.min(delete, replace));
+        }
+        return memo[i][j];
+    }
 
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = A_EditDist.class.getResourceAsStream("dataABC.txt");

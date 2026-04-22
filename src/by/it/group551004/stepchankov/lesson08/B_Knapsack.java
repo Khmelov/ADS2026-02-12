@@ -39,6 +39,16 @@ public class B_Knapsack {
 
 
         int result = 0;
+        boolean[] dp = new boolean[w + 1];
+        dp[0] = true;
+        for(int i = 0; i < n; i++){
+            for(int j = w; j >= gold[i]; j--){
+                dp[j] = dp[j] | dp[j - gold[i]];
+                if(dp[j] && j > result){
+                    result = j;
+                }
+            }
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }

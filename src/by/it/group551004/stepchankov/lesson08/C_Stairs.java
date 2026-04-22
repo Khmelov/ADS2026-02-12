@@ -41,11 +41,13 @@ public class C_Stairs {
             stairs[i]=scanner.nextInt();
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        int result = 0;
-
-
-
-
+        int[] dp = new int[n + 2];
+        dp[1] = stairs[0];
+        dp[2] = stairs[1];
+        for(int i = 3; i <= n; i++){
+            dp[i] = (dp[i - 1] < dp[i - 2] ? dp[i - 2] : dp[i - 1]) + stairs[i - 1];
+        }
+        int result = dp[n];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }

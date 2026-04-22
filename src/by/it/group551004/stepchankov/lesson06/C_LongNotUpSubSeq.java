@@ -57,8 +57,30 @@ public class C_LongNotUpSubSeq {
         }
         //тут реализуйте логику задачи методами динамического программирования (!!!)
         int result = 0;
-
-
+        for(int i = 0; i < n / 2; i++){
+            m[i] += m[n - i - 1];
+            m[n - i - 1] = m[i] - m[n - i - 1];
+            m[i] -= m[n - i - 1];
+        }
+        int[] dp = new int[n + 1];
+        for(int i = 1; i <= n; i++){
+            dp[i] = (int)2E9;
+        }
+        dp[0] = 0;
+        for(int i = 0; i < n; i++){
+            int l = 0, r = n, ans = 0;
+            while(l <= r){
+                int mid = (l + r + 1) / 2;
+                if(dp[mid] > m[i]){
+                    r = mid - 1;
+                }else{
+                    ans = ans < mid ? mid : ans;
+                    l = mid + 1;
+                }
+            }
+            dp[ans + 1] = m[i];
+            result = (result < ans + 1 ? ans + 1 : result);
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
