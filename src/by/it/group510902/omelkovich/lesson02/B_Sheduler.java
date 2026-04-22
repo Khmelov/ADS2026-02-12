@@ -29,6 +29,8 @@ public class B_Sheduler {
         //в период [from, int] (включительно).
         //оптимизация проводится по наибольшему числу непересекающихся событий.
         //Начало и конец событий могут совпадать.
+
+        //ваше решение.
         List<Event> result;
         result = new ArrayList<>();
         //ваше решение.
@@ -47,6 +49,7 @@ public class B_Sheduler {
                 lastEndtime = event.stop;
             }
         }
+
 
         return result;          //вернем итог
     }
