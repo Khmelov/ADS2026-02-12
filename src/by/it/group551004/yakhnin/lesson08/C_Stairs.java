@@ -19,8 +19,8 @@ public class C_Stairs {
         if (n == 0) return 0;
 
         int[] dp = new int[n + 1];
-        dp[0] = 0; // перед первой ступенькой сумма = 0
-        dp[1] = stairs[1]; // до первой ступеньки можно дойти только с шага 0
+        dp[0] = 0;
+        dp[1] = stairs[1];
 
         for (int i = 2; i <= n; i++) {
             dp[i] = stairs[i] + Math.max(dp[i-1], dp[i-2]);

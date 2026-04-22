@@ -28,7 +28,6 @@ public class C_LongNotUpSubSeq {
         int length = 0;  // текущая длина LNDS
 
         for (int i = 0; i < n; i++) {
-            // Бинарный поиск: ищем первую позицию, где tails[pos] < a[i]
             int left = 0, right = length;
             while (left < right) {
                 int mid = (left + right) / 2;
