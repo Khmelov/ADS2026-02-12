@@ -1,4 +1,4 @@
-package by.it.a_khmelev.lesson05;
+package by.it.group551003.molchan.lesson05;
 
 import org.junit.Test;
 
@@ -36,5 +36,4 @@ public class Lesson05Test {
         boolean ok = Arrays.equals(result, new int[]{1, 0, 0});
         assertTrue("C failed", ok);
     }
-
 }

@@ -1,4 +1,4 @@
-package by.it.a_khmelev.lesson05;
+package by.it.group551003.molchan.lesson05;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -41,48 +41,101 @@ public class C_QSortOptimized {
     }
 
     int[] getAccessory2(InputStream stream) throws FileNotFoundException {
-        //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
-        //!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!
-        //число отрезков отсортированного массива
+
         int n = scanner.nextInt();
         Segment[] segments = new Segment[n];
-        //число точек
         int m = scanner.nextInt();
         int[] points = new int[m];
         int[] result = new int[m];
 
-        //читаем сами отрезки
         for (int i = 0; i < n; i++) {
-            //читаем начало и конец каждого отрезка
             segments[i] = new Segment(scanner.nextInt(), scanner.nextInt());
         }
-        //читаем точки
         for (int i = 0; i < m; i++) {
             points[i] = scanner.nextInt();
         }
-        //тут реализуйте логику задачи с применением быстрой сортировки
-        //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
+        quickSort(segments, 0, n - 1);
 
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j <= binarySearch(segments, points[i]); j++) {
+                if (segments[j].stop >= points[i]) {
+                   result[i]++;
+                }
+            }
+        }
+
         return result;
     }
 
-    //отрезок
+    void swap(Segment[] arr, int i, int j) {
+        Segment tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+    }
+
+    void quickSort(Segment[] arr, int left, int right) {
+        while (left < right) {
+            Segment pivot = arr[(left + right) / 2];
+
+            int lt = left;
+            int gt = right;
+            int i = left;
+
+            while (i <= gt) {
+                int cmp = arr[i].compareTo(pivot);
+                if      (cmp < 0) swap(arr, lt++, i++);
+                else if (cmp > 0) swap(arr, i, gt--);
+                else              i++;
+            }
+
+            if (lt - left < right - gt) {
+                quickSort(arr, left, lt - 1);
+                left = gt + 1;
+            } else {
+                quickSort(arr, gt + 1, right);
+                right = lt - 1;
+            }
+        }
+    }
+
+    int binarySearch(Segment[] segments, int point) {
+        int left = 0;
+        int right = segments.length - 1;
+        int result = -1;
+
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            if (segments[mid].start <= point) {
+                result = mid;
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        return result;
+    }
+
     private class Segment implements Comparable {
         int start;
         int stop;
 
         Segment(int start, int stop) {
-            this.start = start;
-            this.stop = stop;
+            if (start > stop) {
+                this.start = stop;
+                this.stop = start;
+            } else {
+                this.start = start;
+                this.stop = stop;
+            }
         }
 
         @Override
         public int compareTo(Object o) {
-            //подумайте, что должен возвращать компаратор отрезков
-            return 0;
+            Segment other = (Segment) o;
+            return this.start - other.start;
         }
     }
 

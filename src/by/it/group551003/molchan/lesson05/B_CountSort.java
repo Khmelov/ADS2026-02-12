@@ -1,4 +1,4 @@
-package by.it.a_khmelev.lesson05;
+package by.it.group551003.molchan.lesson05;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -31,6 +31,7 @@ public class B_CountSort {
         Scanner scanner = new Scanner(stream);
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         //размер массива
+        final int MAX_NUM = 10;
         int n = scanner.nextInt();
         int[] points = new int[n];
 
@@ -39,6 +40,17 @@ public class B_CountSort {
             points[i] = scanner.nextInt();
         }
         //тут реализуйте логику задачи с применением сортировки подсчетом
+        int[] count = new int[MAX_NUM + 1];
+        for (int i = 0; i < n; i++) {
+            count[points[i]]++;
+        }
+
+        int currIndex = 0;
+        for (int i = 1; i <= MAX_NUM; i++) {
+            for (int j = 0; j < count[i]; j++) {
+                points[currIndex++] = i;
+            }
+        }
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
