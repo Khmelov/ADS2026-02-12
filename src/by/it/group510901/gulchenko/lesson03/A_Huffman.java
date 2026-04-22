@@ -41,23 +41,32 @@ import java.util.*;
 public class A_Huffman {
 
     //индекс данных из листьев
-    static private final Map<Character, String> codes = new TreeMap<>();
+    private final Map<Character, String> codes = new TreeMap<>();
 
     public static void main(String[] args) throws FileNotFoundException {
         InputStream inputStream = A_Huffman.class.getResourceAsStream("dataA.txt");
+        if (inputStream == null) {
+            throw new FileNotFoundException("Файл dataA.txt не найден");
+        }
+
         A_Huffman instance = new A_Huffman();
-        long startTime = System.currentTimeMillis();
         String result = instance.encode(inputStream);
-        long finishTime = System.currentTimeMillis();
-        System.out.printf("%d %d\n", codes.size(), result.length());
-        for (Map.Entry<Character, String> entry : codes.entrySet()) {
-            System.out.printf("%s: %s\n", entry.getKey(), entry.getValue());
+
+        System.out.printf("%d %d%n", instance.codes.size(), result.length());
+        for (Map.Entry<Character, String> entry : instance.codes.entrySet()) {
+            System.out.printf("%s: %s%n", entry.getKey(), entry.getValue());
         }
         System.out.println(result);
     }
 
     //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
     String encode(InputStream inputStream) throws FileNotFoundException {
+        if (inputStream == null) {
+            throw new FileNotFoundException("Входной поток не найден");
+        }
+
+        codes.clear();
+
         //прочитаем строку для кодирования из тестового файла
         Scanner scanner = new Scanner(inputStream);
         String s = scanner.next();
@@ -68,47 +77,44 @@ public class A_Huffman {
         Map<Character, Integer> count = new HashMap<>();
         //1. переберем все символы по очереди и рассчитаем их частоту в Map count
         //для каждого символа добавим 1 если его в карте еще нет или инкремент если есть.
-        for (int i = 0; i < s.length(); i++ ) {
-            if (count.containsKey(s.charAt(i))) {
-                count.put(s.charAt(i), count.get(s.charAt(i)) + 1);
-            }
-            else {
-                count.put(s.charAt( i), 1);
-            }
+        for (int i = 0; i < s.length(); i++) {
+            char currentChar = s.charAt(i);
+            count.put(currentChar, count.getOrDefault(currentChar, 0) + 1);
         }
 
         //2. перенесем все символы в приоритетную очередь в виде листьев
         PriorityQueue<Node> priorityQueue = new PriorityQueue<>();
-        for (Map.Entry<Character, Integer> entry : count.entrySet() ) {
-            LeafNode leafNode = new LeafNode(entry.getValue(),entry.getKey());
+        for (Map.Entry<Character, Integer> entry : count.entrySet()) {
+            LeafNode leafNode = new LeafNode(entry.getValue(), entry.getKey());
             priorityQueue.add(leafNode);
         }
+
         //3. вынимая по два узла из очереди (для сборки родителя)
         //и возвращая этого родителя обратно в очередь
         //построим дерево кодирования Хаффмана.
         //У родителя частоты детей складываются.
-
-        if (priorityQueue.size()==1) {
+        if (priorityQueue.size() == 1) {
             Node singleNode = priorityQueue.poll();
-            singleNode.fillCodes("1");
-        }
-        else {
+            singleNode.fillCodes("0");
+        } else {
             while (priorityQueue.size() > 1) {
                 Node left = priorityQueue.poll();
                 Node right = priorityQueue.poll();
                 InternalNode internalNode = new InternalNode(left, right);
                 priorityQueue.add(internalNode);
             }
-            Node root = priorityQueue.poll();
-            root.fillCodes("");
-        }
 
-        //4. последний из родителей будет корнем этого дерева
-        //это будет последний и единственный элемент оставшийся в очереди priorityQueue.
+            //4. последний из родителей будет корнем этого дерева
+            //это будет последний и единственный элемент оставшийся в очереди priorityQueue.
+            Node root = priorityQueue.poll();
+            if (root != null) {
+                root.fillCodes("");
+            }
+        }
 
         StringBuilder sb = new StringBuilder();
         //.....
-        for (char c: s.toCharArray()) {
+        for (char c : s.toCharArray()) {
             sb.append(codes.get(c));
         }
 
@@ -122,11 +128,11 @@ public class A_Huffman {
         //абстрактный класс элемент дерева
         //(сделан abstract, чтобы нельзя было использовать его напрямую)
         //а только через его версии InternalNode и LeafNode
-        private final int frequence; //частота символов
+        protected final int frequency; //частота символов
 
         //конструктор по умолчанию
-        private Node(int frequence) {
-            this.frequence = frequence;
+        private Node(int frequency) {
+            this.frequency = frequency;
         }
 
         //генерация кодов (вызывается на корневом узле
@@ -137,21 +143,21 @@ public class A_Huffman {
         //или для сортировок
         @Override
         public int compareTo(Node o) {
-            return Integer.compare(frequence, o.frequence);
+            return Integer.compare(this.frequency, o.frequency);
         }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////
     //расширение базового класса до внутреннего узла дерева
     private class InternalNode extends Node {
-        //внутренный узел дерева
+        //внутренренний узел дерева
         Node left;  //левый ребенок бинарного дерева
         Node right; //правый ребенок бинарного дерева
 
         //для этого дерева не существует внутренних узлов без обоих детей
         //поэтому вот такого конструктора будет достаточно
         InternalNode(Node left, Node right) {
-            super(left.frequence + right.frequence);
+            super(left.frequency + right.frequency);
             this.left = left;
             this.right = right;
         }
@@ -170,8 +176,8 @@ public class A_Huffman {
         //лист
         char symbol; //символы хранятся только в листах
 
-        LeafNode(int frequence, char symbol) {
-            super(frequence);
+        LeafNode(int frequency, char symbol) {
+            super(frequency);
             this.symbol = symbol;
         }
 

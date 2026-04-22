@@ -2,7 +2,6 @@ package by.it.group510901.gulchenko.lesson03;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.lang.classfile.instruction.CharacterRange;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -47,40 +46,49 @@ public class B_Huffman {
 
     public static void main(String[] args) throws FileNotFoundException {
         InputStream inputStream = B_Huffman.class.getResourceAsStream("dataB.txt");
+        if (inputStream == null) {
+            throw new FileNotFoundException("Файл dataB.txt не найден");
+        }
+
         B_Huffman instance = new B_Huffman();
         String result = instance.decode(inputStream);
         System.out.println(result);
     }
 
     String decode(InputStream inputStream) throws FileNotFoundException {
+        if (inputStream == null) {
+            throw new FileNotFoundException("Входной поток не найден");
+        }
+
         StringBuilder result = new StringBuilder();
         //прочитаем строку для кодирования из тестового файла
         Scanner scanner = new Scanner(inputStream);
-        Integer count = scanner.nextInt();
-        Integer length = scanner.nextInt();
+        int count = scanner.nextInt();
+        int length = scanner.nextInt();
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         //тут запишите ваше решение
-        Map<String, Character> map = new HashMap<>();
-        for (int i=0; i<count; i++) {
-            String string =  scanner.next();
-            char ch = string.charAt(0);
+        Map<String, Character> codes = new HashMap<>();
+
+        for (int i = 0; i < count; i++) {
+            String letterWithColon = scanner.next();
+            char symbol = letterWithColon.charAt(0);
             String code = scanner.next();
-            map.put(code,ch);
-            scanner.nextLine();
+            codes.put(code, symbol);
         }
 
         String encoded = scanner.next();
-        String curr = "";
+        StringBuilder currentCode = new StringBuilder();
 
-        for (int j=0; j<encoded.length(); j++) {
-            curr += encoded.charAt(j);
-            if (map.containsKey(curr)) {
-                result.append(map.get(curr));
-                curr = "";
+        for (int i = 0; i < encoded.length(); i++) {
+            currentCode.append(encoded.charAt(i));
+            Character decodedChar = codes.get(currentCode.toString());
+
+            if (decodedChar != null) {
+                result.append(decodedChar);
+                currentCode.setLength(0);
             }
         }
-
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         return result.toString(); //01001100100111
     }

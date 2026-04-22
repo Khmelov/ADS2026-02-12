@@ -3,7 +3,6 @@ package by.it.group510901.gulchenko.lesson03;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 // Lesson 3. C_Heap.
@@ -38,6 +37,10 @@ public class C_HeapMax {
 
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = C_HeapMax.class.getResourceAsStream("dataC.txt");
+        if (stream == null) {
+            throw new FileNotFoundException("Файл dataC.txt не найден");
+        }
+
         C_HeapMax instance = new C_HeapMax();
         System.out.println("MAX=" + instance.findMaxValue(stream));
     }
@@ -48,21 +51,19 @@ public class C_HeapMax {
         MaxHeap heap = new MaxHeap();
         //прочитаем строку для кодирования из тестового файла
         Scanner scanner = new Scanner(stream);
-        Integer count = scanner.nextInt();
-        for (int i = 0; i < count; ) {
-            String s = scanner.nextLine();
-            if (s.equalsIgnoreCase("extractMax")) {
-                Long res = heap.extractMax();
-                if (res != null && res > maxValue) maxValue = res;
-                System.out.println();
-                i++;
-            }
-            if (s.contains(" ")) {
-                String[] p = s.split(" ");
-                if (p[0].equalsIgnoreCase("insert"))
-                    heap.insert(Long.parseLong(p[1]));
-                i++;
-                //System.out.println(heap); //debug
+        int count = scanner.nextInt();
+
+        for (int i = 0; i < count; i++) {
+            String operation = scanner.next();
+
+            if (operation.equalsIgnoreCase("ExtractMax")) {
+                Long result = heap.extractMax();
+                if (result != null && result > maxValue) {
+                    maxValue = result;
+                }
+            } else if (operation.equalsIgnoreCase("Insert")) {
+                long value = scanner.nextLong();
+                heap.insert(value);
             }
         }
         return maxValue;
@@ -72,75 +73,77 @@ public class C_HeapMax {
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         //тут запишите ваше решение.
         //Будет мало? Ну тогда можете его собрать как Generic и/или использовать в варианте B
-        private List<Long> heap = new ArrayList<>();
+        private final ArrayList<Long> heap = new ArrayList<>();
 
         int siftDown(int i) { //просеивание вверх
-            int x = i;
-            int size = heap.size();
+            int currentIndex = i;
 
             while (true) {
-                int left = 2 * x + 1;
-                int right = 2 * x + 2;
-                int largest = x;
+                int leftChildIndex = 2 * currentIndex + 1;
+                int rightChildIndex = 2 * currentIndex + 2;
+                int largestIndex = currentIndex;
 
-                if (left < size && heap.get(left) > heap.get(largest)) {
-                    largest = left;
+                if (leftChildIndex < heap.size() && heap.get(leftChildIndex) > heap.get(largestIndex)) {
+                    largestIndex = leftChildIndex;
                 }
 
-                if (right < size && heap.get(right) > heap.get(largest)) {
-                    largest = right;
+                if (rightChildIndex < heap.size() && heap.get(rightChildIndex) > heap.get(largestIndex)) {
+                    largestIndex = rightChildIndex;
                 }
 
-                if (largest != x) {
-                    Long temp = heap.get(x);
-                    heap.set(x, heap.get(largest));
-                    heap.set(largest, temp);
-                    x = largest;
+                if (largestIndex == currentIndex) {
+                    break;
+                }
+
+                swap(currentIndex, largestIndex);
+                currentIndex = largestIndex;
+            }
+
+            return currentIndex;
+        }
+
+        int siftUp(int i) { //просеивание вниз
+            int currentIndex = i;
+
+            while (currentIndex > 0) {
+                int parentIndex = (currentIndex - 1) / 2;
+
+                if (heap.get(currentIndex) > heap.get(parentIndex)) {
+                    swap(currentIndex, parentIndex);
+                    currentIndex = parentIndex;
                 } else {
                     break;
                 }
             }
-            i=x;
-            return i;
-        }
 
-        int siftUp(int i) { //просеивание вниз
-            int x = i;
-            while (x>0) {
-                int y = (x-1)/2;
-                Long parent = heap.get(y);
-                Long curr = heap.get(x);
-                if (curr > parent) {
-                    Long temp;
-                    temp = parent;
-                    parent = curr;
-                    curr = temp;
-                    heap.set(x, curr);
-                    heap.set(y, parent);
-                    x = y;
-                }
-                else {
-                    break;
-                }
-            }
-            i=x;
-            return i;
-
+            return currentIndex;
         }
 
         void insert(Long value) { //вставка
             heap.add(value);
-            siftUp(heap.size()-1);
+            siftUp(heap.size() - 1);
         }
 
         Long extractMax() { //извлечение и удаление максимума
+            if (heap.isEmpty()) {
+                return null;
+            }
+
             Long result = heap.get(0);
-            Long last = heap.remove(heap.size()-1);
+            Long lastValue = heap.remove(heap.size() - 1);
+
             if (!heap.isEmpty()) {
-                heap.set(0,last);
+                heap.set(0, lastValue);
                 siftDown(0);
             }
+
             return result;
+        }
+
+        private void swap(int firstIndex, int secondIndex) {
+            Long temp = heap.get(firstIndex);
+            heap.set(firstIndex, heap.get(secondIndex));
+            heap.set(secondIndex, temp);
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
     }
