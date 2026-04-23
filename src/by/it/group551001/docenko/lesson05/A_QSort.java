@@ -66,31 +66,98 @@ public class A_QSort {
         for (int i = 0; i < m; i++) {
             points[i] = scanner.nextInt();
         }
-        //тут реализуйте логику задачи с применением быстрой сортировки
-        //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
+        // найти все отрезки что начались до точки
+        // найти все отрезки что закончились до точки
+        // вычесть из первого второе и вывести
+        Segment[] starts = segments.clone();
+
+        qSort(starts, 0, segments.length-1, true);
+        qSort(segments, 0, segments.length-1, false);
+
+        for (int i = 0; i < m; i++) {
+            int countStarts = binarySearch(points[i], starts, true) + 1;
+            int countEnds = binarySearch(points[i], segments, false) + 1;
+            result[i] = countStarts - countEnds;
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
-    //отрезок
+    void qSort(Segment[] arr, int low, int high, boolean byStart) {
+        if (low >= high)
+            return;
+
+        int l = low;
+        int r = high;
+        Segment pivot = arr[(low + high)/ 2];
+
+        while (l <= r) {
+            if (byStart) {
+                while (arr[l].compareTo(pivot) < 0)  l++;
+                while (arr[r].compareTo(pivot) > 0)  r--;
+            } else {
+                while (arr[l].compareTo2(pivot) < 0) l++;
+                while (arr[r].compareTo2(pivot) > 0) r--;
+            }
+
+            if (l <= r) {
+                Segment tmp = arr[l];
+                arr[l] = arr[r];
+                arr[r] = tmp;
+                l++;
+                r--;
+            }
+        }
+
+        if (low < r) qSort(arr, low, r, byStart);
+        if (l < high) qSort(arr, l, high, byStart);
+    }
+
+    int binarySearch(int point, Segment[] arr, boolean byStart) {
+        int left = 0, right = arr.length - 1;
+        int result = -1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            boolean condition = byStart
+                    ? arr[mid].start <= point
+                    : arr[mid].stop < point;
+
+            if (condition) {
+                result = mid;
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        return result;
+    }
+
     private class Segment implements Comparable<Segment> {
         int start;
         int stop;
 
         Segment(int start, int stop) {
-            this.start = start;
-            this.stop = stop;
-            //тут вообще-то лучше доделать конструктор на случай если
-            //концы отрезков придут в обратном порядке
+            if (start < stop) {
+                this.start = start;
+                this.stop = stop;
+            }
+            else {
+                this.start = stop;
+                this.stop = start;
+            }
         }
 
-        @Override
         public int compareTo(Segment o) {
-            //подумайте, что должен возвращать компаратор отрезков
+            return Integer.compare(this.start, o.start);
+        }
 
-            return 0;
+        public int compareTo2(Segment o) {
+            return Integer.compare(this.stop, o.stop);
         }
     }
 
