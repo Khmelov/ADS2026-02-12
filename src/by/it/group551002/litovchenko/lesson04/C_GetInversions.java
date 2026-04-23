@@ -31,34 +31,83 @@ Sample Output:
 Большой тестовый массив можно прочитать свой или сгенерировать его программно.
 */
 
-
 public class C_GetInversions {
 
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = C_GetInversions.class.getResourceAsStream("dataC.txt");
         C_GetInversions instance = new C_GetInversions();
-        //long startTime = System.currentTimeMillis();
+        // long startTime = System.currentTimeMillis();
         int result = instance.calc(stream);
-        //long finishTime = System.currentTimeMillis();
+        // long finishTime = System.currentTimeMillis();
         System.out.print(result);
     }
 
     int calc(InputStream stream) throws FileNotFoundException {
-        //подготовка к чтению данных
+        // подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!
-        //размер массива
+        // !!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!
+        // размер массива
         int n = scanner.nextInt();
-        //сам массив
+        // сам массив
         int[] a = new int[n];
         for (int i = 0; i < n; i++) {
             a[i] = scanner.nextInt();
         }
         int result = 0;
-        //!!!!!!!!!!!!!!!!!!!!!!!!     тут ваше решение   !!!!!!!!!!!!!!!!!!!!!!!!
-
-
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        // !!!!!!!!!!!!!!!!!!!!!!!! тут ваше решение !!!!!!!!!!!!!!!!!!!!!!!!
+        result = mergesort(a, 0, n - 1);
+        // !!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
+
+    int merge(int[] array, int left, int right, int mid) {
+        int[] LowHalf = new int[mid - left + 1];
+        int[] HighHalf = new int[right - mid];
+        for (int i = 0; i < mid - left + 1; i++) {
+            LowHalf[i] = array[left + i];
+        }
+        for (int j = 0; j < right - mid; j++) {
+            HighHalf[j] = array[mid + 1 + j];
+        }
+        int k = left;
+        int i = 0;
+        int j = 0;
+        int invCount = 0;
+        while (i < LowHalf.length && j < HighHalf.length) {
+            if (LowHalf[i] > HighHalf[j]) {
+                array[k] = HighHalf[j];
+                j++;
+                invCount += (LowHalf.length - i);
+            } else {
+                array[k] = LowHalf[i];
+                i++;
+            }
+
+            k++;
+
+        }
+        while (i < LowHalf.length) {
+            array[k] = LowHalf[i];
+            k++;
+            i++;
+        }
+        while (j < HighHalf.length) {
+            array[k] = HighHalf[j];
+            k++;
+            j++;
+        }
+        return invCount;
+    }
+
+    int mergesort(int[] array, int left, int right) {
+        int count = 0;
+        if (left < right) {
+            int mid = (left + right) / 2;
+            mergesort(array, left, mid);
+            mergesort(array, mid + 1, right);
+            count = merge(array, left, right, mid);
+        }
+        return count;
+    }
+
 }
