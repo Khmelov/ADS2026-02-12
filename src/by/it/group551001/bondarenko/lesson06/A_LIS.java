@@ -50,7 +50,17 @@ public class A_LIS {
         for (int i = 0; i < n; i++) {
             m[i] = scanner.nextInt();
         }
+        int[] sub = new int[n];
+        for (int i = 0; i < n; i++) {
+            sub[i] = 1;
+            for (int j = 0; j < i; j++) {
+                if (m[j] < m[i] && sub[j] + 1 > sub[i]) sub[i] = sub[j] + 1;
+            }
+        }
         int result = 0;
+        for (int i = 0; i < n; i++) {
+            if (sub[i] > result) result = sub[i];
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
