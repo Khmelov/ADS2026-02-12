@@ -37,8 +37,22 @@ public class B_Knapsack {
             gold[i]=scanner.nextInt();
         }
 
+        // Массив d[w] — максимальный вес при вместимости w
+        int[] d = new int[w + 1];
 
-        int result = 0;
+        // Для каждого слитка i
+        for (int i = 0; i < n; i++) {
+            // Идем по рюкзаку С КОНЦА до веса текущего слитка.
+            // Это гарантирует, что каждый слиток берется 1 раз.
+            for (int currW = w; currW >= gold[i]; currW--) {
+                // Выбираем: не брать слиток или взять его (d[currW - w[i]] + w[i])
+                if (d[currW - gold[i]] + gold[i] > d[currW]) {
+                    d[currW] = d[currW - gold[i]] + gold[i];
+                }
+            }
+        }
+
+        int result = d[w];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
