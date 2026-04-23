@@ -50,9 +50,48 @@ public class C_EditDist {
 
     String getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        int n = one.length();
+        int m = two.length();
+        int[][] d = new int[n + 1][m + 1];
 
+        // 1. Заполняем таблицу итерационно (алгоритм EDITDISTBU)
+        for (int i = 0; i <= n; i++) d[i][0] = i;
+        for (int j = 0; j <= m; j++) d[0][j] = j;
 
-        String result = "";
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                int cost = (one.charAt(i - 1) == two.charAt(j - 1)) ? 0 : 1;
+                d[i][j] = Math.min(Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1), d[i - 1][j - 1] + cost);
+            }
+        }
+
+        // 2. Восстановление пути (обратный ход)
+        StringBuilder sb = new StringBuilder();
+        int i = n;
+        int j = m;
+
+        while (i > 0 || j > 0) {
+            int cost = (i > 0 && j > 0 && one.charAt(i - 1) == two.charAt(j - 1)) ? 0 : 1;
+
+            // Проверяем, откуда мы пришли в d[i][j]
+            // Приоритет отдаем совпадению/замене (диагонали), затем удалению/вставке
+            if (i > 0 && j > 0 && d[i][j] == d[i - 1][j - 1] + cost) {
+                if (cost == 0) {
+                    sb.insert(0, "#,"); // Совпадение (Match)
+                } else {
+                    sb.insert(0, "~" + two.charAt(j - 1) + ","); // Замена (Replace)
+                }
+                i--; j--;
+            } else if (i > 0 && d[i][j] == d[i - 1][j] + 1) {
+                sb.insert(0, "-" + one.charAt(i - 1) + ","); // Удаление (Delete)
+                i--;
+            } else if (j > 0 && d[i][j] == d[i][j - 1] + 1) {
+                sb.insert(0, "+" + two.charAt(j - 1) + ","); // Вставка (Insert)
+                j--;
+            }
+        }
+
+        String result = sb.toString();
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }

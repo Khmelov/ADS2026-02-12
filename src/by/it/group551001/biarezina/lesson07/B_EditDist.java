@@ -41,9 +41,40 @@ public class B_EditDist {
 
     int getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        int n = one.length();
+        int m = two.length();
 
+        // Создаем двумерный массив D[0...n][0...m]
+        int[][] d = new int[n + 1][m + 1];
 
-        int result = 0;
+        // Инициализация первой колонки: расстояние до пустой строки (удаления)
+        for (int i = 0; i <= n; i++) {
+            d[i][0] = i;
+        }
+
+        // Инициализация первой строки: расстояние от пустой строки (вставки)
+        for (int j = 0; j <= m; j++) {
+            d[0][j] = j;
+        }
+
+        // Основной цикл итерационного заполнения таблицы
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                // Вычисляем стоимость замены (diff)
+                // Символы строк в Java берем по индексам i-1 и j-1
+                int cost = (one.charAt(i - 1) == two.charAt(j - 1)) ? 0 : 1;
+
+                // Находим минимум из трех операций:
+                int deletion = d[i - 1][j] + 1;
+                int insertion = d[i][j - 1] + 1;
+                int substitution = d[i - 1][j - 1] + cost;
+
+                d[i][j] = Math.min(Math.min(deletion, insertion), substitution);
+            }
+        }
+
+        // Результат находится в нижней правой ячейке таблицы
+        int result = d[n][m];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
