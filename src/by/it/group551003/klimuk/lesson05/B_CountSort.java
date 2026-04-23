@@ -40,7 +40,20 @@ public class B_CountSort {
         }
         //тут реализуйте логику задачи с применением сортировки подсчетом
 
-
+        int numOfElems = 10 - 1 + 1;
+        int[] numbers = new int[numOfElems];
+        for (int i = 0; i < numOfElems; i++) {
+            numbers[i] = 0;
+        }
+        for(int i = 0; i < n; i++){
+            numbers[points[i]-1]++;
+        }
+        int j = 0;
+        for (int i = 0; i < n; i++) {
+            while(numbers[j] == 0) j++;
+            points[i] = j+1;
+            numbers[j]--;
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return points;
     }

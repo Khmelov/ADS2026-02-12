@@ -63,13 +63,79 @@ public class C_QSortOptimized {
         }
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
+        // сортируем отрезки
+        quickSort(segments, 0, n - 1);
 
+// для каждой точки
+        for (int i = 0; i < m; i++) {
+            int point = points[i];
+
+            int idx = findFirst(segments, point);
+
+            int count = 0;
+            while (idx < n && segments[idx].start <= point) {
+                if (segments[idx].stop >= point)
+                    count++;
+                idx++;
+            }
+
+            result[i] = count;
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
-    //отрезок
+    private void quickSort(Segment[] a, int left, int right) {
+        while (left < right) {
+            Segment pivot = a[left + (right - left) / 2];
+
+            int lt = left;
+            int gt = right;
+            int i = left;
+
+            while (i <= gt) {
+                int cmp = a[i].compareTo(pivot);
+                if (cmp < 0) {
+                    swap(a, lt++, i++);
+                } else if (cmp > 0) {
+                    swap(a, i, gt--);
+                } else {
+                    i++;
+                }
+            }
+
+            if (lt - left < right - gt) {
+                quickSort(a, left, lt - 1);
+                left = gt + 1;
+            } else {
+                quickSort(a, gt + 1, right);
+                right = lt - 1;
+            }
+        }
+    }
+
+    private void swap(Segment[] a, int i, int j) {
+        Segment temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
+    }
+    private int findFirst(Segment[] a, int point) {
+        int left = 0, right = a.length - 1;
+        int res = a.length;
+
+        while (left <= right) {
+            int mid = (left + right) / 2;
+
+            if (a[mid].start <= point) {
+                res = mid;
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return res;
+    }
     private class Segment implements Comparable {
         int start;
         int stop;
