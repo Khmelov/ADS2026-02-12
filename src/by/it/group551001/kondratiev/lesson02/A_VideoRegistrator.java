@@ -28,7 +28,7 @@ public class A_VideoRegistrator {
         result = new ArrayList<>();
         Arrays.sort(events);
 
-        int i = 0;                              //i - это индекс события events[i]
+        int i = 0;
         int length = events.length;
 
         while(i<length){
