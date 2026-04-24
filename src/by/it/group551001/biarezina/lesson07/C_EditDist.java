@@ -86,6 +86,7 @@ public class C_EditDist {
                 i--;
             } else if (j > 0 && d[i][j] == d[i][j - 1] + 1) {
                 sb.insert(0, "+" + two.charAt(j - 1) + ",");
+                j--;
             }
         }
 
