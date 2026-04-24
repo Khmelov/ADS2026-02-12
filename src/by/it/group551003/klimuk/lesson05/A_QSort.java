@@ -68,7 +68,8 @@ public class A_QSort {
             points[i] = scanner.nextInt();
         }
 
-        Arrays.sort(segments);
+        quickSort(segments, 0, n-1);
+
         for (int i = 0; i < m; i++) {
             int j = 0;
             while(j < n && points[i] >= segments[j].start){
@@ -86,6 +87,28 @@ public class A_QSort {
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
+    }
+    private void quickSort(Segment[] arr, int l, int r) {
+        if (l >= r) return;
+
+        Segment pivot = arr[(l + r) / 2];
+        int i = l, j = r;
+
+        while (i <= j) {
+            while (arr[i].compareTo(pivot) < 0) i++;
+            while (arr[j].compareTo(pivot) > 0) j--;
+
+            if (i <= j) {
+                Segment tmp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = tmp;
+                i++;
+                j--;
+            }
+        }
+
+        if (l < j) quickSort(arr, l, j);
+        if (i < r) quickSort(arr, i, r);
     }
 
     //отрезок
@@ -107,8 +130,10 @@ public class A_QSort {
 
         @Override
         public int compareTo(Segment o) {
-            //подумайте, что должен возвращать компаратор отрезков
-            return Integer.compare(this.start, o.start);
+            if (this.start != o.start) {
+                return this.start - o.start;
+            }
+            return this.stop - o.stop;
         }
     }
 
