@@ -44,6 +44,7 @@ public class C_Stairs {
         int[] dp = new int[n + 1];
 
         dp[0] = 0;
+
         dp[1] = stairs[0];
 
         for (int i = 2; i <= n; i++) {
