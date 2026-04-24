@@ -53,7 +53,7 @@ public class C_LongNotUpSubSeq {
         //читаем всю последовательность
 
 
-        int[] a = new int[n + 1]; // Используем индексацию с 1, как в алгоритме
+        int[] a = new int[n + 1];
         for (int i = 1; i <= n; i++) {
             a[i] = scanner.nextInt();
         }
@@ -61,12 +61,10 @@ public class C_LongNotUpSubSeq {
         int[] d = new int[n + 1];
         int[] prev = new int[n + 1];
 
-        // 1. Алгоритм LISBottomUp (адаптированный под невозрастающую)
         for (int i = 1; i <= n; i++) {
             d[i] = 1;
             prev[i] = -1;
             for (int j = 1; j < i; j++) {
-                // Условие для НЕВОЗРАСТАЮЩЕЙ: a[j] >= a[i]
                 if (a[j] >= a[i] && d[j] + 1 > d[i]) {
                     d[i] = d[j] + 1;
                     prev[i] = j;
@@ -74,7 +72,6 @@ public class C_LongNotUpSubSeq {
             }
         }
 
-        // Находим ans (максимальную длину)
         int ans = 0;
         for (int i = 1; i <= n; i++) {
             if (d[i] > ans) {
@@ -82,10 +79,8 @@ public class C_LongNotUpSubSeq {
             }
         }
 
-        // 2. Алгоритм «Восстановление ответа» со скриншота
         int[] L = new int[ans + 1];
         int k = 1;
-        // Находим индекс последнего элемента самой длинной последовательности
         for (int i = 2; i <= n; i++) {
             if (d[i] > d[k]) {
                 k = i;
@@ -93,14 +88,13 @@ public class C_LongNotUpSubSeq {
         }
 
         int j = ans;
-        int tempK = k; // Используем копию, чтобы не портить цикл, если нужно
+        int tempK = k;
         while (tempK > 0) {
             L[j] = tempK;
             j = j - 1;
             tempK = prev[tempK];
         }
 
-        // Вывод результата
         System.out.println(ans);
         for (int i = 1; i <= ans; i++) {
             System.out.print(L[i] + (i == ans ? "" : " "));

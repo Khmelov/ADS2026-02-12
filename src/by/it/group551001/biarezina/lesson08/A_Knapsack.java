@@ -47,13 +47,10 @@ public class A_Knapsack {
         // Создаем массив D[0...W], инициализируем нулями
         int[] d = new int[w + 1];
 
-        // Основной цикл: перебираем все промежуточные веса от 1 до W
+
         for (int currW = 1; currW <= w; currW++) {
             for (int i = 0; i < n; i++) {
-                // Если вес текущего слитка позволяет положить его в рюкзак
                 if (gold[i] <= currW) {
-                    // Формула из алгоритма: D[w] = max(D[w], D[w - w_i] + c_i)
-                    // Здесь c_i (стоимость) равна w[i] (весу)
                     int newValue = d[currW - gold[i]] + gold[i];
                     if (newValue > d[currW]) {
                         d[currW] = newValue;
@@ -62,7 +59,6 @@ public class A_Knapsack {
             }
         }
 
-        // Результат — максимальный вес для вместимости W
         int result = d[w];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;

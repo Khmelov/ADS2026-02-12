@@ -38,32 +38,27 @@ import java.util.Scanner;
 
 public class A_EditDist {
 
-    // Массив для мемоизации (хранения уже вычисленных значений)
+    // Массив для хранения уже вычисленных значений
     private int[][] D;
     private String s1;
     private String s2;
 
-    // Вспомогательная функция diff(A[i], B[j])
     private int diff(char a, char b) {
         return (a == b) ? 0 : 1;
     }
 
-    // Рекурсивная функция EditDistTD(i, j)
     private int editDistTD(int i, int j) {
-        // Если значение уже вычислено (не равно -1), возвращаем его
         if (D[i][j] != -1) {
             return D[i][j];
         }
 
-        // Базовые случаи
         if (i == 0) {
             D[i][j] = j;
         } else if (j == 0) {
             D[i][j] = i;
         } else {
-            // Рекурсивные вызовы для трех операций
-            int ins = editDistTD(i, j - 1) + 1;    // Вставка
-            int del = editDistTD(i - 1, j) + 1;    // Удаление
+            int ins = editDistTD(i, j - 1) + 1;
+            int del = editDistTD(i - 1, j) + 1;
             // В строках индексы начинаются с 0, поэтому используем i-1 и j-1
             int sub = editDistTD(i - 1, j - 1) + diff(s1.charAt(i - 1), s2.charAt(j - 1)); // Замена
 

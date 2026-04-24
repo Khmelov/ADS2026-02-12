@@ -54,7 +54,7 @@ public class C_EditDist {
         int m = two.length();
         int[][] d = new int[n + 1][m + 1];
 
-        // 1. Заполняем таблицу итерационно (алгоритм EDITDISTBU)
+        // таблицу итерационно
         for (int i = 0; i <= n; i++) d[i][0] = i;
         for (int j = 0; j <= m; j++) d[0][j] = j;
 
@@ -65,7 +65,7 @@ public class C_EditDist {
             }
         }
 
-        // 2. Восстановление пути (обратный ход)
+        // восстановление пути
         StringBuilder sb = new StringBuilder();
         int i = n;
         int j = m;
@@ -73,21 +73,19 @@ public class C_EditDist {
         while (i > 0 || j > 0) {
             int cost = (i > 0 && j > 0 && one.charAt(i - 1) == two.charAt(j - 1)) ? 0 : 1;
 
-            // Проверяем, откуда мы пришли в d[i][j]
             // Приоритет отдаем совпадению/замене (диагонали), затем удалению/вставке
             if (i > 0 && j > 0 && d[i][j] == d[i - 1][j - 1] + cost) {
                 if (cost == 0) {
-                    sb.insert(0, "#,"); // Совпадение (Match)
+                    sb.insert(0, "#,");
                 } else {
-                    sb.insert(0, "~" + two.charAt(j - 1) + ","); // Замена (Replace)
+                    sb.insert(0, "~" + two.charAt(j - 1) + ",");
                 }
                 i--; j--;
             } else if (i > 0 && d[i][j] == d[i - 1][j] + 1) {
-                sb.insert(0, "-" + one.charAt(i - 1) + ","); // Удаление (Delete)
+                sb.insert(0, "-" + one.charAt(i - 1) + ",");
                 i--;
             } else if (j > 0 && d[i][j] == d[i][j - 1] + 1) {
-                sb.insert(0, "+" + two.charAt(j - 1) + ","); // Вставка (Insert)
-                j--;
+                sb.insert(0, "+" + two.charAt(j - 1) + ",");
             }
         }
 

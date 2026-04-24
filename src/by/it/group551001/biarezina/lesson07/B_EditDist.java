@@ -57,14 +57,11 @@ public class B_EditDist {
             d[0][j] = j;
         }
 
-        // Основной цикл итерационного заполнения таблицы
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= m; j++) {
                 // Вычисляем стоимость замены (diff)
-                // Символы строк в Java берем по индексам i-1 и j-1
                 int cost = (one.charAt(i - 1) == two.charAt(j - 1)) ? 0 : 1;
 
-                // Находим минимум из трех операций:
                 int deletion = d[i - 1][j] + 1;
                 int insertion = d[i][j - 1] + 1;
                 int substitution = d[i - 1][j - 1] + cost;
