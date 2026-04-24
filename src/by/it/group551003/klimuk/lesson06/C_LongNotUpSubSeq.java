@@ -51,16 +51,57 @@ public class C_LongNotUpSubSeq {
         //общая длина последовательности
         int n = scanner.nextInt();
         int[] m = new int[n];
-        //читаем всю последовательность
+
         for (int i = 0; i < n; i++) {
             m[i] = scanner.nextInt();
         }
-        //тут реализуйте логику задачи методами динамического программирования (!!!)
-        int result = 0;
 
+        int[] P = new int[n];
 
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        int[] M = new int[n + 1];
+
+        int L = 0;
+
+        for (int i = 0; i < n; i++) {
+
+            int lo = 1;
+            int hi = L;
+
+            while (lo <= hi) {
+                int mid = (lo + hi + 1) / 2;
+
+                if (m[M[mid]] >= m[i]) {
+                    lo = mid + 1;
+                } else {
+                    hi = mid - 1;
+                }
+            }
+
+            int newL = lo;
+
+            P[i] = (newL > 1) ? M[newL - 1] : -1;
+
+            M[newL] = i;
+
+            if (newL > L) {
+                L = newL;
+            }
+        }
+
+        int[] ans = new int[L];
+
+        int cur = M[L];
+        for (int i = L - 1; i >= 0; i--) {
+            ans[i] = cur + 1;
+            cur = P[cur];
+        }
+
+        System.out.println(L);
+        for (int i = 0; i < L; i++) {
+            System.out.print(ans[i] + " ");
+        }
+
+        return L;
     }
 
 }

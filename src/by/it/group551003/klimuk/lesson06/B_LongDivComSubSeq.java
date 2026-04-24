@@ -44,12 +44,25 @@ public class B_LongDivComSubSeq {
         //общая длина последовательности
         int n = scanner.nextInt();
         int[] m = new int[n];
-        //читаем всю последовательность
+
         for (int i = 0; i < n; i++) {
             m[i] = scanner.nextInt();
         }
-        //тут реализуйте логику задачи методами динамического программирования (!!!)
+
+        int[] dp = new int[n];
         int result = 0;
+
+        for (int i = 0; i < n; i++) {
+            dp[i] = 1; // каждый элемент сам по себе
+
+            for (int j = 0; j < i; j++) {
+                if (m[i] % m[j] == 0) { // ключевое отличие от LIS
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+
+            result = Math.max(result, dp[i]);
+        }
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
