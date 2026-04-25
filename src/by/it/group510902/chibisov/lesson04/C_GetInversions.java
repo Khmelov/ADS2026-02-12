@@ -57,8 +57,41 @@ public class C_GetInversions {
         int result = 0;
         //!!!!!!!!!!!!!!!!!!!!!!!!     тут ваше решение   !!!!!!!!!!!!!!!!!!!!!!!!
 
+        result = countInversions(a, 0, n - 1);
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
+
+    int countInversions(int[] array, int left, int right) {
+        if (left >= right) return 0;
+
+        int invCount = 0;
+
+        int mid = (left + right) / 2;
+        invCount += countInversions(array, left, mid);
+        invCount += countInversions(array, mid + 1, right);
+
+        int[] temp = new int[right - left + 1];
+        int leftCur = left;
+        int rightCur = mid + 1;
+        int k = 0;
+
+        while (leftCur <= mid && rightCur <= right) {
+            if (array[leftCur] <= array[rightCur]) temp[k++] = array[leftCur++];
+            else {
+                temp[k++] = array[rightCur++];
+                invCount += (mid - leftCur + 1);
+            }
+        }
+
+        while (leftCur <= mid) temp[k++] = array[leftCur++];
+
+        while (rightCur <= right) temp[k++] = array[rightCur++];
+
+        System.arraycopy(temp, 0, array, left, temp.length);
+
+        return invCount;
+    }
+
 }

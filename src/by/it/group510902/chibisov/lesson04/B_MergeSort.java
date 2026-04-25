@@ -48,10 +48,34 @@ public class B_MergeSort {
         // тут ваше решение (реализуйте сортировку слиянием)
         // https://ru.wikipedia.org/wiki/Сортировка_слиянием
 
+        mergeSort(a, 0, a.length - 1);
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return a;
     }
 
+    void mergeSort(int[] array, int left, int right) {
+        if (left >= right) return;
+
+        int mid = (left + right) / 2;
+        mergeSort(array, left, mid);
+        mergeSort(array, mid + 1, right);
+
+        int[] temp = new int[right - left + 1];
+        int leftCur = left;
+        int rightCur = mid + 1;
+        int k = 0;
+
+        while (leftCur <= mid && rightCur <= right) {
+            if (array[leftCur] <= array[rightCur]) temp[k++] = array[leftCur++];
+            else temp[k++] = array[rightCur++];
+        }
+
+        while (leftCur <= mid) temp[k++] = array[leftCur++];
+
+        while (rightCur <= right) temp[k++] = array[rightCur++];
+
+        System.arraycopy(temp, 0, array, left, temp.length);
+    }
 
 }
