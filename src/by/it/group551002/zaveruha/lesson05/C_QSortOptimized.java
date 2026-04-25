@@ -40,6 +40,59 @@ public class C_QSortOptimized {
         }
     }
 
+    void quickSort(Segment[] a, int l, int r) {
+        while (l < r) {
+            int i = l, j = r;
+            Segment pivot = a[l + (r - l) / 2];
+
+            int lt = l, gt = r;
+
+            while (i <= gt) {
+                int cmp = a[i].compareTo(pivot);
+                if (cmp < 0) {
+                    swap(a, i++, lt++);
+                } else if (cmp > 0) {
+                    swap(a, i, gt--);
+                } else {
+                    i++;
+                }
+            }
+
+            // хвостовая оптимизация
+            if (lt - l < r - gt) {
+                quickSort(a, l, lt - 1);
+                l = gt + 1;
+            } else {
+                quickSort(a, gt + 1, r);
+                r = lt - 1;
+            }
+        }
+    }
+
+    void swap(Segment[] a, int i, int j) {
+        Segment tmp = a[i];
+        a[i] = a[j];
+        a[j] = tmp;
+    }
+
+    int binarySearch(Segment[] a, int point) {
+        int l = 0, r = a.length - 1;
+        int res = -1;
+
+        while (l <= r) {
+            int mid = (l + r) / 2;
+
+            if (a[mid].start <= point) {
+                res = mid;
+                l = mid + 1;
+            } else {
+                r = mid - 1;
+            }
+        }
+
+        return res;
+    }
+
     int[] getAccessory2(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
@@ -63,7 +116,28 @@ public class C_QSortOptimized {
         }
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
+        // сортируем отрезки
+        quickSort(segments, 0, n - 1);
 
+// для каждой точки
+        for (int i = 0; i < m; i++) {
+            int point = points[i];
+
+            int idx = binarySearch(segments, point);
+
+            int count = 0;
+
+            // идём назад и проверяем stop
+            for (int j = idx; j >= 0; j--) {
+                if (segments[j].stop >= point) {
+                    count++;
+                } else {
+                    break;
+                }
+            }
+
+            result[i] = count;
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
@@ -81,8 +155,8 @@ public class C_QSortOptimized {
 
         @Override
         public int compareTo(Object o) {
-            //подумайте, что должен возвращать компаратор отрезков
-            return 0;
+            Segment other = (Segment) o;
+            return Integer.compare(this.start, other.start);
         }
     }
 

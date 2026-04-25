@@ -39,7 +39,19 @@ public class B_CountSort {
             points[i] = scanner.nextInt();
         }
         //тут реализуйте логику задачи с применением сортировки подсчетом
+        int[] count = new int[11];
 
+        for (int i = 0; i < n; i++) {
+            count[points[i]]++;
+        }
+
+        int index = 0;
+        for (int value = 0; value <= 10; value++) {
+            while (count[value] > 0) {
+                points[index++] = value;
+                count[value]--;
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return points;
