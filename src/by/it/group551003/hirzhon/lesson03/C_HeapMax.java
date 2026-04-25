@@ -3,6 +3,7 @@ package by.it.group551003.hirzhon.lesson03;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -75,24 +76,49 @@ public class C_HeapMax {
         private List<Long> heap = new ArrayList<>();
 
         int siftDown(int i) { //просеивание вверх
-
+            while (true) {
+                int largest = i;
+                int leftChild = 2 * i + 1;
+                int rightChild = 2 * i + 2;
+                if (leftChild < heap.size() && heap.get(largest) < heap.get(leftChild))
+                    largest = leftChild;
+                if (rightChild < heap.size() && heap.get(largest) < heap.get(rightChild))
+                    largest = rightChild;
+                if (largest != i) {
+                    Collections.swap(heap, i, largest);
+                    i = largest;
+                } else break;
+            }
             return i;
+
         }
 
         int siftUp(int i) { //просеивание вниз
-
+            while (i > 0) {
+                int parent = (i - 1) / 2;
+                if (heap.get(i) > heap.get(parent)) {
+                    Collections.swap(heap, i, parent);
+                    i = parent;
+                }
+                else break;
+            }
             return i;
         }
 
         void insert(Long value) { //вставка
+            heap.add(value);
+            siftUp(heap.size() - 1);
         }
 
         Long extractMax() { //извлечение и удаление максимума
             Long result = null;
-
+            result = heap.get(0);
+            heap.set(0, heap.get(heap.size() - 1));
+            heap.remove(heap.size() - 1);
+            siftDown(0);
             return result;
         }
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
     }
 
     // РЕМАРКА. Это задание исключительно учебное.
