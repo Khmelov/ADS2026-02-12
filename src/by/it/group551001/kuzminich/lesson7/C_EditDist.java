@@ -47,12 +47,74 @@ import java.util.Scanner;
 
 
 public class C_EditDist {
+    int get_min(int a, int b, int c){
+        if (a<b){
+            return (a<c) ? a : c;
+        }else{
+            return (b<c) ? b : c;
+        }
+    }
 
     String getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        // Create table ======================
+        int l1 = one.length();
+        int l2 = two.length();
+        int [][] D = new int [l1+1][l2+1];
+
+        for (int i = 0; i<=l1; i++){
+            D[i][0] = i;
+        }
+
+        for (int j = 0; j<=l2; j++){
+            D[0][j] = j;
+        }
+        for (int i = 1; i<=l1; i++){
+            for (int j = 1; j<=l2; j++){
+                int cost = (one.charAt(i-1) == two.charAt(j-1)) ? 0 : 1;
+                D[i][j] = get_min(D[i][j-1] + 1, D[i-1][j] + 1, D[i-1][j-1] + cost) ;
+            }
+        }
+        //=========================================
+
+        StringBuilder res = new StringBuilder();
+
+        int i = l1;
+        int j = l2;
+        while (i>0 || j>0){
+            //буквы совпали
+            if (i>0 && j>0 && one.charAt(i-1) == two.charAt(j-1)){
+                res.insert(0, ',');
+                res.insert(0, '#');
+                i--;
+                j--;
+            }
+            //замена элементов (диагональ)
+            else if (i>0 && j>0 && D[i][j] == D[i-1][j-1] + 1){
+                res.insert(0, ',');
+                res.insert(0, two.charAt(j-1));
+                res.insert(0, '~');
+                i--;
+                j--;
+            }
+            //удаление было (ход наверх)
+            else if (i > 0 && D[i][j] == D[i-1][j] + 1){
+                res.insert(0, ',');
+                res.insert(0, one.charAt(i-1));
+                res.insert(0, '-');
+                i--;
+            }
+            // вставка (ход влево)
+            else {//if (j>0 && D[i][j] == D[i][j-1] + 1)
+                res.insert(0, ',');
+                res.insert(0, two.charAt(j-1));
+                res.insert(0, '+');
+                j--;
+            }
+        }
 
 
-        String result = "";
+        String result = res.toString();
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
