@@ -44,21 +44,58 @@ public class C_GetInversions {
     }
 
     int calc(InputStream stream) throws FileNotFoundException {
-        //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!
-        //размер массива
         int n = scanner.nextInt();
-        //сам массив
         int[] a = new int[n];
         for (int i = 0; i < n; i++) {
             a[i] = scanner.nextInt();
         }
-        int result = 0;
-        //!!!!!!!!!!!!!!!!!!!!!!!!     тут ваше решение   !!!!!!!!!!!!!!!!!!!!!!!!
 
+        // Вызываем рекурсивную функцию подсчета
+        return countInversions(a, 0, n - 1);
+    }
 
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+    private int countInversions(int[] a, int left, int right) {
+        int count = 0;
+        if (left < right) {
+            int mid = left + (right - left) / 2;
+
+            // Считаем инверсии в левой и правой частях
+            count += countInversions(a, left, mid);
+            count += countInversions(a, mid + 1, right);
+
+            // Считаем инверсии при слиянии
+            count += mergeAndCount(a, left, mid, right);
+        }
+        return count;
+    }
+
+    private int mergeAndCount(int[] a, int left, int mid, int right) {
+        int[] leftArr = new int[mid - left + 1];
+        int[] rightArr = new int[right - mid];
+
+        // Копируем данные во временные массивы
+        System.arraycopy(a, left, leftArr, 0, leftArr.length);
+        System.arraycopy(a, mid + 1, rightArr, 0, rightArr.length);
+
+        int i = 0, j = 0, k = left;
+        int inversions = 0;
+
+        while (i < leftArr.length && j < rightArr.length) {
+            if (leftArr[i] <= rightArr[j]) {
+                a[k++] = leftArr[i++];
+            } else {
+                // Если элемент справа меньше, чем слева — это инверсия
+                a[k++] = rightArr[j++];
+                // Все элементы в leftArr от текущего i до конца больше, чем rightArr[j]
+                inversions += (leftArr.length - i);
+            }
+        }
+
+        // Копируем оставшиеся элементы
+        while (i < leftArr.length) a[k++] = leftArr[i++];
+        while (j < rightArr.length) a[k++] = rightArr[j++];
+
+        return inversions;
     }
 }
