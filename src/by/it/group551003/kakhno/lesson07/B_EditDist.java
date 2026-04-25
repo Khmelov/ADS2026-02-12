@@ -44,6 +44,32 @@ public class B_EditDist {
 
 
         int result = 0;
+
+        int n, m;
+        n = one.length();
+        m = two.length();
+
+        int[][] dp = new int[n + 1][m + 1];
+
+        for (int i = 0; i <= n; ++i)
+            dp[i][0] = i;
+
+        for (int i = 0; i <= m; ++i)
+            dp[0][i] = i;
+
+        for (int i = 1; i <= n; ++i)
+            for (int j = 1; j <= m; ++j)
+                if (one.charAt(i - 1) == two.charAt(j - 1))
+                    dp[i][j] = dp[i - 1][j - 1];
+                else {
+                    int del, ins, repl;
+                    del = dp[i - 1][j];
+                    ins = dp[i][j - 1];
+                    repl = dp[i - 1][j - 1];
+                    dp[i][j] = 1 + Math.min(del, Math.min(ins, repl));
+                }
+
+        result = dp[n][m];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
