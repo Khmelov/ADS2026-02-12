@@ -36,7 +36,22 @@ public class B_LongDivComSubSeq {
         int result = instance.getDivSeqSize(stream);
         System.out.print(result);
     }
-
+    int for_this_index (int index, int [] m, int[] D){
+        if (D[index] != 0){
+            return D[index];
+        }
+        int prev_max = 0;
+        for (int i=0; i<index; i++){
+            if (m[index] % m[i] == 0){
+                int curr = for_this_index(i, m, D);
+                if (prev_max < curr){
+                    prev_max = curr;
+                }
+            }
+        }
+        D[index] = prev_max + 1;
+        return prev_max + 1;
+    }
     int getDivSeqSize(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
@@ -44,12 +59,20 @@ public class B_LongDivComSubSeq {
         //общая длина последовательности
         int n = scanner.nextInt();
         int[] m = new int[n];
+        int[] D = new int[n];
         //читаем всю последовательность
         for (int i = 0; i < n; i++) {
             m[i] = scanner.nextInt();
+            D[i] = 0;
         }
         //тут реализуйте логику задачи методами динамического программирования (!!!)
         int result = 0;
+        for (int i = 0; i<n; i++){
+            int curr = for_this_index (i, m, D);
+            if (curr > result){
+                result = curr;
+            }
+        }
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!

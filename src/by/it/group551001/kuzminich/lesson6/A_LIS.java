@@ -38,6 +38,22 @@ public class A_LIS {
         int result = instance.getSeqSize(stream);
         System.out.print(result);
     }
+    int find_count(int index, int[] m, int[] D){
+        if (D[index] != 0){
+            return D[index];
+        }
+        int max_pred = 0;
+        for (int i=0; i<index;i++){
+            if (m[i] < m[index]){
+                int curr = find_count(i, m, D);
+                if (max_pred < curr) {
+                    max_pred = curr;
+                }
+            }
+        }
+        D[index] = max_pred + 1;
+        return max_pred + 1;
+    }
 
     int getSeqSize(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
@@ -46,11 +62,23 @@ public class A_LIS {
         //общая длина последовательности
         int n = scanner.nextInt();
         int[] m = new int[n];
+        int[] D = new int[n];
+
         //читаем всю последовательность
         for (int i = 0; i < n; i++) {
             m[i] = scanner.nextInt();
+            D[i] = 0;
         }
+
         int result = 0;
+        for (int i=0; i<n; i++){
+            int curr = find_count(i, m, D);
+            if (curr>result){
+                result = curr;
+            }
+        }
+
+
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
