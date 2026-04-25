@@ -74,24 +74,74 @@ public class C_HeapMax {
         //Будет мало? Ну тогда можете его собрать как Generic и/или использовать в варианте B
         private List<Long> heap = new ArrayList<>();
 
-        int siftDown(int i) { //просеивание вверх
+        private int parent(int i) {
+            return (i - 1) / 2;
+        }
 
+        private int leftChild(int i) {
+            return 2 * i + 1;
+        }
+
+        private int rightChild(int i) {
+            return 2 * i + 2;
+        }
+
+        int siftUp(int i) {
+            while (i > 0 && heap.get(i) > heap.get(parent(i))) {
+                swap(i, parent(i));
+                i = parent(i);
+            }
             return i;
         }
 
-        int siftUp(int i) { //просеивание вниз
+        int siftDown(int i) {
+            int maxIndex = i;
+            int left = leftChild(i);
 
+            if (left < heap.size() && heap.get(left) > heap.get(maxIndex)) {
+                maxIndex = left;
+            }
+
+            int right = rightChild(i);
+            if (right < heap.size() && heap.get(right) > heap.get(maxIndex)) {
+                maxIndex = right;
+            }
+
+            if (i != maxIndex) {
+                swap(i, maxIndex);
+                siftDown(maxIndex);
+            }
             return i;
         }
 
-        void insert(Long value) { //вставка
+        private void swap(int i, int j) {
+            Long temp = heap.get(i);
+            heap.set(i, heap.get(j));
+            heap.set(j, temp);
         }
 
-        Long extractMax() { //извлечение и удаление максимума
-            Long result = null;
+        void insert(Long value) {
+            heap.add(value);
+            siftUp(heap.size() - 1);
+        }
+
+        Long extractMax() {
+            if (heap.isEmpty()) {
+                return null;
+            }
+
+            Long result = heap.get(0);
+
+            if (heap.size() == 1) {
+                heap.remove(0);
+            } else {
+                heap.set(0, heap.remove(heap.size() - 1));
+                siftDown(0);
+            }
 
             return result;
         }
+
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
     }
 
