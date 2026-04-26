@@ -56,8 +56,46 @@ public class C_LongNotUpSubSeq {
             m[i] = scanner.nextInt();
         }
         //тут реализуйте логику задачи методами динамического программирования (!!!)
-        int result = 0;
+        int[] d = new int[n];
+        int[] prev = new int[n];
 
+        for (int i = 0; i < n; i++) {
+            d[i] = 1;
+            prev[i] = -1;
+
+            for (int j = 0; j < i; j++) {
+                if (m[j] >= m[i] && d[j] + 1 > d[i]) {
+                    d[i] = d[j] + 1;
+                    prev[i] = j;
+                }
+            }
+        }
+
+        int last_max_ind = 0;
+        int result = 0;
+        for (int i = 0; i < n; i++) {
+            if (d[i] > result) {
+                result = d[i];
+                last_max_ind = i;
+            }
+        }
+
+        System.out.println(result);
+
+        int ind = last_max_ind;
+        int[] subsequence = new int[result];
+        for (int i = result - 1; i >= 0; i--) {
+            subsequence[i] = (1 + ind);
+            ind = prev[ind];
+        }
+
+        for (int i = 0; i < result - 1; i++) {
+            System.out.print(subsequence[i]);
+            System.out.print(" ");
+        }
+
+        System.out.print(subsequence[result - 1]);
+        System.out.println();
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
