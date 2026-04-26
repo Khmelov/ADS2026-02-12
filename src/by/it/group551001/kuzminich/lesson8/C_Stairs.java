@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
 
+
 /*
 Даны число 1<=n<=100 ступенек лестницы и
 целые числа −10000<=a[1],…,a[n]<=10000, которыми помечены ступеньки.
@@ -32,6 +33,9 @@ Sample Output 3:
 */
 
 public class C_Stairs {
+    int ret_max(int a, int b){
+        return (a>b) ? a : b;
+    }
 
     int getMaxSum(InputStream stream ) {
         Scanner scanner = new Scanner(stream);
@@ -41,13 +45,18 @@ public class C_Stairs {
             stairs[i]=scanner.nextInt();
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        int result = 0;
 
+        int [] max_to_this = new int[n]; //max_to_this[i] будет хранить максимальную сумму, чтобы дойти до ступеньки i
+        max_to_this [0] = stairs[0]; // только один способ на перую ступеньку
+        max_to_this [1] = ret_max(stairs[0] + stairs[1], stairs[1]);
+        for (int i = 2; i<n; i++){
+            max_to_this[i] = ret_max(max_to_this[i-1], max_to_this[i-2]) + stairs[i];
+        }
 
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        return max_to_this[n-1];
     }
 
 

@@ -45,10 +45,27 @@ public class A_Knapsack {
             gold[i]=scanner.nextInt();
         }
 
+        int [] best = new int[w+1];
+        for (int i= 0; i<=w; i++){
+            best[i] = 0;
+        }
 
-        int result = 0;
+        for (int i = 0; i<=w; i++){
+            // for each gold
+            for (int g = 0; g<n; g++){
+                int curr_weight = gold[g];
+                if (curr_weight <= i){
+                    int new_weight = curr_weight + best[i-curr_weight];
+                    if (new_weight > best[i]){
+                        best[i] = new_weight;
+                    }
+                }
+            }
+        }
+
+
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        return best[w];
     }
 
 
