@@ -38,16 +38,16 @@ public class B_Sheduler {
         for (int i = 0; i < events.length; i++) {
             Event current = events[i];
 
-            // Проверяем, что событие вообще в нашем периоде
+
             if (current.start >= from && current.stop <= to) {
-                // Если событие начинается не раньше, чем закончилось последнее
+
                 if (current.start >= laststop) {
-                    result.add(current);           // берем событие
-                    laststop = current.stop;       // обновляем время окончания
+                    result.add(current);
+                    laststop = current.stop;
                 }
             }
         }
-        return result;          //вернем итог
+        return result;
     }
 
     //событие у аудитории(два поля: начало и конец)
