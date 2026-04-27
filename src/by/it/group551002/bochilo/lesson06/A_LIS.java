@@ -2,6 +2,7 @@ package by.it.group551002.bochilo.lesson06;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /*
@@ -50,7 +51,16 @@ public class A_LIS {
         for (int i = 0; i < n; i++) {
             m[i] = scanner.nextInt();
         }
-        int result = 0;
+        int[] dp = new int[n];
+        Arrays.fill(dp, 1);
+        for (int i = 1; i < n; i++) {
+            for (int k = 0; k < i; k++) {
+                if (m[i] > m[k]) {
+                    dp[i] = dp[k] + 1;
+                }
+            }
+        }
+        int result = Arrays.stream(dp).max().getAsInt();
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }

@@ -2,6 +2,7 @@ package by.it.group551002.bochilo.lesson06;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /*
@@ -56,8 +57,40 @@ public class C_LongNotUpSubSeq {
             m[i] = scanner.nextInt();
         }
         //тут реализуйте логику задачи методами динамического программирования (!!!)
-        int result = 0;
-
+        //LDS
+        int[] dp = new int[n];
+        Arrays.fill(dp, 1);
+        int[] prev = new int[n];
+        Arrays.fill(prev, -1);
+        for (int i = 1; i < n; i++) {
+            for (int k = 0; k < i; k++) {
+                if (m[i] <= m[k]) {
+                    dp[i] = dp[k] + 1;
+                    prev[i] = k;
+                }
+            }
+        }
+        //поиск в массиве dp максимального значения - result
+        //и его индекса ind
+        int result = 0, ind = 0;
+        for (int i = 0; i < n; i++) {
+            if (dp[i] > result) {
+                result = dp[i];
+                ind = i;
+            }
+        }
+        //собираем последовательность индексов в обратном порядке
+        int[] ind_seq = new int[result];
+        int pos = result - 1;
+        while (ind != -1) {
+            ind_seq[pos--] = ind + 1;
+            ind = prev[ind];
+        }
+        //выводим массив индексов
+        for (int i = 0; i < ind_seq.length; i++) {
+            System.out.print(ind_seq[i] + " ");
+        }
+        System.out.println();
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
