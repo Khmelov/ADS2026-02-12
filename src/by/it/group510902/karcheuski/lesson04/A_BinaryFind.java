@@ -50,7 +50,7 @@ public class A_BinaryFind {
             a[i - 1] = scanner.nextInt();
         }
 
-        //размер массива индексов
+        //размер массива индексов.
         int k = scanner.nextInt();
         int[] result = new int[k];
         for (int i = 0; i < k; i++) {
