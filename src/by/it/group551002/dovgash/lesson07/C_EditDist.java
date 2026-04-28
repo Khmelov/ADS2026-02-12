@@ -51,8 +51,50 @@ public class C_EditDist {
     String getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
 
+        int n = one.length();
+        int m = two.length();
+        int[][] dp = new int[n + 1][m + 1];
 
-        String result = "";
+
+        for (int i = 0; i <= n; i++) dp[i][0] = i;
+        for (int j = 0; j <= m; j++) dp[0][j] = j;
+
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                int cost = (one.charAt(i - 1) == two.charAt(j - 1)) ? 0 : 1;
+                dp[i][j] = Math.min(Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1),
+                        dp[i - 1][j - 1] + cost);
+            }
+        }
+
+        //back
+        StringBuilder sb = new StringBuilder();
+        int i = n;
+        int j = m;
+
+        while (i > 0 || j > 0) {
+            int cost = (i > 0 && j > 0 && one.charAt(i - 1) == two.charAt(j - 1)) ? 0 : 1;
+
+            if (i > 0 && j > 0 && dp[i][j] == dp[i - 1][j - 1] + cost) {
+
+                if (cost == 0) {
+                    sb.insert(0, "#,");
+                } else {
+                    sb.insert(0, "~" + two.charAt(j - 1) + ",");
+                }
+                i--; j--;
+            } else if (j > 0 && dp[i][j] == dp[i][j - 1] + 1) {
+
+                sb.insert(0, "+" + two.charAt(j - 1) + ",");
+                j--;
+            } else if (i > 0 && dp[i][j] == dp[i - 1][j] + 1) {
+                // Удаление (-)
+                sb.insert(0, "-" + one.charAt(i - 1) + ",");
+                i--;
+            }
+        }
+
+        String result = sb.toString();
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }

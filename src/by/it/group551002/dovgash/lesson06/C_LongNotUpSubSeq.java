@@ -3,6 +3,7 @@ package by.it.group551002.dovgash.lesson06;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
+import java.util.Arrays;
 
 /*
 Задача на программирование: наибольшая невозростающая подпоследовательность
@@ -56,11 +57,43 @@ public class C_LongNotUpSubSeq {
             m[i] = scanner.nextInt();
         }
         //тут реализуйте логику задачи методами динамического программирования (!!!)
-        int result = 0;
+        int[] dp = new int[n];
+        int[] prev = new int[n];
+        int max_len_ind = 0;
 
+        Arrays.fill(prev,-1);
+
+        for (int i = 0; i < n; i++){
+            dp[i] = 1;
+            for (int j = 0; j < i; j++){
+                if (m[j] >= m[i] && dp[j] + 1 > dp[i]){
+                    dp[i] = dp[j] + 1;
+                    prev[i] = j;
+                }
+            }
+            if (dp[i] > dp[max_len_ind]) {
+                max_len_ind = i;
+            }
+        }
+
+        int res_len = dp[max_len_ind];
+        int res_ind[] = new int[res_len];
+        int curr = max_len_ind;
+
+        for (int i = res_len - 1; i >= 0; i--) {
+            res_ind[i] = curr + 1;
+            curr = prev[curr];
+        }
+
+        System.out.println(res_len);
+        for (int i = 0; i < res_len; i++) {
+            System.out.print(res_ind[i] + (i == res_len - 1 ? "" : " "));
+        }
+        System.out.println();
+
+        return res_len;
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
     }
 
 }

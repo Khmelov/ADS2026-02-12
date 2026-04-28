@@ -38,16 +38,43 @@ import java.util.Scanner;
 
 public class A_EditDist {
 
+    private int[][] memo;
 
     int getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        int n = one.length();
+        int m = two.length();
+
+        memo = new int[n+1][m+1];
+
+        for (int i = 0; i <= n; i++){
+            for (int j = 0; j <=m; j++){
+                memo[i][j] = -1;
+            }
+        }
 
 
-        int result = 0;
+        int result = recursion(one, two, n, m);
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
+    private int recursion(String s1, String s2, int i, int j) {
+        if (i == 0) return j;
+        if (j == 0) return i;
+
+        if (memo[i][j] != -1) {
+            return memo[i][j];
+        }
+
+        int cost = (s1.charAt(i - 1) == s2.charAt(j - 1)) ? 0 : 1;
+        int res = Math.min(
+                Math.min(recursion(s1, s2, i - 1, j) + 1,
+                        recursion(s1, s2, i, j - 1) + 1),
+                recursion(s1, s2, i - 1, j - 1) + cost
+        );
+        return memo[i][j] = res;
+    }
 
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = A_EditDist.class.getResourceAsStream("dataABC.txt");

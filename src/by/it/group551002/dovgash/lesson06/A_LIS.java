@@ -3,6 +3,7 @@ package by.it.group551002.dovgash.lesson06;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
+import java.util.Arrays;
 
 /*
 Задача на программирование: наибольшая возрастающая подпоследовательность
@@ -50,7 +51,20 @@ public class A_LIS {
         for (int i = 0; i < n; i++) {
             m[i] = scanner.nextInt();
         }
-        int result = 0;
+
+        int[] dp = new int[n];
+
+        for (int i = 0; i < n; i++){
+            dp[i] = 1;
+            for (int j = 0; j < i; j++){
+                if (m[j] < m[i] && dp[j] + 1 > dp[i]){
+                    dp[i] = dp[j] + 1;
+                }
+            }
+        }
+
+
+        int result = Arrays.stream(dp).max().getAsInt();
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }

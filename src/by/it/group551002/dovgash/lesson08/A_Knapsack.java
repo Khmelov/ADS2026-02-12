@@ -45,8 +45,19 @@ public class A_Knapsack {
             gold[i]=scanner.nextInt();
         }
 
+        int[] dp = new int[w + 1];
+        for (int i = 1; i <= w; i++) {
+            for (int j = 0; j < n; j++) {
+                // Если текущий слиток помещается в рюкзак вместимостью i
+                if (gold[j] <= i) {
+                    // Выбираем максимум между текущим значением и
+                    // вариантом, когда мы берем этот слиток + максимум для оставшегося места
+                    dp[i] = Math.max(dp[i], dp[i - gold[j]] + gold[j]);
+                }
+            }
+        }
 
-        int result = 0;
+        int result = dp[w];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
