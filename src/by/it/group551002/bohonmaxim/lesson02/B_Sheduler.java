@@ -1,6 +1,8 @@
 package by.it.group551002.bohonmaxim.lesson02;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 /*
 Даны интервальные события events
@@ -32,7 +34,15 @@ public class B_Sheduler {
         List<Event> result;
         result = new ArrayList<>();
         //ваше решение.
+        int lstEnd = from;
 
+        Arrays.sort(events, Comparator.comparingInt(e ->e.stop));
+        for (Event tmpEv: events){
+            if (tmpEv.start >= lstEnd && tmpEv.stop <= to){
+                result.add(tmpEv);
+                lstEnd = tmpEv.stop;
+            }
+        }
 
         return result;          //вернем итог
     }
