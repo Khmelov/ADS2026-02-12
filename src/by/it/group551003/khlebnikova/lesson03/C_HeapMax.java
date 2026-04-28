@@ -45,7 +45,7 @@ public class C_HeapMax {
     //эта процедура читает данные из файла, ее можно не менять.
     Long findMaxValue(InputStream stream) {
         Long maxValue = 0L;
-        MaxHeap heap = new MaxHeap();
+        MaxHeap<Long> heap = new MaxHeap();
         //прочитаем строку для кодирования из тестового файла
         Scanner scanner = new Scanner(stream);
         Integer count = scanner.nextInt();
@@ -68,32 +68,64 @@ public class C_HeapMax {
         return maxValue;
     }
 
-    private class MaxHeap {
+    private class MaxHeap<T extends Comparable<T>> {
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         //тут запишите ваше решение.
         //Будет мало? Ну тогда можете его собрать как Generic и/или использовать в варианте B
-        private List<Long> heap = new ArrayList<>();
+        private List<T> heap = new ArrayList<>();
 
         int siftDown(int i) { //просеивание вверх
 
+            int left = 2 * i + 1;
+            int right = 2 * i + 2;
+
+            int largest = i;
+            if (left < heap.size() && heap.get(left).compareTo(heap.get(i)) > 0) {
+                largest = left;
+            }
+            if (right < heap.size() && heap.get(right).compareTo(heap.get(largest)) > 0) {
+                largest = right;
+            }
+            if (largest != i) {
+                T t = heap.get(i);
+                heap.set(i, heap.get(largest));
+                heap.set(largest, t);
+                siftDown(largest);
+            }
             return i;
         }
 
         int siftUp(int i) { //просеивание вниз
 
+            while (i > 0) {
+                int parent = (i - 1) / 2;
+                if (heap.get(parent).compareTo(heap.get(i)) >= 0) {
+                    return i;
+                }
+                T t = heap.get(i);
+                heap.set(i, heap.get(parent));
+                heap.set(parent, t);
+                i = parent;
+            }
             return i;
         }
 
-        void insert(Long value) { //вставка
+        void insert(T value) { //вставка
+            heap.addLast(value);
+            siftUp(heap.size() - 1);
         }
 
-        Long extractMax() { //извлечение и удаление максимума
-            Long result = null;
+        T extractMax() { //извлечение и удаление максимума
+            T result = heap.getFirst();
+            heap.set(0, heap.getLast());
+            heap.removeLast();
+            siftDown(0);
 
             return result;
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
     }
+
 
     // РЕМАРКА. Это задание исключительно учебное.
     // Свои собственные кучи нужны довольно редко.

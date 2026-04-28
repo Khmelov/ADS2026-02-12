@@ -58,29 +58,48 @@ public class A_Huffman {
 
     //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
     String encode(InputStream inputStream) throws FileNotFoundException {
-        //прочитаем строку для кодирования из тестового файла
+        //прочитаем строку для кодирования из тестового файл
+
         Scanner scanner = new Scanner(inputStream);
         String s = scanner.next();
 
-        //все комментарии от тестового решения были оставлены т.к. это задание A.
-        //если они вам мешают их можно удалить
 
         Map<Character, Integer> count = new HashMap<>();
-        //1. переберем все символы по очереди и рассчитаем их частоту в Map count
-        //для каждого символа добавим 1 если его в карте еще нет или инкремент если есть.
+        for(int i = 0; i < s.length(); i++){
+            if(!count.containsKey(s.charAt(i))){
+                count.put(s.charAt(i), 1);
+            } else{
+                count.put(s.charAt(i), count.get(s.charAt(i)) + 1);
+            }
+        }
 
-        //2. перенесем все символы в приоритетную очередь в виде листьев
         PriorityQueue<Node> priorityQueue = new PriorityQueue<>();
+        for(Character ch : count.keySet()){
+            priorityQueue.add(new LeafNode(count.get(ch), ch));
+        }
 
-        //3. вынимая по два узла из очереди (для сборки родителя)
-        //и возвращая этого родителя обратно в очередь
-        //построим дерево кодирования Хаффмана.
-        //У родителя частоты детей складываются.
 
-        //4. последний из родителей будет корнем этого дерева
-        //это будет последний и единственный элемент оставшийся в очереди priorityQueue.
+        while(priorityQueue.size() > 1){
+            Node left = priorityQueue.poll();
+            Node right = priorityQueue.poll();
+            priorityQueue.add(new InternalNode(left, right));
+        }
+
+        if (!priorityQueue.isEmpty()) {
+            Node root = priorityQueue.poll();
+
+            if (root instanceof LeafNode) {
+                codes.put(((LeafNode) root).symbol, "0");
+            } else {
+                root.fillCodes("");
+            }
+        }
+
+
         StringBuilder sb = new StringBuilder();
-        //.....
+        for (char c : s.toCharArray()) {
+            sb.append(codes.get(c));
+        }
 
         return sb.toString();
         //01001100100111
