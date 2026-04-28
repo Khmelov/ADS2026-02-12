@@ -54,7 +54,7 @@ public class C_GreedyKnapsack {
             } else {
                 double unitPrice = (double) item.cost / item.weight;
                 result += unitPrice * currentWeight;
-                currentWeight = 0; // Рюкзак забит до отказа
+                currentWeight = 0;
             }
         }
 
