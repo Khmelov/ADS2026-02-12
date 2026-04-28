@@ -33,6 +33,17 @@ public class B_Sheduler {
         result = new ArrayList<>();
         //ваше решение.
 
+        java.util.Arrays.sort(events, (a, b) -> Integer.compare(a.stop, b.stop));
+
+        int lastStop = from;
+        for (Event e : events) {
+            if (e.start >= from && e.stop <= to) {
+                if (e.start >= lastStop) {
+                    result.add(e);
+                    lastStop = e.stop;
+                }
+            }
+        }
 
         return result;          //вернем итог
     }

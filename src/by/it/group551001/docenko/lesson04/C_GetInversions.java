@@ -1,4 +1,4 @@
-package lesson04;
+package by.it.group551001.docenko.lesson04;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -57,8 +57,50 @@ public class C_GetInversions {
         int result = 0;
         //!!!!!!!!!!!!!!!!!!!!!!!!     тут ваше решение   !!!!!!!!!!!!!!!!!!!!!!!!
 
+        result = calcInversions(a, 0, a.length-1);
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
+    }
+
+    int calcInversions(int[] arr, int l, int r) {
+        int inv = 0;
+
+        if (r == l) {
+            return inv;
+        }
+
+        int m = (l + r) / 2;
+
+        inv += this.calcInversions(arr, l, m);
+        inv += this.calcInversions(arr, m+1, r);
+
+        int[] temp = arr.clone();
+
+        int l_cur = l, r_cur = m + 1;
+        for (int i = l; i <= r; i++) {
+            if (l_cur <= m && r_cur <= r) {
+                if (temp[l_cur] <= temp[r_cur]) {
+                    arr[i] = temp[l_cur];
+                    l_cur++;
+                }
+                else {
+                    inv += (m - l_cur + 1);
+                    arr[i] = temp[r_cur];
+                    r_cur++;
+                }
+            }
+            else if (l_cur <= m) {
+                arr[i] = temp[l_cur];
+                l_cur++;
+            }
+            else {
+                arr[i] = temp[r_cur];
+                r_cur++;
+            }
+        }
+
+        return inv;
+
     }
 }

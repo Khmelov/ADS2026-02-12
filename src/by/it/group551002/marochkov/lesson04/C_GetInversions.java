@@ -57,8 +57,77 @@ public class C_GetInversions {
         int result = 0;
         //!!!!!!!!!!!!!!!!!!!!!!!!     тут ваше решение   !!!!!!!!!!!!!!!!!!!!!!!!
 
+        int[] temp = new int[n];
+        for (int i = 0; i < n; i++)
+            temp[i] = a[i];
 
+        result = mergeSort(temp, 0, n - 1);
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
+
+
+    int merge(int[] arr, int left, int mid, int right) {
+        int lenL = mid - left + 1;
+        int lenR = right - mid;
+
+        int[] arrL = new int[lenL];
+        int[] arrR = new int[lenR];
+
+        for (int i = 0; i < lenL; i++)
+            arrL[i] = arr[left + i];
+
+        for (int i = 0; i < lenR; i++)
+            arrR[i] = arr[mid + i + 1];
+
+        int i = 0, j = 0;
+        int k = left;
+
+        int inversions = 0;
+
+        while (i < lenL && j < lenR) {
+            if (arrL[i] <= arrR[j]) {
+                arr[k] = arrL[i];
+                i++;
+            } else {
+                arr[k] = arrR[j];
+                j++;
+                inversions += mid - i + 1;
+            }
+            k++;
+        }
+
+        while (i < lenL) {
+            arr[k] = arrL[i];
+            i++;
+            k++;
+        }
+
+        while (j < lenR) {
+            arr[k] = arrR[j];
+            j++;
+            k++;
+        }
+
+        return inversions;
+    }
+
+    int mergeSort(int[] arr, int left, int right) {
+        int inversions = 0;
+
+        if (left < right) {
+            int mid = left + (right - left) / 2;
+
+            inversions += mergeSort(arr, left, mid);
+            inversions += mergeSort(arr, mid + 1, right);
+
+            inversions += merge(arr, left, mid, right);
+        }
+
+        return inversions;
+    }
+
+
+
+
 }

@@ -57,8 +57,8 @@ public class C_GreedyKnapsack {
         while (weight <= W && i < items.length) {
             thing = items[i];
             if (weight + thing.weight > W) {
-                cost = cost + (W - weight) * (thing.cost / thing.weight);
-                weight += thing.weight;
+                cost = cost + (W - weight) * ((double)thing.cost / thing.weight);
+                weight = W;
             }
             else {
                 cost = cost + thing.cost;
@@ -115,7 +115,7 @@ public class C_GreedyKnapsack {
 
         @Override
         public int compareTo(Item o) {
-            return o.cost/o.weight - this.cost/this.weight;
+            return Double.compare((double)o.cost/o.weight, (double)this.cost/this.weight);
         }
     }
 }

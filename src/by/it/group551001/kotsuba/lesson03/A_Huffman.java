@@ -95,6 +95,7 @@ public class A_Huffman {
             Node root = priorityQueue.poll();
             if (root != null) {
                 root.fillCodes("");
+
             }
         }
         //4. последний из родителей будет корнем этого дерева

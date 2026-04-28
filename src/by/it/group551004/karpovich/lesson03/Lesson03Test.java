@@ -1,4 +1,4 @@
-package lesson03;
+package by.it.group551004.karpovich.lesson03;
 
 import org.junit.Test;
 

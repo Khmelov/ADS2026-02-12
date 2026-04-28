@@ -3,6 +3,8 @@ package by.it.group551002.shender.lesson03;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
+import java.util.Map;
+import java.util.HashMap;
 
 // Lesson 3. B_Huffman.
 // Восстановите строку по её коду и беспрефиксному коду символов.
@@ -55,11 +57,42 @@ public class B_Huffman {
         Scanner scanner = new Scanner(inputStream);
         Integer count = scanner.nextInt();
         Integer length = scanner.nextInt();
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-        //тут запишите ваше решение
+        Map<String, Character> dictionary = new HashMap<>();
 
+        // 1. Считываем словарь из файла
+        for (int i = 0; i < count; i++) {
+            // Читаем строку вида "a:"
+            String letterStr = scanner.next();
+            // Берем только саму букву, отбрасывая двоеточие
+            char letter = letterStr.charAt(0);
 
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+            // Читаем сам код из нулей и единиц, например "10"
+            String code = scanner.next();
+
+            // Кладем в словарь
+            dictionary.put(code, letter);
+        }
+
+        // 2. Считываем саму закодированную строку
+        String encodedString = scanner.next();
+
+        // 3. Расшифровываем
+        StringBuilder tempCode = new StringBuilder(); // Временный буфер для накопления нулей и единиц
+
+        // Проходим по каждому символу закодированной строки
+        for (int i = 0; i < length; i++) {
+            // Добавляем текущий '0' или '1' в буфер
+            tempCode.append(encodedString.charAt(i));
+
+            // Проверяем: есть ли накопленная комбинация в нашем словаре?
+            if (dictionary.containsKey(tempCode.toString())) {
+                // Если есть, достаем букву и пишем её в финальный результат
+                result.append(dictionary.get(tempCode.toString()));
+
+                // Очищаем временный буфер, чтобы начать собирать код для следующей буквы
+                tempCode.setLength(0);
+            }
+        }
         return result.toString(); //01001100100111
     }
 

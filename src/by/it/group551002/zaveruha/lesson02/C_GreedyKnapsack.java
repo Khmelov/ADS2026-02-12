@@ -49,7 +49,22 @@ public class C_GreedyKnapsack {
         //кроме того, можете описать свой компаратор в классе Item
 
         //ваше решение.
+        java.util.Arrays.sort(items);
 
+        int remaining = W;
+
+        for (Item item : items) {
+            if (remaining == 0) break;
+
+            if (item.weight <= remaining) {
+                result += item.cost;
+                remaining -= item.weight;
+            } else {
+
+                result += item.cost * ((double) remaining / item.weight);
+                remaining = 0;
+            }
+        }
 
         System.out.printf("Удалось собрать рюкзак на сумму %f\n", result);
         return result;
@@ -75,9 +90,9 @@ public class C_GreedyKnapsack {
         @Override
         public int compareTo(Item o) {
             //тут может быть ваш компаратор
-
-
-            return 0;
+            double r1 = (double) this.cost / this.weight;
+            double r2 = (double) o.cost / o.weight;
+            return Double.compare(r2, r1);
         }
     }
 }
