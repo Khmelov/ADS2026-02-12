@@ -1,8 +1,9 @@
-package by.it.group510902.makaruk.lesson05;
+package by.it.group551004.gavrilovroman.lesson05;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
+
 /*
 Первая строка содержит число 1<=n<=10000, вторая - n натуральных чисел, не превышающих 10.
 Выведите упорядоченную по неубыванию последовательность этих чисел.
@@ -12,7 +13,9 @@ import java.util.Scanner;
 Пример: https://karussell.wordpress.com/2010/03/01/fast-integer-sorting-algorithm-on/
 Вольный перевод: http://programador.ru/sorting-positive-int-linear-time/
 */
+
 public class B_CountSort {
+
 
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = B_CountSort.class.getResourceAsStream("dataB.txt");
@@ -32,19 +35,36 @@ public class B_CountSort {
             points[i] = scanner.nextInt();
         }
 
-        int[] count = new int[11];
-        for (int value : points) {
-            count[value]++;
-        }
+        points = sort(points);
+        return points;
+    }
 
-        int index = 0;
-        for (int value = 1; value <= 10; value++) {
-            for (int j = 0; j < count[value]; j++) {
-                points[index++] = value;
+    int[] sort(int[] a){
+        int min = a[0], max = a[0];
+        for (int i = 1; i < a.length; i++) {
+            if (a[i] < min) {
+                min = a[i];
+            }
+            if (a[i] > max) {
+                max = a[i];
             }
         }
+        return sort(a, min, max);
+    }
 
-        return points;
+    int[] sort(int[] a, int min, int max){
+        int[] count = new int[max-min+1];
+        for (int j : a) {
+            count[j - min]++;
+        }
+        int idx = 0;
+        for(int i = 0; i < count.length; i++){
+            for(int j=0; j < count[i]; j++){
+                a[idx] = i+min;
+                idx++;
+            }
+        }
+        return a;
     }
 
 }
