@@ -65,7 +65,6 @@ public class B_MergeSort {
 
             mergeSort(array, left, mid);
             mergeSort(array, mid + 1, right);
-
             merge(array, left, mid, right);
         }
     }
