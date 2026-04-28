@@ -155,7 +155,6 @@ public class A_Huffman {
         protected Node(int frequence) {
             this.frequence = frequence;
         }
-
         //генерация кодов (вызывается на корневом узле
         //один раз в конце, т.е. после построения дерева)
         abstract void fillCodes(String code);

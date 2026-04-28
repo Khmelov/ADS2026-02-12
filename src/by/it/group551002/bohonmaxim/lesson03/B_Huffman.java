@@ -50,7 +50,6 @@ public class B_Huffman {
         String result = instance.decode(inputStream);
         System.out.println(result);
     }
-
     String decode(InputStream inputStream) throws FileNotFoundException {
         StringBuilder result = new StringBuilder();
         //прочитаем строку для кодирования из тестового файла
