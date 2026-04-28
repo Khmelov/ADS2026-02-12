@@ -1,6 +1,7 @@
 package by.it.a_khmelev.lesson02;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 /*
 Даны интервальные события events
@@ -32,7 +33,17 @@ public class B_Sheduler {
         List<Event> result;
         result = new ArrayList<>();
         //ваше решение.
+        Arrays.sort(events, (a,b)-> Integer.compare(a.stop, b.stop));
+        int limit = from;
+        for(Event event : events){
+            int start = event.start;
+            int end = event.stop;
+            if (start >= limit && end <= to){
+                result.add(event);
+                limit = end;
+            }
 
+        }
 
         return result;          //вернем итог
     }
