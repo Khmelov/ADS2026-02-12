@@ -6,6 +6,7 @@ import java.io.InputStream;
 
 import static org.junit.Assert.assertTrue;
 
+
 public class Lesson06Test {
     @Test
     public void checkA() throws Exception {

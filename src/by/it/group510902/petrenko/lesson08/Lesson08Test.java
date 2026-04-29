@@ -6,6 +6,7 @@ import java.io.InputStream;
 
 import static org.junit.Assert.assertEquals;
 
+
 public class Lesson08Test {
     @Test
     public void A() throws Exception {
