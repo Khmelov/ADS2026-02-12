@@ -45,6 +45,106 @@ public class A_QSort {
         }
     }
 
+    void swap(int[] dataArray, int i, int j)
+    {
+        if (i != j) {
+            dataArray[i] = dataArray[i] + dataArray[j];
+            dataArray[j] = dataArray[i] - dataArray[j];
+            dataArray[i] = dataArray[i] - dataArray[j];
+        }
+    }
+
+    int partition(int[] dataArray, final int arrayLength, int low, int high)
+    {
+        int pivot, randomIndex, i, j;
+        boolean isDoNotStop;
+
+        randomIndex = 0;
+        pivot = 0;
+        i = low;
+        j = high;
+        isDoNotStop = true;
+
+        randomIndex = low + (int)(Math.random() * (high - low + 1));
+        pivot = dataArray[randomIndex];
+
+        while (isDoNotStop)
+        {
+            while (i <= high && dataArray[i] < pivot)
+                i++;
+
+            while (j >= low && dataArray[j] > pivot)
+                j--;
+
+            if (i >= j)
+                isDoNotStop = false;
+            else
+                swap(dataArray, i++, j--);
+        }
+
+        return j;
+    }
+
+    void quicksort(int[] dataArray, int low, int high)
+    {
+        int point;
+        int arrayLength;
+        point = 0;
+        arrayLength = dataArray.length;
+
+        if (dataArray == null)
+            System.out.print("Массив пуст, сначала введите массив\n");
+        else
+            if (low < high)
+            {
+                point = partition(dataArray, arrayLength, low, high);
+                quicksort(dataArray, low, point);
+                quicksort(dataArray, point + 1, high);
+            }
+    }
+
+    public int binaryFindLowerBound(int[] arr, int target) {
+        //Поиск последнего индекса элемента, после которого target будет больше за элемент
+        int left;
+        int right;
+        int middle;
+
+        left = 0;
+        right = arr.length;
+        middle = 0;
+
+        while (left < right) {
+            middle = (left + right) / 2;
+
+            if (arr[middle] < target)
+                left = middle + 1;
+            else
+                right = middle;
+        }
+        return left;
+    }
+
+    public int binaryFindUpperBound(int[] arr, int target) {
+        //Поиск последнего индекса элемента, после которого target будет больше за элемент
+        int left;
+        int right;
+        int middle;
+
+        left = 0;
+        right = arr.length;
+        middle = 0;
+
+        while (left < right) {
+            middle = (left + right) / 2;
+
+            if (arr[middle] <= target)
+                left = middle + 1;
+            else
+                right = middle;
+        }
+        return left;
+    }
+
     int[] getAccessory(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
@@ -68,6 +168,31 @@ public class A_QSort {
         }
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
+
+        int[] starts;
+        int[] stops;
+        int startsCount;
+        int endsCount;
+
+        endsCount = 0;
+        startsCount = 0;
+
+        starts = new int[segments.length];
+        stops = new int[segments.length];
+
+        for (int i = 0; i < segments.length; i++) {
+            starts[i] = segments[i].start;
+            stops[i] = segments[i].stop;
+        }
+
+        quicksort(starts, 0, starts.length - 1);
+        quicksort(stops, 0, stops.length - 1);
+
+        for (int i = 0; i < m; i++) {
+            startsCount = binaryFindUpperBound(starts, points[i]); // количество starts ≤ x
+            endsCount   = binaryFindLowerBound(stops, points[i]);   // количество ends < x
+            result[i] = startsCount - endsCount;
+        }
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
