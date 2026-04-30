@@ -64,34 +64,30 @@ public class C_QSortOptimized {
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
         quickSort(segments, 0, n - 1);
+
+        // ПОИСК: для каждой точки находим количество покрывающих её отрезков
         for (int i = 0; i < m; i++) {
-            int p = points[i];
+            int point = points[i];
 
-            int idx = binarySearch(segments, p);
+            // Шаг 1: бинарный поиск последнего отрезка с start <= point
+            int lastIndex = findLastWithStartLE(segments, point);
 
-            int count = 0;
-
-            for (int j = 0; j <= idx; j++) {
-                if (segments[j].stop >= p) {
-                    count++;
-                }
+            if (lastIndex == -1) {
+                result[i] = 0;
+                continue;
             }
-            result[i] = count;
-        }
 
-        return result;
-    }
+            // Шаг 2: бинарный поиск первого отрезка с stop >= point среди [0..lastIndex]
+            int firstValidIndex = findFirstWithStopGE(segments, 0, lastIndex, point);
 
-    private int binarySearch(Segment[] arr, int point) {
-        int left = 0, right = arr.length - 1, result = -1;
-        while (left <= right) {
-            int mid = (left + right) / 2;
-            if (arr[mid].start <= point) {
-                result = mid;
-                left = mid + 1;
-            } else {
-                right = mid - 1;
+            if (firstValidIndex == -1) {
+                result[i] = 0;
+                continue;
             }
+
+            // Шаг 3: считаем все отрезки, содержащие точку
+            // (двигаемся от первого найденного влево и вправо)
+            result[i] = countContainingSegments(segments, firstValidIndex, lastIndex, point);
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
@@ -121,6 +117,66 @@ public class C_QSortOptimized {
                 right = lt - 1;
             }
         }
+    }
+    private int findLastWithStartLE(Segment[] arr, int point) {
+        int left = 0;
+        int right = arr.length - 1;
+        int result = -1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (arr[mid].start <= point) {
+                result = mid;
+                left = mid + 1;  // ищем дальше вправо
+            } else {
+                right = mid - 1;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Бинарный поиск первого отрезка с stop >= point в диапазоне [left, right]
+     * @return индекс первого подходящего отрезка или -1
+     */
+    private int findFirstWithStopGE(Segment[] arr, int left, int right, int point) {
+        int result = -1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (arr[mid].stop >= point) {
+                result = mid;
+                right = mid - 1;  // ищем левее, т.к. нужен первый
+            } else {
+                left = mid + 1;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Подсчет количества отрезков, содержащих точку,
+     * начиная с firstValidIndex и расширяясь влево и вправо
+     * среди отрезков с индексами [0..lastIndex]
+     */
+    private int countContainingSegments(Segment[] segments, int firstValid, int lastIndex, int point) {
+        int count = 0;
+
+        // Считаем от firstValid вправо до lastIndex
+        for (int i = firstValid; i <= lastIndex; i++) {
+            if (segments[i].start <= point && segments[i].stop >= point) {
+                count++;
+            }
+        }
+
+        // Считаем от firstValid-1 влево до 0
+        for (int i = firstValid - 1; i >= 0; i--) {
+            if (segments[i].start <= point && segments[i].stop >= point) {
+                count++;
+            }
+        }
+
+        return count;
     }
 
     private void swap(Segment[] arr, int i, int j) {
