@@ -37,14 +37,40 @@ import java.util.Scanner;
 */
 
 public class A_EditDist {
-
+    int[][] memo;
 
     int getDistanceEdinting(String one, String two) {
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        int n = one.length();
+        int m = two.length();
 
+        memo = new int[n + 1][m + 1];
 
-        int result = 0;
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        for (int i = 0; i <= n; i++) {
+            for (int j = 0; j <= m; j++) {
+                memo[i][j] = -1;
+            }
+        }
+
+        return dist(one, two, n, m);
+    }
+
+    int dist(String one, String two, int i, int j) {
+        if (i == 0) return j;
+        if (j == 0) return i;
+
+        if (memo[i][j] != -1) return memo[i][j];
+
+        int cost = (one.charAt(i - 1) == two.charAt(j - 1)) ? 0 : 1;
+
+        int result = Math.min(
+                Math.min(
+                        dist(one, two, i - 1, j) + 1,
+                        dist(one, two, i, j - 1) + 1
+                ),
+                dist(one, two, i - 1, j - 1) + cost
+        );
+
+        memo[i][j] = result;
         return result;
     }
 
