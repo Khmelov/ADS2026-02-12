@@ -40,6 +40,84 @@ public class C_QSortOptimized {
         }
     }
 
+    void swap(int[] dataArray, int i, int j)
+    {
+        if (i != j) {
+            dataArray[i] = dataArray[i] + dataArray[j];
+            dataArray[j] = dataArray[i] - dataArray[j];
+            dataArray[i] = dataArray[i] - dataArray[j];
+        }
+    }
+
+    void quicksort(int[] dataArray, int low, int high) {
+        if (dataArray == null) {
+            System.out.print("Массив пуст, сначала введите массив\n");
+            return;
+        }
+        if (low >= high)
+            return;
+
+        int pivot = dataArray[low + (int)(Math.random() * (high - low + 1))],
+                i = low,
+                j = low,    //current element
+                k = high;
+
+        while (j <= k) {
+            if (dataArray[j] < pivot)
+                swap(dataArray, i++, j++);
+            else
+                if (dataArray[j] > pivot)
+                    swap(dataArray, j, k--);  // Кидаем в самый конец
+                else
+                    ++j;
+        }
+
+        quicksort(dataArray, low, i);
+        quicksort(dataArray, j, high);
+    }
+
+    public int binaryFindLowerBound(int[] arr, int target) {
+        //Поиск последнего индекса элемента, после которого target будет больше за элемент
+        int left;
+        int right;
+        int middle;
+
+        left = 0;
+        right = arr.length;
+        middle = 0;
+
+        while (left < right) {
+            middle = (left + right) / 2;
+
+            if (arr[middle] < target)
+                left = middle + 1;
+            else
+                right = middle;
+        }
+        return left;
+    }
+
+    public int binaryFindUpperBound(int[] arr, int target) {
+        //Поиск последнего индекса элемента, после которого target будет больше за элемент
+        int left;
+        int right;
+        int middle;
+
+        left = 0;
+        right = arr.length;
+        middle = 0;
+
+        while (left < right) {
+            middle = (left + right) / 2;
+
+            if (arr[middle] <= target)
+                left = middle + 1;
+            else
+                right = middle;
+        }
+        return left;
+    }
+
     int[] getAccessory2(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
@@ -64,13 +142,37 @@ public class C_QSortOptimized {
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
+        int[] starts;
+        int[] stops;
+        int startsCount;
+        int endsCount;
+
+        endsCount = 0;
+        startsCount = 0;
+
+        starts = new int[segments.length];
+        stops = new int[segments.length];
+
+        for (int i = 0; i < segments.length; i++) {
+            starts[i] = segments[i].start;
+            stops[i] = segments[i].stop;
+        }
+
+        quicksort(starts, 0, starts.length - 1);
+        quicksort(stops, 0, stops.length - 1);
+
+        for (int i = 0; i < m; i++) {
+            startsCount = binaryFindUpperBound(starts, points[i]); // количество starts ≤ x
+            endsCount   = binaryFindLowerBound(stops, points[i]);   // количество ends < x
+            result[i] = startsCount - endsCount;
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
     //отрезок
-    private class Segment implements Comparable {
+    private class Segment implements Comparable<Segment> {
         int start;
         int stop;
 
@@ -80,7 +182,7 @@ public class C_QSortOptimized {
         }
 
         @Override
-        public int compareTo(Object o) {
+        public int compareTo(Segment o) {
             //подумайте, что должен возвращать компаратор отрезков
             return 0;
         }
