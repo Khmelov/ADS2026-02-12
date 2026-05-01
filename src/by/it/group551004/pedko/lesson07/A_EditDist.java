@@ -34,6 +34,9 @@ import java.util.Scanner;
     Sample Output 3:
     5
 
+    aabbbb
+    bbb
+
 */
 
 public class A_EditDist {
@@ -42,12 +45,28 @@ public class A_EditDist {
     int getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
 
-
         int result = 0;
+        result = dist(one, two);
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
+    int dist(String one, String two) {
+        if (one.isEmpty() || two.isEmpty())
+            return one.length() + two.length();
+        int i = 0;
+        while(i < one.length() && i < two.length() && one.charAt(i) == two.charAt(i))
+            ++i;
+        if(i > 0)
+            return dist(one.substring(i), two.substring(i));
+        else {
+            return 1 + Math.min(
+                    Math.min(
+                    dist(one.substring(1), two),
+                    dist(one, two.substring(1))),
+                    dist(one.substring(1), two.substring(1)));
+        }
+    }
 
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = A_EditDist.class.getResourceAsStream("dataABC.txt");

@@ -19,6 +19,7 @@ import java.util.Scanner;
      операция("+" вставка, "-" удаление, "~" замена, "#" копирование)
      символ замены или вставки
 
+
     Sample Input 1:
     ab
     ab
@@ -51,8 +52,43 @@ public class C_EditDist {
     String getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
 
+        int[][] costs = new int[one.length()+1][two.length()+1];
+        String[][] changes = new String[one.length()+1][two.length()+1];
 
-        String result = "";
+        costs[0][0] = 0;
+        changes[0][0] = "";
+
+        for(int i = 1; i < one.length() + 1; ++i) {
+            costs[i][0] = i;
+            changes[i][0] = changes[i - 1][0] + "-" + one.charAt(i - 1) + ",";
+        }
+        for(int j = 1; j < two.length() + 1; ++j) {
+            costs[0][j] = j;
+            changes[0][j] = changes[0][j - 1] + "+" + two.charAt(j - 1) + ",";
+        }
+
+        for(int i = 1; i < one.length() + 1; ++i) {
+            for(int j = 1; j < two.length() + 1; ++j) {
+                int cost = one.charAt(i-1) == two.charAt(j-1) ? 0 : 1;
+                if(costs[i - 1][j - 1]+cost < costs[i][j - 1] + 1 && costs[i - 1][j - 1]+cost < costs[i - 1][j] + 1) {
+                    if(cost == 0) {
+                        costs[i][j] = costs[i - 1][j - 1];
+                        changes[i][j] = changes[i - 1][j - 1] + "#,";
+                    } else {
+                        costs[i][j] = costs[i - 1][j - 1] + 1;
+                        changes[i][j] = changes[i - 1][j - 1] + "~" + two.charAt(j - 1) + ",";
+                    }
+                } else if(costs[i - 1][j] < costs[i][j - 1]) {
+                    costs[i][j] = costs[i - 1][j] + 1;
+                    changes[i][j] = changes[i - 1][j] + "-" + one.charAt(i - 1) + ",";
+                } else {
+                    costs[i][j] = costs[i][j - 1] + 1;
+                    changes[i][j] = changes[i][j - 1] + "+" + two.charAt(j - 1) + ",";
+                }
+            }
+        }
+
+        String result = changes[one.length()][two.length()];;
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
