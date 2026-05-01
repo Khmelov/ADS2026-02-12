@@ -2,6 +2,7 @@ package by.it.group551004.pedko.lesson08;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /*
@@ -29,23 +30,44 @@ Sample Input 3:
 Sample Output 3:
 3
 
+MySample Input 4:
+5
+4 -1 -2 -100 15    === Более интересный путь
+MySample Output 4:
+4  3  2  -97 17    === Ответ в виде лучшего значения для каждой ступеньки
+
 */
 
 public class C_Stairs {
 
     int getMaxSum(InputStream stream ) {
         Scanner scanner = new Scanner(stream);
-        int n=scanner.nextInt();
-        int stairs[]=new int[n];
+        int n = scanner.nextInt();
+        int stairs[] = new int[n];
         for (int i = 0; i < n; i++) {
             stairs[i]=scanner.nextInt();
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         int result = 0;
 
+        int prev = 0;
+        int prevprev = 0;
+        int[] bestSteps;
+        bestSteps = stairs.clone();
 
+        for (int i = 0; i < n; ++i) {
+            bestSteps[i] = Math.max(bestSteps[i] + prevprev, bestSteps[i] + prev);
+            prevprev = prev;
+            prev = bestSteps[i];
+        }
 
+//        for (int i = 0; i < n; ++i) {
+//            System.out.print(bestSteps[i] + " ");
+//        }
+//
+//        System.out.println();
 
+        result = bestSteps[bestSteps.length - 1];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
