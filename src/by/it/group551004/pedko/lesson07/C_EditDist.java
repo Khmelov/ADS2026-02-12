@@ -62,6 +62,7 @@ public class C_EditDist {
             costs[i][0] = i;
             changes[i][0] = changes[i - 1][0] + "-" + one.charAt(i - 1) + ",";
         }
+
         for(int j = 1; j < two.length() + 1; ++j) {
             costs[0][j] = j;
             changes[0][j] = changes[0][j - 1] + "+" + two.charAt(j - 1) + ",";
@@ -70,7 +71,9 @@ public class C_EditDist {
         for(int i = 1; i < one.length() + 1; ++i) {
             for(int j = 1; j < two.length() + 1; ++j) {
                 int cost = one.charAt(i-1) == two.charAt(j-1) ? 0 : 1;
+
                 if(costs[i - 1][j - 1]+cost < costs[i][j - 1] + 1 && costs[i - 1][j - 1]+cost < costs[i - 1][j] + 1) {
+
                     if(cost == 0) {
                         costs[i][j] = costs[i - 1][j - 1];
                         changes[i][j] = changes[i - 1][j - 1] + "#,";
@@ -78,13 +81,16 @@ public class C_EditDist {
                         costs[i][j] = costs[i - 1][j - 1] + 1;
                         changes[i][j] = changes[i - 1][j - 1] + "~" + two.charAt(j - 1) + ",";
                     }
-                } else if(costs[i - 1][j] < costs[i][j - 1]) {
-                    costs[i][j] = costs[i - 1][j] + 1;
-                    changes[i][j] = changes[i - 1][j] + "-" + one.charAt(i - 1) + ",";
-                } else {
-                    costs[i][j] = costs[i][j - 1] + 1;
-                    changes[i][j] = changes[i][j - 1] + "+" + two.charAt(j - 1) + ",";
-                }
+
+                } else
+
+                    if(costs[i - 1][j] < costs[i][j - 1]) {
+                        costs[i][j] = costs[i - 1][j] + 1;
+                        changes[i][j] = changes[i - 1][j] + "-" + one.charAt(i - 1) + ",";
+                    } else {
+                        costs[i][j] = costs[i][j - 1] + 1;
+                        changes[i][j] = changes[i][j - 1] + "+" + two.charAt(j - 1) + ",";
+                    }
             }
         }
 
