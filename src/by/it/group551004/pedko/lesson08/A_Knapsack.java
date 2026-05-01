@@ -25,7 +25,6 @@ Sample Output:
 10
 
 Sample Input 2:
-
 15 3
 2 8 16
 Sample Output 2:
@@ -45,10 +44,27 @@ public class A_Knapsack {
             gold[i]=scanner.nextInt();
         }
 
+        boolean[] possibles = new boolean[w + 1]; //Массив [0..10]
+        possibles[0] = true;
 
-        int result = 0;
+        for (int i = 1; i < w + 1; ++i)
+            possibles[i] = false;
+
+        for (int i = 0; i < w + 1; ++i) {
+            if (possibles[i])
+                for (int j = 0; j < gold.length; ++j) {
+                    if (i + gold[j] < w + 1) {
+                        possibles[i + gold[j]] = true;
+                    }
+                }
+        }
+
+        for (int i = w; i >= 0; --i)
+            if (possibles[i])
+                return i;
+
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        return 0;
     }
 
 
