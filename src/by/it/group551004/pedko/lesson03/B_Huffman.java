@@ -2,6 +2,8 @@ package by.it.group551004.pedko.lesson03;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 // Lesson 3. B_Huffman.
@@ -58,6 +60,30 @@ public class B_Huffman {
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         //тут запишите ваше решение
 
+        char c;
+        String code;
+        String part;
+        String codedMessage;
+        boolean isNotFound = true;
+
+        Map<String, Character> chars = new HashMap<>();
+
+        for (int i = 0; i < count; ++i) {https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments
+            c = scanner.next().charAt(0);
+            code = scanner.next();
+            chars.put(code, c);
+        }
+
+        codedMessage = scanner.next();
+
+        int start = 0;
+        for(int end = 1; end <= length; ++end) {
+            Character cc = chars.get(codedMessage.substring(start, end));
+            if(cc != null) {
+                result.append(cc);
+                start = end;
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         return result.toString(); //01001100100111
