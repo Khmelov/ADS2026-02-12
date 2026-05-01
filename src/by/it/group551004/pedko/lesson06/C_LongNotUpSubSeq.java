@@ -44,23 +44,58 @@ public class C_LongNotUpSubSeq {
         System.out.print(result);
     }
 
+    int findMaxIndex(int[] data) {
+        int max = 0;
+        for (int i = 1; i < data.length; ++i) {
+            if (data[i] > data[max])
+                max = i;
+        }
+        return max;
+    }
+
     int getNotUpSeqSize(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         //общая длина последовательности
         int n = scanner.nextInt();
-        int[] m = new int[n];
-        //читаем всю последовательность
-        for (int i = 0; i < n; i++) {
-            m[i] = scanner.nextInt();
-        }
-        //тут реализуйте логику задачи методами динамического программирования (!!!)
-        int result = 0;
+        int[] ints = new int[n];
+        int[] sizes = new int[n];
+        int[] prevs = new int[n];
 
+        ints[0] = scanner.nextInt();
+        sizes[0] = 1;
+        prevs[0] = 0;
+
+        for(int i = 1; i < n; ++i) {
+            ints[i] = scanner.nextInt();
+            sizes[i] = 1;
+            prevs[i] = i;
+            for(int j = 0; j < i; ++j) {
+                if(ints[i] <= ints[j] && sizes[i] <= sizes[j]) {
+                    sizes[i] = sizes[j]+1;
+                    prevs[i] = j;
+                }
+            }
+        }
+
+        StringBuilder sAnswer = new StringBuilder();
+
+        int index = findMaxIndex(sizes);
+        while(true) {
+            sAnswer.insert(0, (index+1) + " ");
+            if(prevs[index] == index)
+                break;
+            else
+                index = prevs[index];
+        }
+
+        System.out.println(sAnswer);
+
+        //тут реализуйте логику задачи методами динамического программирования (!!!)
+        int answer = sizes[findMaxIndex(sizes)];
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        return answer;
     }
-
 }

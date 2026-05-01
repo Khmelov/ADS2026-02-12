@@ -37,23 +37,45 @@ public class B_LongDivComSubSeq {
         System.out.print(result);
     }
 
+    int findMax(int[] data) {
+        int max = data[0];
+        for (int i = 1; i < data.length; ++i) {
+            if (data[i] > max)
+                max = data[i];
+        }
+        return max;
+    }
+
+
     int getDivSeqSize(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         //общая длина последовательности
-        int n = scanner.nextInt();
-        int[] m = new int[n];
-        //читаем всю последовательность
-        for (int i = 0; i < n; i++) {
-            m[i] = scanner.nextInt();
-        }
         //тут реализуйте логику задачи методами динамического программирования (!!!)
-        int result = 0;
+        int n = scanner.nextInt();
+        int[] ints = new int[n];
+        int[] sizes = new int[n];
+        int answer = 0;
 
+        ints[0] = scanner.nextInt();
+        sizes[0] = 1;
 
+        for(int i = 1; i < n; ++i) {
+            ints[i] = scanner.nextInt();
+            sizes[i] = 1;
+
+            for(int j = 0; j < i; ++j) {
+                if(ints[i] % ints[j] == 0 && sizes[i] <= sizes[j]) {
+                    sizes[i] = sizes[j]+1;
+                }
+
+            }
+        }
+
+        answer = findMax(sizes);
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        return answer;
     }
 
 }
