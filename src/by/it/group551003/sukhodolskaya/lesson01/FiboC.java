@@ -1,4 +1,4 @@
-package by.it.group551003.suchodolskaya.lesson01;
+package by.it.group551003.sukhodolskaya.lesson01;
 
 /*
  * Даны целые числа 1<=n<=1E18 и 2<=m<=1E5,
