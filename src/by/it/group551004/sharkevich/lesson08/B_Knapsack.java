@@ -37,10 +37,23 @@ public class B_Knapsack {
             gold[i]=scanner.nextInt();
         }
 
+        int[][] dp = new int[n + 1][w + 1];
 
-        int result = 0;
+        for (int i = 0; i <= n; i++)
+            dp[i][0] = 0;
+        for (int j = 0; j <= n; j++)
+            dp[0][j] = 0;
+        for (int i = 1; i <= n; i++)
+            for (int j = 1; j <= w; j++) {
+                dp[i][j] = dp[i - 1][j];
+                if (gold[i - 1] <= j) {
+                    int newHeight = dp[i - 1][j - gold[i - 1]] + gold[i - 1];
+                    if (newHeight > dp[i][j])
+                        dp[i][j] = newHeight;
+                }
+            }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        return dp[n][w];
     }
 
 
