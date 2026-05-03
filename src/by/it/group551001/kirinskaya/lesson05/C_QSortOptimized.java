@@ -63,10 +63,83 @@ public class C_QSortOptimized {
         }
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
-
+        QuickSort3Way(segments, 0, n-1);
+        for(int i = 0; i<m; i++){
+            int point = points[i];
+            int firstindex = findfirstcovering(segments,point);
+            if (firstindex == -1){
+                result[i] = 0;
+            } else {
+                int count = 0;
+                int j = firstindex;
+                while (j<n && segments[j].start <= point ){
+                    if (segments[j].stop >=point){
+                        count++;
+                    }
+                    j++;
+                }
+                result[i]=count;
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
+    }
+
+    private void QuickSort3Way(Segment[] arr, int low, int high){
+        while (low<high){
+            Segment pivot = arr[low];
+            int lt = low;
+            int gt = high;
+            int i =low;
+            while(i<=gt){
+                int cmp= arr[i].compareTo(pivot);
+                if (cmp < 0){
+                    swap(arr, lt, i);
+                    lt++;
+                    i++;
+                } else if (cmp > 0){
+                    swap(arr, i, gt);
+                    gt--;
+                } else {
+                    i++;
+                }
+            }
+            if (lt-low <high - gt){
+                QuickSort3Way(arr, low, lt-1);
+                low = gt + 1;
+            } else {
+                QuickSort3Way(arr, gt+1, high);
+                high = lt-1;
+            }
+        }
+    }
+
+    private int findfirstcovering(Segment[] segments, int point){
+        int left =0;
+        int right = segments.length -1;
+        int result = -1;
+
+        while (left<=right){
+            int mid = left + (right -left)/2;
+            if (segments[mid].start <= point){
+                if (segments[mid].stop >= point){
+                    result = mid;
+                    right = mid-1;
+                } else {
+                    left = mid+1;
+                }
+            }  else {
+                right = mid-1;
+            }
+        }
+        return result;
+    }
+
+    private void swap(Segment[] arr, int i, int j){
+        Segment temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
     }
 
     //отрезок
@@ -75,14 +148,23 @@ public class C_QSortOptimized {
         int stop;
 
         Segment(int start, int stop) {
-            this.start = start;
-            this.stop = stop;
+            if (start<=stop) {
+                this.start = start;
+                this.stop = stop;
+            } else {
+                this.start = stop;
+                this.stop = start;
+            }
         }
 
         @Override
         public int compareTo(Object o) {
+            Segment other = (Segment) o;
             //подумайте, что должен возвращать компаратор отрезков
-            return 0;
+            if (this.start != other.start){
+                return Integer.compare(this.start, other.start);
+            }
+            return Integer.compare(this.stop, other.stop);
         }
     }
 
