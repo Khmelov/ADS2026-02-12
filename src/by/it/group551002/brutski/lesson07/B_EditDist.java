@@ -37,13 +37,45 @@ import java.util.Scanner;
 */
 
 public class B_EditDist {
+    int diff(char a, char b) {
+        if (a == b)
+            return 0;
 
+        return 1;
+    }
+
+    int min(int a, int b, int c) {
+        if (a >= b && b >= c || b >= a && a >= c)
+            return c;
+
+        if (c > a && a > b || a > c && c > b)
+            return b;
+
+        return a;
+    }
 
     int getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
 
+        int n = one.length(), m = two.length();
+        int[][] d = new int[n + 1][m + 1];
 
-        int result = 0;
+        for (int i = 0; i < n + 1; i++) {
+            d[i][0] = i;
+        }
+
+        for (int j = 0; j < m + 1; j++) {
+            d[0][j] = j;
+        }
+
+        for (int i = 1; i < n + 1; i++) {
+            for (int j = 1; j < m + 1; j++) {
+                d[i][j] = min(d[i - 1][j] + 1, d[i][j - 1] + 1,
+                        d[i - 1][j - 1] + diff(one.charAt(i - 1), two.charAt(j - 1)));
+            }
+        }
+
+        int result = d[n][m];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }

@@ -37,15 +37,53 @@ import java.util.Scanner;
 */
 
 public class A_EditDist {
+    int diff(char a, char b) {
+        if (a == b)
+            return 0;
 
+        return 1;
+    }
+
+    int min(int a, int b, int c) {
+        if (a >= b && b >= c || b >= a && a >= c)
+            return c;
+
+        if (c > a && a > b || a > c && c > b)
+            return b;
+
+        return a;
+    }
+
+    int editDist(int[][] d, String s1, String s2, int i, int j) {
+        if (d[i][j] != -1)
+            return d[i][j];
+
+        if (i == 0)
+            d[i][j] = j;
+        else if (j == 0)
+            d[i][j] = i;
+        else {
+            int ins = editDist(d, s1, s2, i, j - 1) + 1;
+            int del = editDist(d, s1, s2,i - 1, j) + 1;
+            int sub = editDist(d, s1, s2, i - 1, j - 1) + diff(s1.charAt(i - 1), s2.charAt(j - 1));
+            d[i][j] = min(ins, del, sub);
+        }
+
+        return d[i][j];
+    }
 
     int getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
 
+        int n = one.length(), m = two.length();
 
+        int[][] d = new int[n + 1][m + 1];
+        for (int i = 0; i < n + 1; i++) {
+            for (int j = 0; j < m + 1; j++)
+                d[i][j] = -1;
+        }
 
-
-        int result = 0;
+        int result = editDist(d, one, two, n, m);
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
