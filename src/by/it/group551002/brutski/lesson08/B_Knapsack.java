@@ -2,6 +2,7 @@ package by.it.group551002.brutski.lesson08;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Scanner;
 
 /*
@@ -37,8 +38,23 @@ public class B_Knapsack {
             gold[i]=scanner.nextInt();
         }
 
+        int[][] d = new int[w + 1][n + 1];
+        for (int i = 0; i < w + 1; i++)
+            d[i][0] = 0;
 
-        int result = 0;
+        for (int i = 0; i < n + 1; i++)
+            d[0][i] = 0;
+
+        for (int i = 1; i < n + 1; i++) {
+            for (int j = 1; j < w + 1; j++) {
+                d[j][i] = d[j][i - 1];
+                if (gold[i - 1] <= j) {
+                    d[j][i] = Math.max(d[j][i], d[j - gold[i - 1]][i - 1] + gold[i - 1]);
+                }
+            }
+        }
+
+        int result = d[w][n];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
