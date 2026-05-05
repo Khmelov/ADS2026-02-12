@@ -26,23 +26,24 @@ Sample Output:
 */
 
 public class B_Knapsack {
-
     int getMaxWeight(InputStream stream ) {
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         Scanner scanner = new Scanner(stream);
         int w=scanner.nextInt();
         int n=scanner.nextInt();
-        int gold[]=new int[n];
+        int[] gold = new int[n];
         for (int i = 0; i < n; i++) {
             gold[i]=scanner.nextInt();
         }
 
+        int[] dp = new int[w + 1];
 
-        int result = 0;
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        // внешний цикл по весам товаров, а внутренний по имеющимся ёмкостям начиная с наибольшей (от 1 до w)
+        for (int i = 0; i < n; i++)
+            for (int j = w; j >= gold[i]; j--)
+                dp[j] = Math.max(dp[j], dp[j - gold[i]] + gold[i]);
+
+        return dp[w];
     }
-
 
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = B_Knapsack.class.getResourceAsStream("dataB.txt");
