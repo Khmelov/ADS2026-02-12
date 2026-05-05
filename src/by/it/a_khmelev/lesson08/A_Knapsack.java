@@ -1,8 +1,5 @@
 package by.it.a_khmelev.lesson08;
 
-import by.it.a_khmelev.lesson07.A_EditDist;
-
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
@@ -48,8 +45,26 @@ public class A_Knapsack {
             gold[i]=scanner.nextInt();
         }
 
+        // Создаем массив для хранения максимального веса для каждой вместимости от 0 до w
+        int[] d = new int[w + 1];
 
-        int result = 0;
+        // Для каждого возможного веса рюкзака от 1 до w
+        for (int i = 1; i <= w; i++) {
+            // Пробуем каждый тип золотого слитка
+            for (int j = 0; j < n; j++) {
+                // Если слиток помещается в текущий объем рюкзака i
+                if (gold[j] <= i) {
+                    // Рассчитываем вес: слиток + лучший результат для оставшегося места
+                    int current = d[i - gold[j]] + gold[j];
+                    // Если получили больше, чем было найдено ранее для веса i, обновляем
+                    if (current > d[i]) {
+                        d[i] = current;
+                    }
+                }
+            }
+        }
+
+        int result = d[w];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
