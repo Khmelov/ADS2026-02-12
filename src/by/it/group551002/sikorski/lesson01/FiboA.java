@@ -8,6 +8,7 @@ import java.math.BigInteger;
 
 public class FiboA {
 
+
     private long startTime = System.currentTimeMillis();
 
     public static void main(String[] args) {
@@ -28,24 +29,23 @@ public class FiboA {
     }
 
     private int calc(int n) {
-        // Простейший вариант рекурсии
-        // Время O(2^n)
+        // Простейший вариант рекурсии O(2^n)
         if (n < 2) {
             return n;
         }
         return calc(n - 1) + calc(n - 2);
     }
 
+
     BigInteger slowA(Integer n) {
-        // Рекурсия без ограничения на размер числа
-        // Время O(2^n)
+        // Рекурсия без ограничения на размер числа O(2^n)
         if (n == 0) {
             return BigInteger.ZERO;
         }
         if (n == 1) {
             return BigInteger.ONE;
         }
-        // Используем метод .add() для сложения объектов BigInteger
+        // Используем метод .add() для сложения BigInteger
         return slowA(n - 1).add(slowA(n - 2));
     }
 }
