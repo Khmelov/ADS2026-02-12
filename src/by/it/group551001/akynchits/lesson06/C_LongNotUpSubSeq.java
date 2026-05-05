@@ -2,6 +2,7 @@ package by.it.group551001.akynchits.lesson06;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /*
@@ -56,7 +57,58 @@ public class C_LongNotUpSubSeq {
             m[i] = scanner.nextInt();
         }
         //тут реализуйте логику задачи методами динамического программирования (!!!)
-        int result = 0;
+        int[] tailsIndices = new int[n];
+
+        int[] parent = new int[n];
+        Arrays.fill(parent, -1);
+
+        int len = 0;
+
+        for (int i = 0; i < n; i++) {
+            // Бинарный поиск
+            int low = 0;
+            int high = len;
+
+            while (low < high) {
+                int mid = low + (high - low) / 2;
+
+                if (m[tailsIndices[mid]] >= m[i]) {
+                    low = mid + 1;
+                } else {
+                    high = mid;
+                }
+            }
+
+            if (low > 0) {
+                parent[i] = tailsIndices[low - 1];
+            }
+
+            tailsIndices[low] = i;
+            if (low == len) {
+                len++;
+            }
+        }
+
+        int result = len;
+
+        // Восстановление пути по индексам
+        int[] path = new int[result];
+        int curr = tailsIndices[result - 1];
+        for (int i = result - 1; i >= 0; i--) {
+            path[i] = curr + 1; // Индексы с 1 по условию
+            curr = parent[curr];
+        }
+
+        // Формирование вывода
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < result; i++) {
+            sb.append(path[i]);
+            if (i < result - 1)
+                sb.append(" ");
+        }
+
+        System.out.println(result);
+        System.out.println(sb.toString());
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
