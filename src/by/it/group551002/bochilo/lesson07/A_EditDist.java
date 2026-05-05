@@ -41,11 +41,27 @@ public class A_EditDist {
 
     int getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-        int result = 0;
+        int m = one.length();
+        int n = two.length();
+        int[][] memo = new int[m + 1][n + 1];
+        for (int[] row : memo) java.util.Arrays.fill(row, -1);
+        int result = rec(one, two, m, n, memo);
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
+    }
+
+    private int rec(String one, String two, int i, int j, int[][] memo) {
+        if (i == 0) return j;
+        if (j == 0) return i;
+        if (memo[i][j] != -1) return memo[i][j];
+        if (one.charAt(i - 1) == two.charAt(j - 1)) {
+            memo[i][j] = rec(one, two, i - 1, j - 1, memo);
+        } else {
+            memo[i][j] = 1 + Math.min(rec(one, two, i - 1, j - 1, memo),
+                             Math.min(rec(one, two, i - 1, j, memo),
+                                      rec(one, two, i, j - 1, memo)));
+        }
+        return memo[i][j];
     }
 
 
