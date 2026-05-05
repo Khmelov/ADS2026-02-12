@@ -10,7 +10,6 @@ import java.util.Scanner;
 
 import javax.swing.text.Segment;
 
-import javafx.scene.effect.Light.Point;
 
 /*
 Видеорегистраторы и площадь.
