@@ -62,13 +62,6 @@ public class A_QSort {
             //читаем начало и конец каждого отрезка
             int start = scanner.nextInt();
             int end = scanner.nextInt();
-            //тут вообще-то лучше доделать конструктор на случай если
-            //концы отрезков придут в обратном порядке
-            if (start > end) {
-                int temp = start;
-                start = end;
-                end = temp;
-            }
             segments[i] = new Segment(start, end);
         }
         //читаем точки
