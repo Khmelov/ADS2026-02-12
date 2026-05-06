@@ -33,29 +33,48 @@ Sample Output 3:
 
 public class C_Stairs {
 
-    int getMaxSum(InputStream stream ) {
+    int getMaxSum(InputStream stream) {
         Scanner scanner = new Scanner(stream);
-        int n=scanner.nextInt();
-        int stairs[]=new int[n];
+        int n = scanner.nextInt();
+        int[] stairs = new int[n];
         for (int i = 0; i < n; i++) {
-            stairs[i]=scanner.nextInt();
+            stairs[i] = scanner.nextInt();
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        int result = 0;
 
+        // Базовые случаи
+        if (n == 0) return 0;
+        if (n == 1) return stairs[0];
 
+        // Создаем массив для динамического программирования
+        // dp[i] = максимальная сумма для достижения ступеньки i (0-индексация)
+        int[] dp = new int[n];
 
+        // Инициализация: на первую ступеньку можно попасть только с нулевой
+        dp[0] = stairs[0];
+
+        // На вторую ступеньку можно попасть либо с нулевой (перешагнув через первую),
+        // либо с первой
+        dp[1] = Math.max(stairs[0] + stairs[1], stairs[1]);
+
+        // Заполняем массив для остальных ступенек
+        for (int i = 2; i < n; i++) {
+            // Для текущей ступеньки i можно прийти:
+            // 1) с предыдущей ступеньки (i-1)
+            // 2) с позапрошлой ступеньки (i-2)
+            dp[i] = Math.max(dp[i - 1], dp[i - 2]) + stairs[i];
+        }
+
+        int result = dp[n - 1];
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
-
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = C_Stairs.class.getResourceAsStream("dataC.txt");
         C_Stairs instance = new C_Stairs();
-        int res=instance.getMaxSum(stream);
+        int res = instance.getMaxSum(stream);
         System.out.println(res);
     }
-
 }
