@@ -46,7 +46,6 @@ public class C_GetInversions {
     int calc(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!
         //размер массива
         int n = scanner.nextInt();
         //сам массив
@@ -54,11 +53,44 @@ public class C_GetInversions {
         for (int i = 0; i < n; i++) {
             a[i] = scanner.nextInt();
         }
-        int result = 0;
-        //!!!!!!!!!!!!!!!!!!!!!!!!     тут ваше решение   !!!!!!!!!!!!!!!!!!!!!!!!
+        return (int) countInversions(a, 0, n - 1);
+    }
+    private long countInversions(int[] a, int left, int right) {
+        long count = 0;
+        if (left < right) {
+            int mid = (left + right) / 2;
 
+            // Считаем инверсии в левой и правой частях
+            count += countInversions(a, left, mid);
+            count += countInversions(a, mid + 1, right);
 
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+            // Считаем инверсии при слиянии
+            count += mergeAndCount(a, left, mid, right);
+        }
+        return count;
+    }
+
+    private long mergeAndCount(int[] a, int left, int mid, int right) {
+        int[] leftArray = java.util.Arrays.copyOfRange(a, left, mid + 1);
+        int[] rightArray = java.util.Arrays.copyOfRange(a, mid + 1, right + 1);
+
+        int i = 0, j = 0, k = left;
+        long swaps = 0;
+
+        while (i < leftArray.length && j < rightArray.length) {
+            if (leftArray[i] <= rightArray[j]) {
+                a[k++] = leftArray[i++];
+            } else {
+                // Если элемент справа меньше, то он меньше всех оставшихся элементов слева
+                a[k++] = rightArray[j++];
+                swaps += (leftArray.length - i); // Вот здесь считаются инверсии
+            }
+        }
+
+        while (i < leftArray.length) a[k++] = leftArray[i++];
+        while (j < rightArray.length) a[k++] = rightArray[j++];
+
+        return swaps;
+
     }
 }

@@ -34,7 +34,6 @@ public class B_MergeSort {
     int[] getMergeSort(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
 
         //размер массива
         int n = scanner.nextInt();
@@ -44,14 +43,60 @@ public class B_MergeSort {
             a[i] = scanner.nextInt();
             System.out.println(a[i]);
         }
-
+        a = mergeSort(a, 0, n - 1);
         // тут ваше решение (реализуйте сортировку слиянием)
+
         // https://ru.wikipedia.org/wiki/Сортировка_слиянием
 
-
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        return a;
+    }
+    private int[] mergeSort(int[] a, int left, int right) {
+        if (left < right) {
+            int mid = (left + right) / 2;
+            mergeSort(a, left, mid);
+            mergeSort(a, mid + 1, right);
+            merge(a, left, mid, right);
+        }
         return a;
     }
 
+    // Слияние двух отсортированных частей
+    private void merge(int[] a, int left, int mid, int right) {
+        int[] leftArray = new int[mid - left + 1];
+        int[] rightArray = new int[right - mid];
+
+        // Копируем данные во временные массивы
+        for (int i = 0; i < leftArray.length; i++)
+            leftArray[i] = a[left + i];
+        for (int j = 0; j < rightArray.length; j++)
+            rightArray[j] = a[mid + 1 + j];
+
+        int i = 0, j = 0;
+        int k = left;
+
+        // Слияние
+        while (i < leftArray.length && j < rightArray.length) {
+            if (leftArray[i] <= rightArray[j]) {
+                a[k] = leftArray[i];
+                i++;
+            } else {
+                a[k] = rightArray[j];
+                j++;
+            }
+            k++;
+        }
+
+        // Дозаписываем остатки, если они есть
+        while (i < leftArray.length) {
+            a[k] = leftArray[i];
+            i++;
+            k++;
+        }
+        while (j < rightArray.length) {
+            a[k] = rightArray[j];
+            j++;
+            k++;
+        }
+    }
 
 }
