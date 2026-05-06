@@ -1,6 +1,8 @@
 package by.it.group551002.sikorski.lesson02;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 /*
 Даны интервальные события events
@@ -32,7 +34,24 @@ public class B_Sheduler {
         List<Event> result;
         result = new ArrayList<>();
         //ваше решение.
+        Arrays.sort(events, new Comparator<Event>() {
+            @Override
+            public int compare(Event e1, Event e2) {
+                return Integer.compare(e1.stop, e2.stop);
+            }
+        });
+        // 2. Итерируемся по отсортированным событиям
+        int lastStop = from; // Время, когда аудитория освобождается
 
+        for (Event event : events) {
+            // Проверяем:
+            // - событие начинается не раньше, чем освободилась аудитория
+            // - событие заканчивается не позже установленного предела 'to'
+            if (event.start >= lastStop && event.stop <= to) {
+                result.add(event);    // Берем событие в расписание
+                lastStop = event.stop; // Теперь аудитория занята до момента окончания этого события
+            }
+        }
 
         return result;          //вернем итог
     }

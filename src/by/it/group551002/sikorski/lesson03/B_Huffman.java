@@ -3,6 +3,8 @@ package by.it.group551002.sikorski.lesson03;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
 
 // Lesson 3. B_Huffman.
 // Восстановите строку по её коду и беспрефиксному коду символов.
@@ -53,11 +55,33 @@ public class B_Huffman {
         StringBuilder result = new StringBuilder();
         //прочитаем строку для кодирования из тестового файла
         Scanner scanner = new Scanner(inputStream);
-        Integer count = scanner.nextInt();
-        Integer length = scanner.nextInt();
+        Integer k = scanner.nextInt();
+        Integer l = scanner.nextInt();
+        scanner.nextLine(); // Переход на следующую строку после чисел
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         //тут запишите ваше решение
+        //Создаем карту для быстрого поиска
+        Map<String, Character> codes = new HashMap<>();
+        for (int i = 0; i < k; i++) {
+            String line = scanner.nextLine(); // Формат "a: 0"
+            char letter = line.charAt(0);
+            String code = line.substring(3); // Отрезаем "x: "
+            codes.put(code, letter);
+        }
 
+        //Читаем зашифрованную строку
+        String encodedString = scanner.next();
+
+        //Декодируем
+        StringBuilder temp = new StringBuilder();
+        for (int i = 0; i < encodedString.length(); i++) {
+            temp.append(encodedString.charAt(i));
+            // Если накопленная последовательность битов есть в словаре
+            if (codes.containsKey(temp.toString())) {
+                result.append(codes.get(temp.toString())); // Добавляем букву
+                temp.setLength(0); // Сбрасываем временную строку для следующей буквы
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         return result.toString(); //01001100100111

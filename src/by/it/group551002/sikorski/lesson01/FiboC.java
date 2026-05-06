@@ -25,7 +25,6 @@ public class FiboC {
         // Находим период Пизано для модуля m
         long period = getPisanoPeriod(m);
 
-
         n = n % period;
 
         if (n <= 1) return n;

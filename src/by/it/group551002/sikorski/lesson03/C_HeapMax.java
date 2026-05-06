@@ -69,30 +69,87 @@ public class C_HeapMax {
     }
 
     private class MaxHeap {
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-        //тут запишите ваше решение.
-        //Будет мало? Ну тогда можете его собрать как Generic и/или использовать в варианте B
         private List<Long> heap = new ArrayList<>();
 
-        int siftDown(int i) { //просеивание вверх
+        // Восстановление инварианта кучи путем перемещения элемента к началу массива
+        int siftUp(int currentIndex) {
+            while (currentIndex > 0) {
+                // Вычисляем индекс вышестоящего узла по формуле (i-1)/2
+                int upperIndex = (currentIndex - 1) / 2;
 
-            return i;
+
+                if (heap.get(currentIndex) <= heap.get(upperIndex)) {
+                    break;
+                }
+
+                // Нарушение инварианта: текущий элемент больше вышестоящего, меняем их местами
+                swap(currentIndex, upperIndex);
+                currentIndex = upperIndex;
+            }
+            return currentIndex;
         }
 
-        int siftUp(int i) { //просеивание вниз
+        // Восстановление инварианта кучи путем перемещения элемента к концу массива
+        int siftDown(int currentIndex) {
+            int heapSize = heap.size();
 
-            return i;
+            while (true) {
+                // Индексы узлов на следующем уровне
+                int leftBranch = 2 * currentIndex + 1;
+                int rightBranch = 2 * currentIndex + 2;
+                int largestIndex = currentIndex;
+
+
+                if (leftBranch < heapSize && heap.get(leftBranch) > heap.get(largestIndex)) {
+                    largestIndex = leftBranch;
+                }
+
+
+                if (rightBranch < heapSize && heap.get(rightBranch) > heap.get(largestIndex)) {
+                    largestIndex = rightBranch;
+                }
+
+                // Если текущий индекс остался наибольшим, инвариант восстановлен
+                if (largestIndex == currentIndex) {
+                    break;
+                }
+
+                // Перемещаем большее значение вверх, а текущее вниз
+                swap(currentIndex, largestIndex);
+                currentIndex = largestIndex;
+            }
+            return currentIndex;
         }
 
-        void insert(Long value) { //вставка
+        void insert(Long value) {
+            // Добавление элемента в конец структуры и запуск балансировки вверх
+            heap.add(value);
+            siftUp(heap.size() - 1);
         }
 
-        Long extractMax() { //извлечение и удаление максимума
-            Long result = null;
+        Long extractMax() {
+            if (heap.isEmpty()) return null;
 
-            return result;
+            Long maxValue = heap.get(0);
+            int lastIndex = heap.size() - 1;
+
+            // Переносим последний элемент массива в начало для сохранения связности
+            Long lastValue = heap.remove(lastIndex);
+
+            if (!heap.isEmpty()) {
+                heap.set(0, lastValue);
+                // Балансировка нового корневого элемента вниз
+                siftDown(0);
+            }
+
+            return maxValue;
         }
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+
+        private void swap(int i, int j) {
+            Long temp = heap.get(i);
+            heap.set(i, heap.get(j));
+            heap.set(j, temp);
+        }
     }
 
     // РЕМАРКА. Это задание исключительно учебное.

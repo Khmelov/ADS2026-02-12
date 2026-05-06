@@ -15,6 +15,7 @@ package by.it.group551002.sikorski.lesson02;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class C_GreedyKnapsack {
@@ -29,10 +30,29 @@ public class C_GreedyKnapsack {
     double calc(InputStream inputStream) throws FileNotFoundException {
         Scanner input = new Scanner(inputStream);
         int n = input.nextInt();      //сколько предметов в файле
-        int W = input.nextInt();      //какой вес у рюкзака
+        int W = input.nextInt();              //какой вес у рюкзака
         Item[] items = new Item[n];   //получим список предметов
         for (int i = 0; i < n; i++) { //создавая каждый конструктором
             items[i] = new Item(input.nextInt(), input.nextInt());
+        }
+        Arrays.sort(items);
+
+        double result = 0;
+        int currentWeight = 0;
+
+        // 2. Жадное наполнение
+        for (Item item : items) {
+            if (currentWeight + item.weight <= W) {
+                // Если предмет влезает целиком — берем его весь
+                result += item.cost;
+                currentWeight += item.weight;
+            } else {
+                // Если не влезает — отрезаем кусок, чтобы заполнить остаток
+                int remainingCapacity = W - currentWeight;
+                result += (double) item.cost * remainingCapacity / item.weight;
+                currentWeight = W;
+                break; // Рюкзак полон
+            }
         }
         //покажем предметы
         for (Item item : items) {
@@ -43,7 +63,7 @@ public class C_GreedyKnapsack {
         //тут необходимо реализовать решение задачи
         //итогом является максимально воможная стоимость вещей в рюкзаке
         //вещи можно резать на кусочки (непрерывный рюкзак)
-        double result = 0;
+        //double result = 0;
         //тут реализуйте алгоритм сбора рюкзака
         //будет особенно хорошо, если с собственной сортировкой
         //кроме того, можете описать свой компаратор в классе Item
@@ -75,9 +95,12 @@ public class C_GreedyKnapsack {
         @Override
         public int compareTo(Item o) {
             //тут может быть ваш компаратор
+            // Удельная стоимость (цена / вес)
+            double r1 = (double) this.cost / this.weight;
+            double r2 = (double) o.cost / o.weight;
 
-
-            return 0;
+            // Сортировка по убыванию: возвращаем -1 если текущий предмет выгоднее
+            return Double.compare(r2, r1);
         }
     }
 }
