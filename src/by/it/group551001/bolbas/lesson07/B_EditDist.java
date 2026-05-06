@@ -38,16 +38,48 @@ import java.util.Scanner;
 
 public class B_EditDist {
 
-
     int getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
 
+        int m = one.length();
+        int n = two.length();
 
-        int result = 0;
+        // Создаем таблицу (m+1) x (n+1)
+        int[][] dp = new int[m + 1][n + 1];
+
+        // Инициализируем базовые случаи
+        for (int i = 0; i <= m; i++) {
+            dp[i][0] = i; // Удалить i символов из первой строки
+        }
+        for (int j = 0; j <= n; j++) {
+            dp[0][j] = j; // Вставить j символов во вторую строку
+        }
+
+        // Заполняем таблицу
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (one.charAt(i - 1) == two.charAt(j - 1)) {
+                    // Символы совпадают, не требуется операций
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    // Вычисляем три операции:
+                    // 1. Замена символа
+                    int replace = dp[i - 1][j - 1] + 1;
+                    // 2. Удаление символа из первой строки
+                    int delete = dp[i - 1][j] + 1;
+                    // 3. Вставка символа во вторую строку
+                    int insert = dp[i][j - 1] + 1;
+
+                    // Берем минимальное значение
+                    dp[i][j] = Math.min(replace, Math.min(delete, insert));
+                }
+            }
+        }
+
+        int result = dp[m][n];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
-
 
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = B_EditDist.class.getResourceAsStream("dataABC.txt");
@@ -57,5 +89,4 @@ public class B_EditDist {
         System.out.println(instance.getDistanceEdinting(scanner.nextLine(), scanner.nextLine()));
         System.out.println(instance.getDistanceEdinting(scanner.nextLine(), scanner.nextLine()));
     }
-
 }

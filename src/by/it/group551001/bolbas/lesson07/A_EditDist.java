@@ -38,16 +38,55 @@ import java.util.Scanner;
 
 public class A_EditDist {
 
-
     int getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
 
+        int m = one.length();
+        int n = two.length();
 
-        int result = 0;
+        // Создаем таблицу для мемоизации, инициализируем -1 (не вычислено)
+        int[][] dp = new int[m + 1][n + 1];
+        for (int i = 0; i <= m; i++) {
+            for (int j = 0; j <= n; j++) {
+                dp[i][j] = -1;
+            }
+        }
+
+        // Рекурсивная функция
+        result = editDistRecursive(one, two, m, n, dp);
+
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
+    private int editDistRecursive(String one, String two, int i, int j, int[][] dp) {
+        // Базовые случаи
+        if (i == 0) return j; // Если первая строка пуста, нужно j вставок
+        if (j == 0) return i; // Если вторая строка пуста, нужно i удалений
+
+        // Если уже вычислено, возвращаем значение
+        if (dp[i][j] != -1) return dp[i][j];
+
+        // Если символы совпадают, рекурсивно вычисляем для оставшихся строк
+        if (one.charAt(i - 1) == two.charAt(j - 1)) {
+            dp[i][j] = editDistRecursive(one, two, i - 1, j - 1, dp);
+        } else {
+            // Вычисляем три операции:
+            // 1. Замена символа
+            int replace = editDistRecursive(one, two, i - 1, j - 1, dp) + 1;
+            // 2. Удаление символа из первой строки
+            int delete = editDistRecursive(one, two, i - 1, j, dp) + 1;
+            // 3. Вставка символа во вторую строку
+            int insert = editDistRecursive(one, two, i, j - 1, dp) + 1;
+
+            // Берем минимальное значение
+            dp[i][j] = Math.min(replace, Math.min(delete, insert));
+        }
+
+        return dp[i][j];
+    }
+
+    int result;
 
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = A_EditDist.class.getResourceAsStream("dataABC.txt");
