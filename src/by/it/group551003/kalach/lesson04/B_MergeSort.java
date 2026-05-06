@@ -32,25 +32,59 @@ public class B_MergeSort {
     }
 
     int[] getMergeSort(InputStream stream) throws FileNotFoundException {
-        //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-
-        //размер массива
         int n = scanner.nextInt();
-        //сам массив
         int[] a = new int[n];
         for (int i = 0; i < n; i++) {
             a[i] = scanner.nextInt();
-            System.out.println(a[i]);
         }
 
-        // тут ваше решение (реализуйте сортировку слиянием)
-        // https://ru.wikipedia.org/wiki/Сортировка_слиянием
+        // Вызываем рекурсивную сортировку
+        mergeSort(a, 0, n - 1);
 
-
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return a;
+    }
+
+    private void mergeSort(int[] a, int left, int right) {
+        if (left < right) {
+            // Находим середину
+            int mid = left + (right - left) / 2;
+
+            // Рекурсивно сортируем левую и правую половины
+            mergeSort(a, left, mid);
+            mergeSort(a, mid + 1, right);
+
+            // Сливаем отсортированные части
+            merge(a, left, mid, right);
+        }
+    }
+
+    private void merge(int[] a, int left, int mid, int right) {
+        // Создаем временные массивы для копирования данных
+        int n1 = mid - left + 1;
+        int n2 = right - mid;
+
+        int[] L = new int[n1];
+        int[] R = new int[n2];
+
+        for (int i = 0; i < n1; i++) L[i] = a[left + i];
+        for (int j = 0; j < n2; j++) R[j] = a[mid + 1 + j];
+
+        // Индексы для прохода по подмассивам и основному массиву
+        int i = 0, j = 0, k = left;
+
+        // Сравниваем элементы из L и R и кладем меньший в основной массив
+        while (i < n1 && j < n2) {
+            if (L[i] <= R[j]) {
+                a[k++] = L[i++];
+            } else {
+                a[k++] = R[j++];
+            }
+        }
+
+        // Докладываем остатки, если они есть
+        while (i < n1) a[k++] = L[i++];
+        while (j < n2) a[k++] = R[j++];
     }
 
 
