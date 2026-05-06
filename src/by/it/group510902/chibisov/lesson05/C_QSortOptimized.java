@@ -64,25 +64,87 @@ public class C_QSortOptimized {
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
+        quickSortOptimized(segments, 0, n - 1);
+
+        for (int i = 0; i < m; i++) {
+            int bound = upperBound(segments, points[i]);
+
+            for (int j = 0; j < bound; j++) {
+                if (points[i] <= segments[j].stop) {
+                    result[i]++;
+                }
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
+    void quickSortOptimized(Segment[] arr, int left, int right) {
+        while (left < right) {
+            int lt = left;
+            int gt = right;
+            int i = left + 1;
+
+            Segment pivot = arr[left + (right - left) / 2];
+
+            arr[left + (right - left) / 2] = arr[left];
+            arr[left] = pivot;
+
+            while (i <= gt) {
+                int cmp = arr[i].compareTo(pivot);
+                if (cmp < 0) {
+                    Segment temp = arr[lt];
+                    arr[lt++] = arr[i];
+                    arr[i++] = temp;
+                } else if (cmp > 0) {
+                    Segment temp = arr[i];
+                    arr[i] = arr[gt];
+                    arr[gt--] = temp;
+                } else {
+                    i++;
+                }
+            }
+
+            if (lt - left < right - gt) {
+                quickSortOptimized(arr, left, lt - 1);
+                left = gt + 1;
+            } else {
+                quickSortOptimized(arr, gt + 1, right);
+                right = lt - 1;
+            }
+        }
+    }
+
+    int upperBound(Segment[] arr, int value) {
+        int left = 0;
+        int right = arr.length;
+        while (left < right) {
+            int current = left + (right - left) / 2;
+
+            if (arr[current].start <= value) {
+                left = current + 1;
+            } else {
+                right = current;
+            }
+        }
+        return left;
+    }
+
     //отрезок
-    private class Segment implements Comparable {
+    private class Segment implements Comparable<Segment>  {
         int start;
         int stop;
 
         Segment(int start, int stop) {
-            this.start = start;
-            this.stop = stop;
+            this.start = Math.min(start,stop);
+            this.stop = Math.max(start,stop);
         }
 
         @Override
-        public int compareTo(Object o) {
+        public int compareTo(Segment o) {
             //подумайте, что должен возвращать компаратор отрезков
-            return 0;
+            return Integer.compare(start, o.start);
         }
     }
 

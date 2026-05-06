@@ -2,6 +2,7 @@ package by.it.group510902.chibisov.lesson05;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /*
@@ -69,9 +70,51 @@ public class A_QSort {
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
+        quickSort(segments, 0, n - 1);
+
+        /*
+        for (int i = 0; i < n; i++) {
+            System.out.println("(" + segments[i].start + "," + segments[i].stop +  ")");
+        }
+        * */
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (segments[j].start > points[i]) break;
+                if (points[i] >= segments[j].start && points[i] <= segments[j].stop) {
+                    result[i]++;
+                }
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
+    }
+
+    void quickSort(Segment[] arr, int left, int right) {
+        if (left >= right) return;
+
+        int mid = partition(arr, left, right);
+
+        quickSort(arr, left, mid);
+        quickSort(arr, mid + 1, right);
+    }
+
+    int partition (Segment[] arr, int left, int right) {
+        Segment pivot = arr[left + (right - left) / 2];
+        int i = left;
+        int j = right;
+
+        while (true) {
+            while (arr[i].compareTo(pivot) < 0) i++;
+            while (arr[j].compareTo(pivot) > 0) j--;
+
+            if(i >= j) return j;
+
+            Segment temp = arr[i];
+            arr[i++] = arr[j];
+            arr[j--] = temp;
+        }
     }
 
     //отрезок
@@ -80,17 +123,16 @@ public class A_QSort {
         int stop;
 
         Segment(int start, int stop) {
-            this.start = start;
-            this.stop = stop;
             //тут вообще-то лучше доделать конструктор на случай если
             //концы отрезков придут в обратном порядке
+            this.start = Math.min(start,stop);
+            this.stop = Math.max(start,stop);
         }
 
         @Override
         public int compareTo(Segment o) {
             //подумайте, что должен возвращать компаратор отрезков
-
-            return 0;
+            return Integer.compare(start, o.start);
         }
     }
 

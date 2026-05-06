@@ -39,7 +39,18 @@ public class B_CountSort {
             points[i] = scanner.nextInt();
         }
         //тут реализуйте логику задачи с применением сортировки подсчетом
+        final int MAX_VALUE = 10;
+        int[] occurrences = new int[MAX_VALUE + 1];
 
+        for (int i = 0; i < n; i++) {
+            occurrences[points[i]]++;
+        }
+
+        for (int i = 0, j = 0; i <= MAX_VALUE; i++) {
+            for (int k = 0; k < occurrences[i]; k++) {
+                points[j++] = i;
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return points;
