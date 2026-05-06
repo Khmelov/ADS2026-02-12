@@ -2,10 +2,11 @@ package by.it.group510902.chibisov.lesson06;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /*
-Задача на программирование: наибольшая невозростающая подпоследовательность
+Задача на программирование: наибольшая невозрастающая подпоследовательность
 
 Дано:
     целое число 1<=n<=1E5 ( ОБРАТИТЕ ВНИМАНИЕ НА РАЗМЕРНОСТЬ! )
@@ -41,7 +42,7 @@ public class C_LongNotUpSubSeq {
         InputStream stream = B_LongDivComSubSeq.class.getResourceAsStream("dataC.txt");
         C_LongNotUpSubSeq instance = new C_LongNotUpSubSeq();
         int result = instance.getNotUpSeqSize(stream);
-        System.out.print(result);
+        //System.out.print(result);
     }
 
     int getNotUpSeqSize(InputStream stream) throws FileNotFoundException {
@@ -58,6 +59,35 @@ public class C_LongNotUpSubSeq {
         //тут реализуйте логику задачи методами динамического программирования (!!!)
         int result = 0;
 
+        int[] dp = new int[n];
+
+        Arrays.fill(dp, 1);
+
+        for (int i = 1; i < n; i++) {
+            int maxlen = 1;
+            for (int j = i - 1; j >= 0; j--) {
+                if (m[j] >= m[i]) {
+                    maxlen = Math.max(maxlen, dp[j] + 1);
+                }
+            }
+            dp[i] = maxlen;
+        }
+
+        for (int i = 0; i < n; i++) result = Math.max(result, dp[i]);
+
+        int[] idc = new int[result];
+
+        System.out.println(result);
+
+        for (int i = n - 1, len = result; i >= 0; i--) {
+            if (dp[i] == len) {
+                idc[len - 1] = i + 1;
+                len--;
+            }
+        }
+
+        for (int i = 0; i < result; i++) System.out.print(idc[i] + " ");
+        System.out.println();
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;

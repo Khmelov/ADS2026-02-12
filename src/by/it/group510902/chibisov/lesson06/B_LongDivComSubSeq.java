@@ -2,6 +2,7 @@ package by.it.group510902.chibisov.lesson06;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /*
@@ -51,6 +52,21 @@ public class B_LongDivComSubSeq {
         //тут реализуйте логику задачи методами динамического программирования (!!!)
         int result = 0;
 
+        int[] dp = new int[n];
+
+        Arrays.fill(dp, 1);
+
+        for (int i = 1; i < n; i++) {
+            int maxlen = 1;
+            for (int j = i - 1; j >= 0; j--) {
+                if (m[i] % m[j] == 0) {
+                    maxlen = Math.max(maxlen, dp[j] + 1);
+                }
+            }
+            dp[i] = maxlen;
+        }
+
+        for (int i = 0; i < n; i++) result = Math.max(result, dp[i]);
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
