@@ -99,7 +99,6 @@ public class C_HeapMax {
                 int rightBranch = 2 * currentIndex + 2;
                 int largestIndex = currentIndex;
 
-
                 if (leftBranch < heapSize && heap.get(leftBranch) > heap.get(largestIndex)) {
                     largestIndex = leftBranch;
                 }
@@ -130,6 +129,7 @@ public class C_HeapMax {
         Long extractMax() {
             if (heap.isEmpty()) return null;
 
+            // Глобальный максимум всегда находится в нулевом индексе
             Long maxValue = heap.get(0);
             int lastIndex = heap.size() - 1;
 
