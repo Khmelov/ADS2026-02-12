@@ -53,7 +53,7 @@ public class C_GreedyKnapsack {
 
         //ваше решение.
         Arrays.sort(items);
-        for(int i = 0; i < items.length && currWeight < W; i++) {
+        for (int i = 0; i < items.length && currWeight < W; i++) {
             if (currWeight + items[i].weight <= W) {
                 result += items[i].cost;
                 currWeight += items[i].weight;
