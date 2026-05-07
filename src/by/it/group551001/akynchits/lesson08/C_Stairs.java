@@ -35,17 +35,29 @@ public class C_Stairs {
 
     int getMaxSum(InputStream stream ) {
         Scanner scanner = new Scanner(stream);
-        int n=scanner.nextInt();
-        int stairs[]=new int[n];
+        int n = scanner.nextInt();
+        int[] stairs = new int[n];
         for (int i = 0; i < n; i++) {
-            stairs[i]=scanner.nextInt();
+            stairs[i] = scanner.nextInt();
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        int result = 0;
 
+        // Массив dp будет хранить максимальную сумму для достижения каждой ступеньки
+        // dp[0] — это "земля" (до первой ступеньки), сумма 0
+        int[] dp = new int[n + 1];
+        dp[0] = 0;
 
+        // Для первой ступеньки вариант только один — шагнуть с земли
+        dp[1] = stairs[0];
 
+        // Для всех остальных ступенек (от 2-й до n-й)
+        for (int i = 2; i <= n; i++) {
+            // Выбираем максимум между тем, чтобы прийти с (i-1) или с (i-2) ступеньки
+            // stairs[i-1] — это значение текущей ступеньки (так как массив stairs 0-индексирован)
+            dp[i] = Math.max(dp[i - 1], dp[i - 2]) + stairs[i - 1];
+        }
 
+        int result = dp[n];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
