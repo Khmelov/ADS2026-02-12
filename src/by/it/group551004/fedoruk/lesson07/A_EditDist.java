@@ -39,34 +39,46 @@ import java.util.Scanner;
 public class A_EditDist {
 
 
+    int[][] memo; // массив для хранения результатов
+
     int getDistanceEdinting(String one, String two) {
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        // !!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!
         int n1 = one.length();
         int n2 = two.length();
-        int[][] dp = new int[n1 + 1][n2 + 1];
 
+        memo = new int[n1 + 1][n2 + 1];
         for (int i = 0; i <= n1; i++) {
-            dp[i][0] = i;
-        }
-        for (int j = 0; j <= n2; j++) {
-            dp[0][j] = j;
-        }
-
-        for (int i = 1; i <= n1; i++) {
-            for (int j = 1; j <= n2; j++) {
-                int cost = (one.charAt(i - 1) == two.charAt(j - 1)) ? 0 : 1;
-
-                int a = dp[i - 1][j] + 1;
-                int b = dp[i][j - 1] + 1;
-                int c = dp[i - 1][j - 1] + cost;
-
-                dp[i][j] = Math.min(a, Math.min(b, c));
+            for (int j = 0; j <= n2; j++) {
+                memo[i][j] = -1;
             }
         }
-        int result = dp[n1][n2];
 
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        // Вызываем рекурсивную вспомогательную функцию
+        int result = editDistanceRecursive(one, two, n1, n2);
+
+        // !!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
+    }
+
+    // Вспомогательная рекурсивная функция
+    private int editDistanceRecursive(String s1, String s2, int i, int j) {
+
+        if (i == 0) return j;
+        if (j == 0) return i;
+
+        if (memo[i][j] != -1) {
+            return memo[i][j];
+        }
+
+        int cost = (s1.charAt(i - 1) == s2.charAt(j - 1)) ? 0 : 1;
+
+        int delete = editDistanceRecursive(s1, s2, i - 1, j) + 1;
+        int insert = editDistanceRecursive(s1, s2, i, j - 1) + 1;
+        int substitute = editDistanceRecursive(s1, s2, i - 1, j - 1) + cost;
+
+        // Сохраняем в память и возвращаем результат
+        memo[i][j] = Math.min(delete, Math.min(insert, substitute));
+        return memo[i][j];
     }
 
 
