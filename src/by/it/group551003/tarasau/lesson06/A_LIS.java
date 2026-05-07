@@ -2,6 +2,7 @@ package by.it.group551003.tarasau.lesson06;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /*
@@ -53,25 +54,18 @@ public class A_LIS {
         int result = 0;
 
         int[] tails = new int[n];
-        int length = 0; // текущая длина LIS
+        int length = 1;
 
-        for (int num : m) {
-            int left = 0, right = length;
+        Arrays.fill(tails, 1);
 
-            while (left < right) {
-                int mid = left + (right - left) / 2;
-                if (tails[mid] < num) {
-                    left = mid + 1;
-                } else {
-                    right = mid;
+        // we're basically calculating the swaps required for arr to become sorted (if bubble-sorted)
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (m[j] < m[i]) {
+                    tails[i] = Math.max(tails[i], tails[j] + 1);
                 }
             }
-
-            tails[left] = num; // вставляем или заменяем
-
-            if (left == length) {
-                length++; // нашли новую бОльшую длину
-            }
+            length = Math.max(length, tails[i]);
         }
 
         result = length;

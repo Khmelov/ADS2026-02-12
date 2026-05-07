@@ -62,43 +62,57 @@ public class C_LongNotUpSubSeq {
         int result = 1;
 
         int[] tails = new int[n];
-        int[] prevs = new int[n];
-        int length = 1;
-        int seqEnd = 0;
-
-        Arrays.fill(tails, 1);
-        Arrays.fill(prevs, -1);
+        int[] tailsI = new int[n];
+        int[] prev = new int[n];
+        int length = 0;
 
         for (int i = 0; i < n; i++) {
-            for (int j = 0; j < i; j++) {
-                if (m[j] >= m[i] && tails[j] + 1 > tails[i]) {
-                    tails[i] = tails[j] + 1;  // запоминаем сколько "вариантов" привело сюда
-                    prevs[i] = j;  // запоминаем позицию предыдущего элемента
+            int left = 0, right = length;
+            // so curr length is 0, we just put the first elem in
+            // then we search in range from 0 to 1, and if elem is >=
+            // we limit it to mid + 1 from left, which puts it through (left == right)
+            // adding it to the LIS, iterating, range expanding, the binary search here
+            // technically operates based off of previous info (last LIS elem), expands length/arr if the elem
+            // is bigger than all of the previous ones using the info that elems before the last one
+            // are all ordered, and changes the already known ones
+            // length never decreases this way, though we only get one of the possible sequences this way
+            while (left < right) {
+                int mid = left + (right - left) / 2;
+                if (tails[mid] >= m[i]) {
+                    left = mid + 1;
+                } else {
+                    right = mid;
                 }
             }
 
-            if (tails[i] > length) {  // увеличиваем только если длина вышла больше чем была
-                length = tails[i];
-                seqEnd = i;  // запоминаем текущий последний элем. последовательности для развёртки
+            tails[left] = m[i];
+            tailsI[left] = i;
+
+            // previous elem in LIS for m[i] — tailsI[left-1]
+            if (left > 0) {
+                prev[i] = tailsI[left - 1];
+            } else {
+                prev[i] = -1;
+            }
+
+            if (left == length) {
+                length++;
             }
         }
 
-        result = length;
-        System.out.println(result);
-
         List<Integer> seq = new ArrayList<>();
-        int current = seqEnd;
+        int current = tailsI[length - 1];
         while (current != -1) {
-            seq.add(current+1);
-            current = prevs[current];  // после записи current, в массиве prevs по индексу current содержится следующий
+            seq.add(current + 1);
+            current = prev[current];
         }
 
-        seq = seq.reversed(); // они записывались в обратном порядке, меняем порядок на прямой
+        seq = seq.reversed();
 
-        for (int i = 0; i < seq.size(); i++) { // вывод
-            System.out.print(seq.get(i) + " ");
-        }
-        System.out.println();
+        System.out.println("Длина: " + length);
+        System.out.println("Индексы: " + seq);
+
+        result = length;
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
