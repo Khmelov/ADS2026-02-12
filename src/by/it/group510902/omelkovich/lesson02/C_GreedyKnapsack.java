@@ -16,7 +16,7 @@ package by.it.group510902.omelkovich.lesson02;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
-
+import java.lang.reflect.Array;
 public class C_GreedyKnapsack {
     public static void main(String[] args) throws FileNotFoundException {
         long startTime = System.currentTimeMillis();
