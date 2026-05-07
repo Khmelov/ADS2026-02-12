@@ -48,9 +48,75 @@ public class B_MergeSort {
         // тут ваше решение (реализуйте сортировку слиянием)
         // https://ru.wikipedia.org/wiki/Сортировка_слиянием
 
-
+        a = mergeSort(a);
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return a;
+    }
+
+    int[] mergeSort(int[] arr) {
+        // если 1 элемент — уже отсортирован
+        if (arr.length <= 1) {
+            return arr;
+        }
+
+        int mid = arr.length / 2;
+
+        // делим массив на 2 части
+        int[] left = new int[mid];
+        int[] right = new int[arr.length - mid];
+
+        // копируем левую часть
+        for (int i = 0; i < mid; i++) {
+            left[i] = arr[i];
+        }
+
+        // копируем правую часть
+        for (int i = mid; i < arr.length; i++) {
+            right[i - mid] = arr[i];
+        }
+
+
+        left = mergeSort(left);
+        right = mergeSort(right);
+
+        // объединяем
+        return merge(left, right);
+    }
+    int[] merge(int[] left, int[] right) {
+        int[] result = new int[left.length + right.length];
+
+        int i = 0; // индекс левого массива
+        int j = 0; // индекс правого массива
+        int k = 0; // индекс результата
+
+        while (i < left.length && j < right.length) {
+
+            // сравниваем элементы
+            if (left[i] <= right[j]) {
+                result[k] = left[i];
+                i++;
+            } else {
+                result[k] = right[j];
+                j++;
+            }
+            k++;
+        }
+
+        // если остались элементы слева
+        while (i < left.length) {
+            result[k] = left[i];
+            i++;
+            k++;
+        }
+
+        // если остались элементы справа
+        while (j < right.length) {
+            result[k] = right[j];
+            j++;
+            k++;
+        }
+
+        return result;
     }
 
 
