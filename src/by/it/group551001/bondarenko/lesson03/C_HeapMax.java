@@ -75,21 +75,62 @@ public class C_HeapMax {
         private List<Long> heap = new ArrayList<>();
 
         int siftDown(int i) { //просеивание вверх
-
+            int size = heap.size();
+            long value = heap.get(i);
+            while (true) {
+                int leftKid = 2 * i + 1;
+                int rightKid = 2 * i + 2;
+                int biggest = i;
+                if (leftKid < size && heap.get(leftKid) > value) {
+                    biggest = leftKid;
+                } else {
+                    biggest = i;
+                }
+                if (rightKid < size && heap.get(rightKid) > heap.get(biggest)) {
+                    biggest = rightKid;
+                }
+                if (biggest != i) {
+                    heap.set(i, heap.get(biggest));
+                    i = biggest;
+                } else {
+                    break;
+                }
+            }
+            heap.set(i, value);
             return i;
         }
 
         int siftUp(int i) { //просеивание вниз
-
+            long value = heap.get(i);
+            while (i > 0) {
+                int parent = (i - 1) / 2;
+                if (value > heap.get(parent)) {
+                    heap.set(i, heap.get(parent));
+                    i = parent;
+                } else {
+                    break;
+                }
+            }
+            heap.set(i, value);
             return i;
         }
 
         void insert(Long value) { //вставка
+            heap.add(value);
+            siftUp(heap.size() - 1);
         }
 
         Long extractMax() { //извлечение и удаление максимума
-            Long result = null;
-
+            Long result = heap.get(0);
+            if (heap.size() == 1) {
+                heap.remove(0);
+                return result;
+            }
+            int lastInd = heap.size() - 1;
+            long lastVal = heap.get(lastInd);
+            heap.set(0, lastVal);
+            heap.remove(lastInd);
+            siftDown(0);
             return result;
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
