@@ -1,4 +1,4 @@
-package by.it.a_khmelev.lesson05;
+package by.it.group510901.kostykovich.lesson05;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -51,6 +51,8 @@ public class C_QSortOptimized {
         int m = scanner.nextInt();
         int[] points = new int[m];
         int[] result = new int[m];
+        int[] starts = new int[n];
+        int[] stops = new int[n];
 
         //читаем сами отрезки
         for (int i = 0; i < n; i++) {
@@ -63,7 +65,18 @@ public class C_QSortOptimized {
         }
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
+        QuickSortOptimized(segments, 0, n - 1);
+        for (int i = 0; i < n; i++) {
+            starts[i] = segments[i].start;
+            stops[i] = segments[i].stop;
+        }
 
+        for (int i = 0; i < m; i++) {
+            int point = points[i];
+            int starts_less = bin_search_count(starts, point + 1);
+            int stops_less = bin_search_count(stops, point);
+            result[i] = starts_less - stops_less;
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
@@ -81,9 +94,71 @@ public class C_QSortOptimized {
 
         @Override
         public int compareTo(Object o) {
+            Segment comp = (Segment) o;
+            if (this.start != comp.start)
+                return Integer.compare(this.start, comp.start);
+
             //подумайте, что должен возвращать компаратор отрезков
-            return 0;
+            return Integer.compare(this.stop, comp.stop);
         }
     }
+    Segment GetMid(Segment a, Segment b, Segment c){
+        if (a.compareTo(b) >= 0 && b.compareTo(c) >= 0 || c.compareTo(b) >= 0 && b.compareTo(a) >= 0)
+            return b;
 
+        if (b.compareTo(a) >= 0 && a.compareTo(c) >= 0 || c.compareTo(a) >= 0 && a.compareTo(b) >= 0)
+            return a;
+
+        return c;
+    }
+    void QuickSortOptimized(Segment[] segs, int l, int r) {
+        while (l < r) {
+            int less = l;
+            int i = less + 1, gr = r;
+            Segment pivot = GetMid(segs[l], segs[(l + r) / 2], segs[r]);
+
+            while (i <= gr) {
+                if (segs[i].compareTo(pivot) < 0) {
+                    Segment temp = segs[less];
+                    segs[less] = segs[i];
+                    segs[i] = temp;
+                    less++;
+                    i++;
+                }
+                else if (segs[i].compareTo(pivot) > 0) {
+                    Segment temp = segs[gr];
+                    segs[gr] = segs[i];
+                    segs[i] = temp;
+                    gr--;
+                }
+                else
+                    i++;
+            }
+
+            if (less - l < r - gr) {
+                QuickSortOptimized(segs, l, less - 1);
+                l = gr + 1;
+            }
+            else {
+                QuickSortOptimized(segs, gr + 1, r);
+                r = less - 1;
+            }
+        }
+    }
+    int bin_search_count(int[] a, int val) {
+        int l = 0, r = a.length - 1;
+        int count = 0;
+
+        while (l <= r) {
+            int mid = (l + r) / 2;
+            if (a[mid] < val) {
+                l = mid + 1;
+                count = mid + 1;
+            }
+            else
+                r = mid - 1;
+        }
+
+        return count;
+    }
 }

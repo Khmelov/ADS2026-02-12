@@ -1,8 +1,10 @@
-package by.it.a_khmelev.lesson05;
+package by.it.group510901.kostykovich.lesson05;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
+import java.util.stream.*; // Импорт всех классов Stream API
 
 /*
 Первая строка содержит число 1<=n<=10000, вторая - n натуральных чисел, не превышающих 10.
@@ -39,8 +41,22 @@ public class B_CountSort {
             points[i] = scanner.nextInt();
         }
         //тут реализуйте логику задачи с применением сортировки подсчетом
+        int min = Arrays.stream(points).min().orElse(0);
+        int max = Arrays.stream(points).max().orElse(Integer.MAX_VALUE);
+        int size = max - min + 1;
+        int[] Counter = new int[size];
+        for(int point : points){
+            Counter[point-min]++;
+        }
+        int index = 0;
+        for(int i = 0; i < size; i++){
+            while(Counter[i] > 0){
+                points[index] = i + min;
+                Counter[i]--;
+                index++;
+            }
 
-
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return points;
     }
