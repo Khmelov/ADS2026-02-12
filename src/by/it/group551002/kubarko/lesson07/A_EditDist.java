@@ -37,13 +37,31 @@ import java.util.Scanner;
 */
 
 public class A_EditDist {
+    int levRec(String one, String two, int m, int n )
+    {
+        if(m == 0) return n;
+        if(n == 0) return m;
 
+        if (one.charAt(m - 1) == two.charAt(n - 1)) {
+            return levRec(one, two, m - 1, n - 1);
+        }
+        return 1 + Math.min(
+                // Insert
+                levRec(one, two, m, n - 1),
+                Math.min(
+                        // Remove
+                        levRec(one, two, m - 1, n),
+
+                        // Replace
+                        levRec(one, two, m - 1, n - 1)
+                )
+        );
+    }
 
     int getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
 
-
-        int result = 0;
+        int result = levRec(one, two, one.length(), two.length());
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
