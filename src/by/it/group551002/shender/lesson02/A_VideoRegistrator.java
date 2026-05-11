@@ -1,6 +1,7 @@
 package by.it.group551002.shender.lesson02;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 /*
 Даны события events
@@ -26,6 +27,15 @@ public class A_VideoRegistrator {
         List<Double> result;
         result = new ArrayList<>();
         int i = 0;
+        Arrays.sort(events);
+        while  (i < events.length) {
+            result.add(events[i]);
+            double startTime = events[i];
+            i++;
+            while (i < events.length && events[i] <= (startTime + workDuration)) {
+                i++;
+            }
+        }
         //i - это индекс события events[i]
         //Комментарии от проверочного решения сохранены для подсказки, но вы можете их удалить.
         //Подготовка к жадному поглощению массива событий
