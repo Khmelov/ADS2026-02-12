@@ -41,7 +41,7 @@ public class C_LongNotUpSubSeq {
         InputStream stream = B_LongDivComSubSeq.class.getResourceAsStream("dataC.txt");
         C_LongNotUpSubSeq instance = new C_LongNotUpSubSeq();
         int result = instance.getNotUpSeqSize(stream);
-        System.out.print(result);
+        //System.out.print(result);
     }
 
     int getNotUpSeqSize(InputStream stream) throws FileNotFoundException {
@@ -55,12 +55,60 @@ public class C_LongNotUpSubSeq {
         for (int i = 0; i < n; i++) {
             m[i] = scanner.nextInt();
         }
-        //тут реализуйте логику задачи методами динамического программирования (!!!)
-        int result = 0;
 
+        //тут реализуйте логику задачи методами динамического программирования (!!!)
+        int[] d = new int[n + 1];
+        d[0] = Integer.MAX_VALUE;
+        int[] lastIdx = new int[n + 1];
+        int[] prev = new int[n];
+
+        int maxLen = 0;
+
+        for (int i = 0; i < n; i++) {
+            int x = m[i];
+
+            int lo = 0, hi = maxLen;
+            while (lo < hi) {
+                int mid = (lo + hi + 1) / 2;
+                if (d[mid] >= x) {
+                    lo = mid;
+                } else {
+                    hi = mid - 1;
+                }
+            }
+
+            int newLen = lo + 1;
+
+
+            prev[i] = (lo == 0) ? -1 : lastIdx[lo];
+
+            d[newLen] = x;        
+            lastIdx[newLen] = i;
+
+            if (newLen > maxLen) {
+                maxLen = newLen;
+            }
+        }
+
+        // восстанавливаем индексы
+        int[] indices = new int[maxLen];
+        int pos = lastIdx[maxLen];
+        for (int k = maxLen - 1; k >= 0; k--) {
+            indices[k] = pos + 1;
+            pos = prev[pos];
+        }
+
+        // вывод результата
+        System.out.println(maxLen);
+        for (int i = 0; i < indices.length; i++) {
+            System.out.print(indices[i]);
+            if (i < indices.length - 1) {
+                System.out.print(" ");
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        return maxLen;
     }
 
 }
