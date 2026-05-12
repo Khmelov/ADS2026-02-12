@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("all")
 public class Lesson01Test {
+
     /*
     для прохождения тестов создайте JUnit-конфигурацию на свой пакет:
     Поля:
