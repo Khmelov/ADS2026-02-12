@@ -1,0 +1,35 @@
+package by.it.group551003.hirzhon.lesson01;
+
+import java.math.BigInteger;
+
+/*
+ * Вам необходимо выполнить способ вычисления чисел Фибоначчи со вспомогательным массивом
+ * без ограничений на размер результата (BigInteger)
+ */
+
+public class FiboB {
+
+    private long startTime = System.currentTimeMillis();
+
+    public static void main(String[] args) {
+        //вычисление чисел простым быстрым методом
+        FiboB fibo = new FiboB();
+        int n = 55555;
+        System.out.printf("fastB(%d)=%d \n\t time=%d \n\n", n, fibo.fastB(n), fibo.time());
+    }
+
+    private long time() {
+        return System.currentTimeMillis() - startTime;
+    }
+
+    BigInteger fastB(Integer n) {
+        BigInteger[] arr = new BigInteger[n + 3];
+        arr[0] = BigInteger.ZERO;
+        arr[1] = BigInteger.ONE;
+        arr[2] = BigInteger.ONE;
+        for (int i = 3; i <= n; i++) arr[i] = arr[i - 2].add(arr[i - 1]);
+        return arr[n];
+    }
+
+}
+
