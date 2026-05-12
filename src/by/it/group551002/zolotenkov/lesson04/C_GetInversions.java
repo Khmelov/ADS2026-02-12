@@ -87,7 +87,7 @@ public class C_GetInversions {
             if (leftArr[i] <= rightArr[j]) {
                 a[k++] = leftArr[i++];
             } else {
-                // Если элемент из правой части меньше элемента из левой — это инверсия!
+                // Если элемент из правой части меньше элемента из левой — это инверсия
                 // Он меньше текущего leftArr[i] и ВСЕХ последующих элементов в leftArr
                 a[k++] = rightArr[j++];
                 swaps += (mid + 1) - (left + i);
