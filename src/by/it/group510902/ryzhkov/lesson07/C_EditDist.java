@@ -51,11 +51,55 @@ public class C_EditDist {
 
     String getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-        String result = "";
+        int m = one.length();
+        int n = two.length();
+        
+        int[][] dp = new int[m + 1][n + 1];
+        
+        for (int j = 0; j <= n; j++) {
+            dp[0][j] = j;
+        }
+        
+        for (int i = 0; i <= m; i++) {
+            dp[i][0] = i;
+        }
+        
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (one.charAt(i - 1) == two.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    int insert = dp[i][j - 1];
+                    int delete = dp[i - 1][j];
+                    int replace = dp[i - 1][j - 1];
+                    dp[i][j] = 1 + Math.min(Math.min(insert, delete), replace);
+                }
+            }
+        }
+        
+        StringBuilder result = new StringBuilder();
+        int i = m;
+        int j = n;
+        
+        while (i > 0 || j > 0) {
+            if (i > 0 && j > 0 && one.charAt(i - 1) == two.charAt(j - 1)) {
+                result.insert(0, "#,");
+                i--;
+                j--;
+            } else if (i > 0 && j > 0 && dp[i][j] == dp[i - 1][j - 1] + 1) {
+                result.insert(0, "~" + two.charAt(j - 1) + ",");
+                i--;
+                j--;
+            } else if (j > 0 && dp[i][j] == dp[i][j - 1] + 1) {
+                result.insert(0, "+" + two.charAt(j - 1) + ",");
+                j--;
+            } else if (i > 0 && dp[i][j] == dp[i - 1][j] + 1) {
+                result.insert(0, "-" + one.charAt(i - 1) + ",");
+                i--;
+            }
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        return result.toString();
     }
 
 

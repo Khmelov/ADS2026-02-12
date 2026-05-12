@@ -79,7 +79,7 @@ public class C_QSortOptimized {
             int countEndsLess = countStrictlyLess(stops, x);
             result[j] = countStarts - countEndsLess;
         }
-
+        
         return result;
     }
 

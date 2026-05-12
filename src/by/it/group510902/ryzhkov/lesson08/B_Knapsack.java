@@ -38,8 +38,15 @@ public class B_Knapsack {
             gold[i]=scanner.nextInt();
         }
 
-
-        int result = 0;
+        int[] dp = new int[w + 1];
+        
+        for (int i = 0; i < n; i++) {
+            for (int capacity = w; capacity >= gold[i]; capacity--) {
+                dp[capacity] = Math.max(dp[capacity], dp[capacity - gold[i]] + gold[i]);
+            }
+        }
+        
+        int result = dp[w];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }

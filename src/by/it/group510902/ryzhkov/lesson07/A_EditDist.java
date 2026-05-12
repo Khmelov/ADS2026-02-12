@@ -41,11 +41,41 @@ public class A_EditDist {
 
     int getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-        int result = 0;
+        int m = one.length();
+        int n = two.length();
+        
+        // Create memoization table
+        Integer[][] memo = new Integer[m + 1][n + 1];
+        
+        int result = editDistanceRecursive(one, two, m, n, memo);
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
+    }
+
+    private int editDistanceRecursive(String one, String two, int i, int j, Integer[][] memo) {
+        if (i == 0) {
+            return j;
+        }
+        
+        if (j == 0) {
+            return i;
+        }
+        
+        if (memo[i][j] != null) {
+            return memo[i][j];
+        }
+        
+        if (one.charAt(i - 1) == two.charAt(j - 1)) {
+            memo[i][j] = editDistanceRecursive(one, two, i - 1, j - 1, memo);
+        } else {
+            int insert = editDistanceRecursive(one, two, i, j - 1, memo);     
+            int delete = editDistanceRecursive(one, two, i - 1, j, memo);    
+            int replace = editDistanceRecursive(one, two, i - 1, j - 1, memo);
+            
+            memo[i][j] = 1 + Math.min(Math.min(insert, delete), replace);
+        }
+        
+        return memo[i][j];
     }
 
 
