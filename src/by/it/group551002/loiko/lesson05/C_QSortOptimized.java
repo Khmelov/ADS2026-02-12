@@ -63,26 +63,117 @@ public class C_QSortOptimized {
         }
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
+        // сортируем отрезки с помощью улучшенной быстрой сортировки
+        quickSort3Way(segments, 0, segments.length - 1);
 
+// создаём массивы начал и концов для бинарного поиска
+        int[] starts = new int[n];
+        int[] stops = new int[n];
+        for (int i = 0; i < n; i++) {
+            starts[i] = segments[i].start;
+            stops[i] = segments[i].stop;
+        }
+
+// для каждой точки находим количество покрывающих отрезков
+        for (int i = 0; i < m; i++) {
+            int point = points[i];
+
+            // первый отрезок, у которого start > point
+            int firstGreater = binarySearchFirstGreater(starts, point);
+
+            if (firstGreater == 0) {
+                result[i] = 0;
+                continue;
+            }
+
+            int count = 0;
+            for (int j = 0; j < firstGreater; j++) {
+                if (stops[j] >= point) {
+                    count++;
+                }
+            }
+            result[i] = count;
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
+        // бинарный поиск первого элемента > x
+        private int binarySearchFirstGreater(int[] arr, int x) {
+            int left = 0;
+            int right = arr.length - 1;
+            int result = arr.length;
+
+            while (left <= right) {
+                int mid = (left + right) / 2;
+                if (arr[mid] > x) {
+                    result = mid;
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
+            }
+            return result;
+        }
+
+// улучшенная быстрая сортировка с 3-разбиением и устранением хвостовой рекурсии
+        private void quickSort3Way(Segment[] arr, int left, int right) {
+            while (left < right) {
+                int mid = (left + right) / 2;
+                if (arr[left].compareTo(arr[mid]) > 0) swap(arr, left, mid);
+                if (arr[left].compareTo(arr[right]) > 0) swap(arr, left, right);
+                if (arr[mid].compareTo(arr[right]) > 0) swap(arr, mid, right);
+                swap(arr, mid, right - 1);
+                Segment pivot = arr[right - 1];
+
+                int i = left;
+                int j = right - 1;
+                int k = left;
+
+                while (k <= j) {
+                    int cmp = arr[k].compareTo(pivot);
+                    if (cmp < 0) {
+                        swap(arr, i, k);
+                        i++;
+                        k++;
+                    } else if (cmp > 0) {
+                        swap(arr, j, k);
+                        j--;
+                    } else {
+                        k++;
+                    }
+                }
+
+                quickSort3Way(arr, left, i - 1);
+                left = j + 1;
+            }
+        }
+
+// вспомогательный метод для обмена элементов
+        private void swap(Segment[] arr, int i, int j) {
+            Segment temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+
+
 
     //отрезок
-    private class Segment implements Comparable {
+    private class Segment implements Comparable<Segment> {
         int start;
         int stop;
 
         Segment(int start, int stop) {
-            this.start = start;
-            this.stop = stop;
+            this.start = Math.min(start, stop);
+            this.stop = Math.max(start, stop);
         }
 
         @Override
-        public int compareTo(Object o) {
-            //подумайте, что должен возвращать компаратор отрезков
-            return 0;
+        public int compareTo(Segment o) {
+            if (this.start != o.start) {
+                return Integer.compare(this.start, o.start);
+            }
+            return Integer.compare(this.stop, o.stop);
         }
     }
 

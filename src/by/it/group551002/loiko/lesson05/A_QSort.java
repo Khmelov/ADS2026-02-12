@@ -68,10 +68,71 @@ public class A_QSort {
         }
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
+        // сортируем отрезки по началу (start)
+        quickSort(segments, 0, segments.length - 1);
 
+        // для каждой точки находим количество покрывающих её отрезков
+        for (int i = 0; i < m; i++) {
+            int point = points[i];
+            int count = 0;
 
+            // ищем первый отрезок, у которого start > point
+            // все отрезки до него имеют start <= point
+            int left = 0;
+            int right = segments.length - 1;
+            int lastValid = -1;
+
+            while (left <= right) {
+                int mid = (left + right) / 2;
+                if (segments[mid].start <= point) {
+                    lastValid = mid;
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            }
+
+            // теперь проверяем все отрезки от 0 до lastValid на условие stop >= point
+            for (int j = 0; j <= lastValid; j++) {
+                if (segments[j].stop >= point) {
+                    count++;
+                }
+            }
+
+            result[i] = count;
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
+    }
+
+    // быстрая сортировка отрезков по start
+    private void quickSort(Segment[] segments, int low, int high) {
+        if (low < high) {
+            int pivotIndex = partition(segments, low, high);
+            quickSort(segments, low, pivotIndex - 1);
+            quickSort(segments, pivotIndex + 1, high);
+        }
+    }
+
+    // разделение массива относительно опорного элемента
+    private int partition(Segment[] segments, int low, int high) {
+        Segment pivot = segments[high];
+        int i = low - 1;
+
+        for (int j = low; j < high; j++) {
+            if (segments[j].start <= pivot.start) {
+                i++;
+                Segment temp = segments[i];
+                segments[i] = segments[j];
+                segments[j] = temp;
+            }
+        }
+
+        Segment temp = segments[i + 1];
+        segments[i + 1] = segments[high];
+        segments[high] = temp;
+
+        return i + 1;
     }
 
     //отрезок
@@ -80,17 +141,21 @@ public class A_QSort {
         int stop;
 
         Segment(int start, int stop) {
-            this.start = start;
-            this.stop = stop;
-            //тут вообще-то лучше доделать конструктор на случай если
-            //концы отрезков придут в обратном порядке
+            // если концы пришли в обратном порядке, исправляем
+            if (start <= stop) {
+                this.start = start;
+                this.stop = stop;
+            } else {
+                this.start = stop;
+                this.stop = start;
+            }
         }
 
         @Override
         public int compareTo(Segment o) {
             //подумайте, что должен возвращать компаратор отрезков
-
-            return 0;
+            // сортируем по началу отрезка (start)
+            return Integer.compare(this.start, o.start);
         }
     }
 
