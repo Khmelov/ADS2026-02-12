@@ -45,7 +45,6 @@ public class A_Knapsack {
         for (int i = 0; i < n; i++) {
             gold[i] = scanner.nextInt();
         }
-        int result = 0;
         int[] capacity = new int[w + 1];
         Arrays.fill(capacity, 0);
         for (int i = 1; i < w + 1; i++)
