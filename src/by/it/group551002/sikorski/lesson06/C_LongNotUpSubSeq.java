@@ -47,20 +47,66 @@ public class C_LongNotUpSubSeq {
     int getNotUpSeqSize(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         //общая длина последовательности
         int n = scanner.nextInt();
-        int[] m = new int[n];
+        int[] a = new int[n];
         //читаем всю последовательность
         for (int i = 0; i < n; i++) {
-            m[i] = scanner.nextInt();
+            a[i] = scanner.nextInt();
         }
         //тут реализуйте логику задачи методами динамического программирования (!!!)
-        int result = 0;
+        if (n == 0) return 0;
 
+        // tailsIdx[i] хранит индекс последнего элемента подпоследовательности длины i+1
+        int[] tailsIdx = new int[n];
+        // prev[i] хранит индекс предыдущего элемента для i в подпоследовательности
+        int[] prev = new int[n];
+        int len = 0;
 
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        for (int i = 0; i < n; i++) {
+            // Бинарный поиск: ищем первый элемент в tailsIdx, который меньше a[i]
+            // Т.к. ищем невозрастающую, tailsIdx будет содержать значения в невозрастающем порядке
+            int l = 0, r = len - 1;
+            int pos = len;
+            while (l <= r) {
+                int mid = l + (r - l) / 2;
+                if (a[tailsIdx[mid]] < a[i]) {
+                    pos = mid;
+                    r = mid - 1;
+                } else {
+                    l = mid + 1;
+                }
+            }
+
+            if (pos == len) {
+                // Увеличиваем длину подпоследовательности
+                if (len > 0) prev[i] = tailsIdx[len - 1];
+                else prev[i] = -1;
+                tailsIdx[len++] = i;
+            } else {
+                // Обновляем существующую длину более выгодным (большим) значением
+                if (pos > 0) prev[i] = tailsIdx[pos - 1];
+                else prev[i] = -1;
+                tailsIdx[pos] = i;
+            }
+        }
+
+        // Восстановление пути (индексов)
+        int[] resultIndices = new int[len];
+        int curr = tailsIdx[len - 1];
+        for (int i = len - 1; i >= 0; i--) {
+            resultIndices[i] = curr + 1; // Переводим в 1-индексацию
+            curr = prev[curr];
+        }
+
+        // Вывод согласно Sample Output: сначала длина, потом индексы
+        System.out.println(len);
+        for (int i = 0; i < len; i++) {
+            System.out.print(resultIndices[i] + (i == len - 1 ? "" : " "));
+        }
+        System.out.println();
+
+        return len;
     }
 
 }

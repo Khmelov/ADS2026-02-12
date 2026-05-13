@@ -40,7 +40,6 @@ public class B_LongDivComSubSeq {
     int getDivSeqSize(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         //общая длина последовательности
         int n = scanner.nextInt();
         int[] m = new int[n];
@@ -49,10 +48,27 @@ public class B_LongDivComSubSeq {
             m[i] = scanner.nextInt();
         }
         //тут реализуйте логику задачи методами динамического программирования (!!!)
+        // dp[i] — максимальная длина кратной подпоследовательности,
+        // завершающейся на элементе m[i]
+        int[] dp = new int[n];
+
         int result = 0;
 
-
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        for (int i = 0; i < n; i++) {
+            // Минимальная длина всегда 1 (само число)
+            dp[i] = 1;
+            for (int j = 0; j < i; j++) {
+                // Условие: текущее число должно делиться на предыдущее
+                // И длина цепочки через j должна быть больше текущей для i
+                if (m[i] % m[j] == 0 && dp[j] + 1 > dp[i]) {
+                    dp[i] = dp[j] + 1;
+                }
+            }
+            // Обновляем глобальный максимум
+            if (dp[i] > result) {
+                result = dp[i];
+            }
+        }
         return result;
     }
 

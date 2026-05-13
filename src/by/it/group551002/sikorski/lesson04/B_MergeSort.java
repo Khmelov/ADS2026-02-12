@@ -44,7 +44,6 @@ public class B_MergeSort {
             System.out.println(a[i]);
         }
         a = mergeSort(a, 0, n - 1);
-        // тут ваше решение (реализуйте сортировку слиянием)
 
         // https://ru.wikipedia.org/wiki/Сортировка_слиянием
 
@@ -86,7 +85,6 @@ public class B_MergeSort {
             k++;
         }
 
-        // Дозаписываем остатки, если они есть
         while (i < leftArray.length) {
             a[k] = leftArray[i];
             i++;

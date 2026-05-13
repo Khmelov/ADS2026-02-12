@@ -86,7 +86,7 @@ public class A_QSort {
     private void quickSort(int[] arr, int left, int right) {
         while (left < right) {
             int m = partition(arr, left, right);
-            // Оптимизация хвостовой рекурсии: выбираем меньшую часть для рекурсии
+            // выбираем меньшую часть для рекурсии
             if (m - left < right - m) {
                 quickSort(arr, left, m);
                 left = m + 1;

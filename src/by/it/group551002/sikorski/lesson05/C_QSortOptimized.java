@@ -43,7 +43,6 @@ public class C_QSortOptimized {
     int[] getAccessory2(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
-        //!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!
         //число отрезков отсортированного массива
         int n = scanner.nextInt();
         Segment[] segments = new Segment[n];
@@ -63,10 +62,66 @@ public class C_QSortOptimized {
         }
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
+        quickSort(segments, 0, n - 1);
 
-
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        for (int i = 0; i < m; i++) {
+            result[i] = countCoverage(segments, points[i]);
+        }
         return result;
+    }
+
+    private void quickSort(Segment[] arr, int left, int right) {
+        while (left < right) {
+            // 3-разбиение
+            int lt = left, i = left + 1, gt = right;
+            Segment pivot = arr[left];
+            while (i <= gt) {
+                int cmp = arr[i].compareTo(pivot);
+                if (cmp < 0) swap(arr, lt++, i++);
+                else if (cmp > 0) swap(arr, i, gt--);
+                else i++;
+            }
+            if (lt - left < right - gt) {
+                quickSort(arr, left, lt - 1);
+                left = gt + 1;
+            } else {
+                quickSort(arr, gt + 1, right);
+                right = lt - 1;
+            }
+        }
+    }
+
+    private void swap(Segment[] arr, int i, int j) {
+        Segment temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
+    private int countCoverage(Segment[] segments, int point) {
+        // Бинарный поиск первого отрезка, который может содержать точку (по start)
+        int left = 0, right = segments.length - 1;
+        int firstPossible = -1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (segments[mid].start <= point) {
+                firstPossible = mid;
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        if (firstPossible == -1) return 0;
+
+        // Линейный обход найденной части решения
+        int count = 0;
+        for (int i = 0; i <= firstPossible; i++) {
+            if (segments[i].stop >= point) {
+                count++;
+            }
+        }
+        return count;
     }
 
     //отрезок
