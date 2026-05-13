@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 /*
-Задача на программирование: наибольшая невозростающая подпоследовательность
+Задача на программирование: наибольшая невозрастающая подпоследовательность
 
 Дано:
     целое число 1<=n<=1E5 ( ОБРАТИТЕ ВНИМАНИЕ НА РАЗМЕРНОСТЬ! )
@@ -38,7 +38,7 @@ import java.util.Scanner;
 public class C_LongNotUpSubSeq {
 
     public static void main(String[] args) throws FileNotFoundException {
-        InputStream stream = B_LongDivComSubSeq.class.getResourceAsStream("dataC.txt");
+        InputStream stream = C_LongNotUpSubSeq.class.getResourceAsStream("dataC.txt");
         C_LongNotUpSubSeq instance = new C_LongNotUpSubSeq();
         int result = instance.getNotUpSeqSize(stream);
         System.out.print(result);
@@ -55,12 +55,49 @@ public class C_LongNotUpSubSeq {
         for (int i = 0; i < n; i++) {
             m[i] = scanner.nextInt();
         }
-        //тут реализуйте логику задачи методами динамического программирования (!!!)
-        int result = 0;
 
+        int[] tails = new int[n];
+        int[] tailsIndices = new int[n];
+        int[] prev = new int[n];
+        int len = 0;
 
+        for (int i = 0; i < n; i++) {
+            int x = m[i];
+            // Бинарный поиск места для x в невозрастающей последовательности
+            int low = 0, high = len;
+            while (low < high) {
+                int mid = (low + high) / 2;
+                if (tails[mid] >= x) {
+                    low = mid + 1;
+                } else {
+                    high = mid;
+                }
+            }
+
+            tails[low] = x;
+            tailsIndices[low] = i;
+            prev[i] = (low > 0) ? tailsIndices[low - 1] : -1;
+
+            if (low == len) {
+                len++;
+            }
+        }
+
+        int[] resultIndices = new int[len];
+        int curr = tailsIndices[len - 1];
+        for (int i = len - 1; i >= 0; i--) {
+            resultIndices[i] = curr + 1;
+            curr = prev[curr];
+        }
+
+        System.out.println(len);
+        for (int i = 0; i < len; i++) {
+            System.out.print(resultIndices[i] + (i == len - 1 ? "" : " "));
+        }
+        System.out.println();
+
+        int result = len;
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
-
 }

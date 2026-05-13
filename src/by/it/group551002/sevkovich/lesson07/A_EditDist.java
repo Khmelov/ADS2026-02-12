@@ -2,6 +2,7 @@ package by.it.group551002.sevkovich.lesson07;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /*
@@ -41,11 +42,30 @@ public class A_EditDist {
 
     int getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        int n = one.length();
+        int m = two.length();
+        int[][] memo = new int[n + 1][m + 1];
+        for (int[] row : memo) {
+            Arrays.fill(row, -1);
+        }
+        return editDistRecursive(one, two, n, m, memo);
+    }
 
+    private int editDistRecursive(String s1, String s2, int n, int m, int[][] memo) {
+        if (n == 0) return m;
+        if (m == 0) return n;
+        if (memo[n][m] != -1) return memo[n][m];
 
-        int result = 0;
+        int cost = (s1.charAt(n - 1) == s2.charAt(m - 1)) ? 0 : 1;
+
+        int res = Math.min(
+                Math.min(editDistRecursive(s1, s2, n - 1, m, memo) + 1,      // удаление
+                        editDistRecursive(s1, s2, n, m - 1, memo) + 1),     // вставка
+                editDistRecursive(s1, s2, n - 1, m - 1, memo) + cost         // замена
+        );
+
+        return memo[n][m] = res;
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
     }
 
 

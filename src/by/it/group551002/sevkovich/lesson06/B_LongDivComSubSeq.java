@@ -44,12 +44,20 @@ public class B_LongDivComSubSeq {
         //общая длина последовательности
         int n = scanner.nextInt();
         int[] m = new int[n];
+        int[] d = new int[n];
         //читаем всю последовательность
         for (int i = 0; i < n; i++) {
             m[i] = scanner.nextInt();
+            d[i] = 1;
         }
-        //тут реализуйте логику задачи методами динамического программирования (!!!)
         int result = 0;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (d[i]<=d[j] && m[i]%m[j]==0) d[i]=d[j]+1;
+            }
+        }
+        result = d[n-1];
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!

@@ -37,8 +37,16 @@ public class B_Knapsack {
             gold[i]=scanner.nextInt();
         }
 
+        int[] dp = new int[w + 1];
 
-        int result = 0;
+        for (int i = 0; i < n; i++) {
+            // Идем с конца в начало, чтобы не учитывать один и тот же слиток дважды
+            for (int j = w; j >= gold[i]; j--) {
+                dp[j] = Math.max(dp[j], dp[j - gold[i]] + gold[i]);
+            }
+        }
+
+        int result = dp[w];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
