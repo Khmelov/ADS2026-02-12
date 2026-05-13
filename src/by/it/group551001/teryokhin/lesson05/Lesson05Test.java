@@ -1,4 +1,4 @@
-package lesson05;
+package by.it.group551001.teryokhin.lesson05;
 
 import org.junit.Test;
 
