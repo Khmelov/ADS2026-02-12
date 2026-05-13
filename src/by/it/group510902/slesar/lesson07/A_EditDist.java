@@ -39,41 +39,37 @@ import java.util.Scanner;
 public class A_EditDist {
 
 
-    int getDistanceEdinting(String one, String two) {
+    int levenshtein(String one, String two, int i, int j) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
 
-        int n = one.length();
-        int m = two.length();
-
-        // Таблица dp размером (n+1) x (m+1)
-        int[][] dp = new int[n + 1][m + 1];
-
-        // Базовые случаи: превращение строки в пустую
-        for (int i = 0; i <= n; i++) dp[i][0] = i; // удалить i символов
-        for (int j = 0; j <= m; j++) dp[0][j] = j; // вставить j символов
-
-        // Заполняем таблицу
-        for (int i = 1; i <= n; i++) {
-            for (int j = 1; j <= m; j++) {
-                if (one.charAt(i - 1) == two.charAt(j - 1)) {
-                    // Символы совпадают — берём диагональ без штрафа
-                    dp[i][j] = dp[i - 1][j - 1];
-                } else {
-                    // Символы разные — минимум из трёх операций + 1
-                    dp[i][j] = 1 + Math.min(
-                            dp[i - 1][j - 1],  // замена
-                            Math.min(
-                                    dp[i - 1][j],  // удаление
-                                    dp[i][j - 1]   // вставка
-                            )
-                    );
-                }
-            }
+        // базовые случаи
+        if (i == 0) {
+            return j;
         }
 
-        return dp[n][m];
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        if (j == 0) {
+            return i;
+        }
+
+        // если символы одинаковые
+        if (one.charAt(i - 1) == two.charAt(j - 1)) {
+            return levenshtein(one, two, i - 1, j - 1);
+        }
+
+        // операции
+        int replace = levenshtein(one, two, i - 1, j - 1);
+        int delete = levenshtein(one, two, i - 1, j);
+        int insert = levenshtein(one, two, i, j - 1);
+
+        return 1 + Math.min(replace, Math.min(delete, insert));
     }
+
+
+    int getDistanceEdinting(String one, String two) {
+
+        return levenshtein(one, two, one.length(), two.length());
+    }
+        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
 
 
     public static void main(String[] args) throws FileNotFoundException {
