@@ -47,8 +47,46 @@ public class B_MergeSort {
 
         // тут ваше решение (реализуйте сортировку слиянием)
         // https://ru.wikipedia.org/wiki/Сортировка_слиянием
+        interface Sorter {
+            void sort(int left, int right);
+        }
 
+        interface Merger {
+            void merge(int left, int mid, int right);
+        }
 
+        Merger merger = (left, mid, right) -> {
+            int[] temp = new int[right - left + 1];
+            int i = left;
+            int j = mid + 1;
+            int k = 0;
+
+            while (i <= mid && j <= right) {
+                if (a[i] <= a[j]) {
+                    temp[k++] = a[i++];
+                } else {
+                    temp[k++] = a[j++];
+                }
+            }
+            while (i <= mid) temp[k++] = a[i++];
+            while (j <= right) temp[k++] = a[j++];
+            for (int t = 0; t < temp.length; t++) {
+                a[left + t] = temp[t];
+            }
+        };
+
+        Sorter sorter = new Sorter() {
+            @Override
+            public void sort(int left, int right) {
+                if (left >= right) return;
+                int mid = (left + right) / 2;
+                sort(left, mid);
+                sort(mid + 1, right);
+                merger.merge(left, mid, right);
+            }
+        };
+
+        sorter.sort(0, n - 1);
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return a;
     }
