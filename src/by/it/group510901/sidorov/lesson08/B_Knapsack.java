@@ -36,9 +36,29 @@ public class B_Knapsack {
         for (int i = 0; i < n; i++) {
             gold[i]=scanner.nextInt();
         }
+        // Таблица: dp[слитки][вместимость]
+        int[][] dp = new int[n + 1][w + 1];
 
+        for (int i = 1; i <= n; i++) {
+            for (int currW = 1; currW <= w; currW++) {
+                // По умолчанию - не берем текущий слиток
+                dp[i][currW] = dp[i - 1][currW];
 
-        int result = 0;
+                // Текущий слиток имеет индекс i-1 в массиве gold
+                int currentGoldWeight = gold[i - 1];
+
+                // Если слиток влезает в текущий воображаемый рюкзак
+                if (currentGoldWeight <= currW) {
+                    // Проверяем: станет ли лучше, если мы его возьмем?
+                    int alternative = dp[i - 1][currW - currentGoldWeight] + currentGoldWeight;
+                    if (alternative > dp[i][currW]) {
+                        dp[i][currW] = alternative;
+                    }
+                }
+            }
+        }
+
+        int result = dp[n][w];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }

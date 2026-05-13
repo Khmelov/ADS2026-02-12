@@ -44,9 +44,29 @@ public class A_Knapsack {
         for (int i = 0; i < n; i++) {
             gold[i]=scanner.nextInt();
         }
+        // Массив, где dp[i] - макс. вес для рюкзака вместимостью i
+        int[] dp = new int[w + 1];
 
+        // Перебираем все возможные вместимости от 1 до W
+        for (int currW = 1; currW <= w; currW++) {
+            // Для каждой вместимости пробуем каждый тип слитка
+            for (int i = 0; i < n; i++) {
+                int goldWeight = gold[i];
 
-        int result = 0;
+                // Если слиток вообще влезает в текущий рюкзак
+                if (goldWeight <= currW) {
+                    // Рассчитываем: вес слитка + лучший вес для оставшегося места
+                    int totalWeight = goldWeight + dp[currW - goldWeight];
+
+                    // Если этот вариант лучше того, что мы уже находили для currW
+                    if (totalWeight > dp[currW]) {
+                        dp[currW] = totalWeight;
+                    }
+                }
+            }
+        }
+
+        int result = dp[w];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
