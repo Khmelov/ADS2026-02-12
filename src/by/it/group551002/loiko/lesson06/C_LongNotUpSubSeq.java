@@ -45,22 +45,69 @@ public class C_LongNotUpSubSeq {
     }
 
     int getNotUpSeqSize(InputStream stream) throws FileNotFoundException {
-        //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        //общая длина последовательности
         int n = scanner.nextInt();
         int[] m = new int[n];
-        //читаем всю последовательность
         for (int i = 0; i < n; i++) {
             m[i] = scanner.nextInt();
         }
-        //тут реализуйте логику задачи методами динамического программирования (!!!)
-        int result = 0;
 
+        // tail[k] - минимальный последний элемент невозрастающей подпоследовательности длины k+1
+        int[] tail = new int[n];
+        // pos[k] - индекс в исходном массиве элемента tail[k]
+        int[] pos = new int[n];
+        // prev[i] - индекс предыдущего элемента в подпоследовательности для m[i]
+        int[] prev = new int[n];
 
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        int length = 0; // текущая длина НВП
+
+        for (int i = 0; i < n; i++) {
+            // бинарный поиск: ищем позицию для вставки m[i]
+            // так как последовательность невозрастающая, ищем первый элемент < m[i]
+            int left = 0;
+            int right = length;
+
+            while (left < right) {
+                int mid = (left + right) / 2;
+                if (tail[mid] < m[i]) {
+                    right = mid;
+                } else {
+                    left = mid + 1;
+                }
+            }
+
+            // left - позиция, куда вставляем m[i]
+            tail[left] = m[i];
+            pos[left] = i;
+
+            // запоминаем предыдущий элемент в подпоследовательности
+            if (left > 0) {
+                prev[i] = pos[left - 1];
+            } else {
+                prev[i] = -1;
+            }
+
+            if (left == length) {
+                length++;
+            }
+        }
+
+        // восстанавливаем индексы (в обратном порядке)
+        int[] indices = new int[length];
+        int current = pos[length - 1];
+        for (int i = length - 1; i >= 0; i--) {
+            indices[i] = current + 1; // +1 потому что индексы с 1
+            current = prev[current];
+        }
+
+        // выводим результат (для проверки)
+        System.out.println(length);
+        for (int i = 0; i < length; i++) {
+            System.out.print(indices[i] + " ");
+        }
+        System.out.println();
+
+        return length;
     }
 
 }
