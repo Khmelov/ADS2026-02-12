@@ -1,4 +1,4 @@
-package by.it.a_khmelev.lesson05;
+package by.it.group551003.kernitsky.lesson05;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -38,9 +38,18 @@ public class B_CountSort {
         for (int i = 0; i < n; i++) {
             points[i] = scanner.nextInt();
         }
-        //тут реализуйте логику задачи с применением сортировки подсчетом
+        int[] count = new int[11];
+        for (int i = 0; i < n; i++) {
+            count[points[i]]++;
+        }
 
-
+        // заполняем массив points отсортированными значениями
+        int index = 0;
+        for (int value = 1; value <= 10; value++) {
+            for (int k = 0; k < count[value]; k++) {
+                points[index++] = value;
+            }
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return points;
     }
