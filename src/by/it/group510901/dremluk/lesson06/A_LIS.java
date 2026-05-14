@@ -32,7 +32,7 @@ import java.util.Scanner;
 public class A_LIS {
 
     public static void main(String[] args) throws FileNotFoundException {
-        // нам дан сразу отсортированный массив чисел, суть
+        // нам дан сразу отсортированный массиив чисел, суть
         InputStream stream = A_LIS.class.getResourceAsStream("dataA.txt");
         A_LIS instance = new A_LIS();
         // задачи в том, что программа должна вывести максимальную

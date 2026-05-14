@@ -41,7 +41,7 @@ public class A_Knapsack {
         Scanner scanner = new Scanner(stream);
 /*таким образом заполняем массив, после чего
 выбираем максимальный вес из всех вариантов. направление обхода слева направо (от веса слитка до веса рюкзака)*/
-        int w = scanner.nextInt();   // вместимость рюкзака
+        int w = scanner.nextInt();   // вместимостаь рюкзака
         int n = scanner.nextInt();   // количество типов слитков
 
         int[] gold = new int[n];     // веса слитков
