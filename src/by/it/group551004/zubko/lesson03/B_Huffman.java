@@ -57,6 +57,24 @@ public class B_Huffman {
         Integer length = scanner.nextInt();
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         //тут запишите ваше решение
+        char[] ch = new char[count];
+        for (int i = 0; i < count; i++) {
+            String line = scanner.next() + scanner.next();
+            ch[i] = line.charAt(0);
+        }
+        String helpString = scanner.next();
+        int index = 0;
+        for (int i = 0; i < length; i++) {
+            if (helpString.charAt(i) == '0') {
+                result.append(ch[index]);
+                index = 0;
+            } else {
+                ++index;
+            }
+        }
+        if (index >= 0) {
+            result.append(ch[index]);
+        }
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
