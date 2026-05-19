@@ -62,19 +62,18 @@ public class A_QSort {
             //читаем начало и конец каждого отрезка
             segments[i] = new Segment(scanner.nextInt(), scanner.nextInt());
         }
-        //читаем точки
+
         for (int i = 0; i < m; i++) {
             points[i] = scanner.nextInt();
         }
-        //тут реализуйте логику задачи с применением быстрой сортировки
-        //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
+
         for (int i = 0; i < m; i++) {
             int point = points[i];
             int count = 0;
 
             for (int j = 0; j < n; j++) {
                 if (point >= segments[j].start && point <= segments[j].stop) {
-                    count++; // убрали break
+                    count++;
                 }
             }
             result[i] = count;
