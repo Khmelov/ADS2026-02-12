@@ -66,8 +66,7 @@ public class B_Huffman {
 
         // считываем k строк с кодами символов
         for (int i = 0; i < count; i++) {
-            String line = scanner.nextLine(); // строка вида "a: 0"
-            // разделяем по ": " (двоеточие и пробел)
+            String line = scanner.nextLine();
             String[] parts = line.split(": ");
             char symbol = parts[0].charAt(0); // извлекаем символ
             String code = parts[1];            // извлекаем код

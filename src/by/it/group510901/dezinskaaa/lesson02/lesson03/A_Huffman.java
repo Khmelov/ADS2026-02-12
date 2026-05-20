@@ -61,33 +61,28 @@ public class A_Huffman {
         //прочитаем строку для кодирования из тестового файла
         Scanner scanner = new Scanner(inputStream);
         String s = scanner.next();
-        Map<Character, Integer> count = new HashMap<>();// карта для подсчёта частоты каждого символа
-        for (char c : s.toCharArray()) {//переберем все символы по очереди и рассчитаем частоту
-            count.put(c, count.getOrDefault(c, 0) + 1);// для символа добавим +1, если его в карте нет используем 0
+        Map<Character, Integer> count = new HashMap<>();
+        for (char c : s.toCharArray()) {
+            count.put(c, count.getOrDefault(c, 0) + 1);
         }
 
         //перенесем все символы в приоритетную очередь в виде листьев
         PriorityQueue<Node> priorityQueue = new PriorityQueue<>();
         for (Map.Entry<Character, Integer> entry : count.entrySet()) {   // обходим все записи карты частот
-            priorityQueue.add(new LeafNode(entry.getValue(), entry.getKey())); // создаём листовой узел с частотой и символом, добавляем в очередь
+            priorityQueue.add(new LeafNode(entry.getValue(), entry.getKey()));
         }
 
-        //вынимая по два узла из очереди чтобы собрать родителя
-        //и возвращая этого родителя обратно в очередь
-        //построим дерево кодирования хаффмана
-        //у родителя частоты детей складываются.
+
         while (priorityQueue.size() > 1) {
             Node left = priorityQueue.poll();//
             Node right = priorityQueue.poll();
             priorityQueue.add(new InternalNode(left, right));
         }
 
-        //последний из родителей будет корнем этого дерева
-        //это будет последний и единственный элемент оставшийся в очереди
+
         Node root = priorityQueue.poll();
 
-        // особый случай: если строка состоит из одного символа,
-        // то в очереди останется один лист. Присваиваем ему код "0".
+        // особый случай: если строка состоит из одного символа, то в очереди останется один лист. Присваиваем ему код "0".
         if (root instanceof LeafNode) {
             codes.put(((LeafNode) root).symbol, "0");
         } else {
