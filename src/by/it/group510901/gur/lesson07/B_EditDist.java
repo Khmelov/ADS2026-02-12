@@ -1,4 +1,4 @@
-package by.it.a_khmelev.lesson07;
+package by.it.group510901.gur.lesson07;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -15,59 +15,75 @@ import java.util.Scanner;
 Необходимо:
     Решить задачу МЕТОДАМИ ДИНАМИЧЕСКОГО ПРОГРАММИРОВАНИЯ
     Итерационно вычислить расстояние редактирования двух данных непустых строк
-
-    Sample Input 1:
-    ab
-    ab
-    Sample Output 1:
-    0
-
-    Sample Input 2:
-    short
-    ports
-    Sample Output 2:
-    3
-
-    Sample Input 3:
-    distance
-    editing
-    Sample Output 3:
-    5
-
 */
 
 public class B_EditDist {
 
-
     int getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        int n = one.length();
-        int m = two.length();
-        int[][] dp = new int[n+1][m+1];
 
-// инициализация базовых случаев
-        for (int i = 0; i <= n; i++) dp[i][0] = i;
-        for (int j = 0; j <= m; j++) dp[0][j] = j;
+        // Получаем длины строк
+        int m = one.length();  // длина первой строки
+        int n = two.length();  // длина второй строки
 
-// заполнение таблицы
-        for (int i = 1; i <= n; i++) {
-            char ch1 = one.charAt(i-1);
-            for (int j = 1; j <= m; j++) {
-                char ch2 = two.charAt(j-1);
-                int cost = (ch1 == ch2) ? 0 : 1;
-                int del = dp[i-1][j] + 1;
-                int ins = dp[i][j-1] + 1;
-                int sub = dp[i-1][j-1] + cost;
-                dp[i][j] = Math.min(Math.min(del, ins), sub);
+        // Создаем таблицу DP размером (m+1) x (n+1)
+        // dp[i][j] = минимальное расстояние редактирования для первых i символов строки one
+        // и первых j символов строки two
+        int[][] dp = new int[m + 1][n + 1];
+
+        // Инициализация первого столбца (j = 0)
+        // Чтобы из строки one получить пустую строку, нужно удалить все i символов
+        // Поэтому dp[i][0] = i для всех i от 0 до m
+        for (int i = 0; i <= m; i++) {
+            dp[i][0] = i;
+        }
+
+        // Инициализация первой строки (i = 0)
+        // Чтобы из пустой строки получить строку two, нужно вставить все j символов
+        // Поэтому dp[0][j] = j для всех j от 0 до n
+        for (int j = 0; j <= n; j++) {
+            dp[0][j] = j;
+        }
+
+        // Заполняем таблицу DP построчно
+        // Проходим по всем символам первой строки (от 1 до m)
+        for (int i = 1; i <= m; i++) {
+            // Проходим по всем символам второй строки (от 1 до n)
+            for (int j = 1; j <= n; j++) {
+                // Проверяем, равны ли текущие символы
+                // Если равны, то стоимость замены = 0, иначе = 1
+                int cost = (one.charAt(i - 1) == two.charAt(j - 1)) ? 0 : 1;
+
+                // Вычисляем три возможные операции:
+
+                // 1. Удаление символа из первой строки
+                // dp[i-1][j] - расстояние для строк без последнего символа one
+                // +1 - добавляем операцию удаления
+                int delete = dp[i - 1][j] + 1;
+
+                // 2. Вставка символа во вторую строку
+                // dp[i][j-1] - расстояние для строк без последнего символа two
+                // +1 - добавляем операцию вставки
+                int insert = dp[i][j - 1] + 1;
+
+                // 3. Замена символа (если нужно) или ничего не делаем (если символы равны)
+                // dp[i-1][j-1] - расстояние для строк без последних символов обеих строк
+                // + cost - добавляем стоимость замены (0 или 1)
+                int replace = dp[i - 1][j - 1] + cost;
+
+                // Берем минимальное значение из трех операций
+                // Это и будет минимальное расстояние для подстрок one[0..i-1] и two[0..j-1]
+                dp[i][j] = Math.min(Math.min(delete, insert), replace);
             }
         }
-        return dp[n][m];
 
+        // Результат находится в правом нижнем углу таблицы
+        // dp[m][n] - минимальное расстояние редактирования для полных строк one и two
+        int result = dp[m][n];
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-
+        return result;
     }
-
 
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = B_EditDist.class.getResourceAsStream("dataABC.txt");
@@ -77,5 +93,4 @@ public class B_EditDist {
         System.out.println(instance.getDistanceEdinting(scanner.nextLine(), scanner.nextLine()));
         System.out.println(instance.getDistanceEdinting(scanner.nextLine(), scanner.nextLine()));
     }
-
 }
