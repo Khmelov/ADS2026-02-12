@@ -1,4 +1,4 @@
-package by.it.a_khmelev.lesson03;
+package by.it.group551004.stepchankov.lesson03;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -75,28 +75,56 @@ public class C_HeapMax {
         private List<Long> heap = new ArrayList<>();
 
         int siftDown(int i) { //просеивание вверх
-
+            while (true) {
+                int left = 2 * i + 1;
+                int right = 2 * i + 2;
+                int largest = i;
+                if (left < heap.size() && heap.get(left) > heap.get(largest)) largest = left;
+                if (right < heap.size() && heap.get(right) > heap.get(largest)) largest = right;
+                if (largest == i) break;
+                Long tmp = heap.get(i);
+                heap.set(i, heap.get(largest));
+                heap.set(largest, tmp);
+                i = largest;
+            }
             return i;
         }
 
-        int siftUp(int i) { //просеивание вниз
 
+        int siftUp(int i) { //просеивание вниз
+            while (i > 0) {
+                int parent = (i - 1) / 2;
+                if (heap.get(i) > heap.get(parent)) {
+                    Long tmp = heap.get(i);
+                    heap.set(i, heap.get(parent));
+                    heap.set(parent, tmp);
+                    i = parent;
+                } else break;
+            }
             return i;
         }
 
         void insert(Long value) { //вставка
+            heap.add(value);
+            siftUp(heap.size() - 1);
         }
 
         Long extractMax() { //извлечение и удаление максимума
             Long result = null;
-
+            if (!heap.isEmpty()) {
+                result = heap.get(0);
+                Long last = heap.remove(heap.size() - 1);
+                if (!heap.isEmpty()) {
+                    heap.set(0, last);
+                    siftDown(0);
+                }
+            }
             return result;
         }
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
     }
-
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1}
     // РЕМАРКА. Это задание исключительно учебное.
     // Свои собственные кучи нужны довольно редко.
     // В реальном приложении все иначе. Изучите и используйте коллекции
-    // TreeSet, TreeMap, PriorityQueue и т.д. с нужным CompareTo() для объекта внутри.
+    // TreeSet, TreeMap, PriorityQueue и т.д. с нужным CompareTo() для объекта внутри.}
 }
