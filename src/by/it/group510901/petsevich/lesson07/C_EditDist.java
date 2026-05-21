@@ -50,13 +50,58 @@ public class C_EditDist {
 
     String getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        int n = one.length(), m = two.length();
+        int[][] d = new int[n+1][m+1];
+        for (int i = 0; i <= n; i++) {
+            for (int j = 0; j <= m; j++) {
+                if (i == 0) d[i][j] = j;
+                else if (j == 0) d[i][j] = i;
+            }
+        }
 
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                int ins = d[i][j-1] + 1;
+                int del = d[i-1][j] + 1;
+                int sub = d[i-1][j-1] + (one.charAt(i - 1) == two.charAt(j - 1) ? 0 : 1);
+                d[i][j] = min(ins, del, sub);
+            }
+        }
 
         String result = "";
+        int i = n, j = m;
+        while(i > 0 || j > 0) {
+            if(i > 0 && j > 0 && d[i][j] == d[i-1][j-1] + (one.charAt(i-1) != two.charAt(j-1) ? 1 : 0)) {
+                if(one.charAt(i-1) == two.charAt(j-1)) {
+                    result = "#," + result;
+                }
+                else {
+                    result = "~" + two.charAt(j-1) + "," + result;
+                }
+                i--;
+                j--;
+                continue;
+            }
+
+            if(i > 0 && d[i][j] == d[i-1][j] + 1) {
+                result = "-" + one.charAt(i-1) + "," + result;
+                i--;
+                continue;
+            }
+
+            if(j > 0 && d[i][j] == d[i][j-1] + 1) {
+                result = "+" + two.charAt(j-1) + " " + result;
+                j--;
+            }
+        }
+
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
+    int min(int a, int b, int c) {
+        return Math.min(Math.min(a, b), c);
+    }
 
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = C_EditDist.class.getResourceAsStream("dataABC.txt");
