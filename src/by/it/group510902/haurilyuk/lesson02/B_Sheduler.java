@@ -1,6 +1,9 @@
-package by.it.group510902.nebyshynets.lesson02;
+package by.it.group510902.haurilyuk.lesson02;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 /*
 Даны интервальные события events
 реализуйте метод calcStartTimes, так, чтобы число принятых к выполнению
@@ -24,28 +27,21 @@ public class B_Sheduler {
     }
 
     List<Event> calcStartTimes(Event[] events, int from, int to) {
-        //Events - события которые нужно распределить в аудитории
-        //в период [from, int] (включительно).
-        //оптимизация проводится по наибольшему числу непересекающихся событий.
-        //Начало и конец событий могут совпадать.
-        List<Event> result;
-        result = new ArrayList<>();
-        //ваше решение.
-        Arrays.sort(events, Comparator.comparing(Event::getStop));
-        int i = 0;
-        result.add(events[i]);
-        i++;
-        while(i < events.length){
-            if(events[i].start >= result.getLast().stop){
-                result.add(events[i]);
+        List<Event> result = new ArrayList<>();
+        Arrays.sort(events, Comparator.comparingInt(e -> e.stop));
+
+        int currentFreeTime = from;
+
+        for (Event event : events) {
+            if (event.start >= currentFreeTime && event.stop <= to) {
+                result.add(event);
+                currentFreeTime = event.stop;
             }
-            i++;
         }
 
-        return result;          //вернем итог
+        return result;
     }
 
-    //событие у аудитории(два поля: начало и конец)
     static class Event {
         int start;
         int stop;
@@ -59,6 +55,5 @@ public class B_Sheduler {
         public String toString() {
             return "(" + start + ":" + stop + ")";
         }
-        public int getStop() {return this.stop;}
     }
 }
