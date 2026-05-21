@@ -1,6 +1,7 @@
 package by.it.group510901.oblavatskaya.lesson02;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 /*
 Даны события events
@@ -25,12 +26,18 @@ public class A_VideoRegistrator {
         //timeWorkDuration время работы видеокамеры после старта
         List<Double> result;
         result = new ArrayList<>();
+        Arrays.sort(events);
         int i = 0;                              //i - это индекс события events[i]
         //Комментарии от проверочного решения сохранены для подсказки, но вы можете их удалить.
         //Подготовка к жадному поглощению массива событий
         //hint: сортировка Arrays.sort обеспечит скорость алгоритма
         //C*(n log n) + C1*n = O(n log n)
-
+        while (i < events.length) {
+            double start = events[i];
+            result.add(start);
+            double end = start + workDuration;
+            while (i < events.length && events[i] <= end) i++;
+        }
         //пока есть незарегистрированные события
         //получим одно событие по левому краю
         //и запомним время старта видеокамеры
@@ -42,3 +49,4 @@ public class A_VideoRegistrator {
         return result;                        //вернем итог
     }
 }
+

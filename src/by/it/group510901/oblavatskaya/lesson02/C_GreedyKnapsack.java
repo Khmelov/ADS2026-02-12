@@ -15,6 +15,7 @@ package by.it.group510901.oblavatskaya.lesson02;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class C_GreedyKnapsack {
@@ -39,11 +40,24 @@ public class C_GreedyKnapsack {
             System.out.println(item);
         }
         System.out.printf("Всего предметов: %d. Рюкзак вмещает %d кг.\n", n, W);
-
+        Arrays.sort(items);
         //тут необходимо реализовать решение задачи
-        //итогом является максимально воможная стоимость вещей в рюкзаке
+        //итогом является максимально возможная стоимость вещей в рюкзаке
         //вещи можно резать на кусочки (непрерывный рюкзак)
         double result = 0;
+        double remain = W;
+        for (Item i : items) {
+            if (remain == 0) break;
+            if (i.weight <= remain)
+            {
+                result += i.cost;
+                remain -= i.weight;
+            }
+            else {
+                result += (double) i.cost * remain / i.weight;
+                remain = 0;
+            }
+        }
         //тут реализуйте алгоритм сбора рюкзака
         //будет особенно хорошо, если с собственной сортировкой
         //кроме того, можете описать свой компаратор в классе Item
@@ -67,17 +81,17 @@ public class C_GreedyKnapsack {
         @Override
         public String toString() {
             return "Item{" +
-                   "cost=" + cost +
-                   ", weight=" + weight +
-                   '}';
+                    "cost=" + cost +
+                    ", weight=" + weight +
+                    '}';
         }
 
         @Override
         public int compareTo(Item o) {
             //тут может быть ваш компаратор
-
-
-            return 0;
+            double cw1 = (double) this.cost / this.weight;
+            double cw2 = (double) o.cost / o.weight;
+            return Double.compare(cw2, cw1);
         }
     }
 }
