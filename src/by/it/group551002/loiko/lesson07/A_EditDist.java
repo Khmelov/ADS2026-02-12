@@ -38,16 +38,24 @@ import java.util.Scanner;
 
 public class A_EditDist {
 
+        int getDistanceEdinting(String one, String two) {
+            return rec(one, two, one.length(), two.length());
+        }
 
-    int getDistanceEdinting(String one, String two) {
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+    private int rec(String one, String two, int i, int j) {
+        if (i == 0) return j;
+        if (j == 0) return i;
 
+        if (one.charAt(i - 1) == two.charAt(j - 1)) {
+            return rec(one, two, i - 1, j - 1);
+        }
 
-        int result = 0;
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        int delete = rec(one, two, i - 1, j) + 1;
+        int insert = rec(one, two, i, j - 1) + 1;
+        int replace = rec(one, two, i - 1, j - 1) + 1;
+
+        return Math.min(Math.min(delete, insert), replace);
     }
-
 
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = A_EditDist.class.getResourceAsStream("dataABC.txt");

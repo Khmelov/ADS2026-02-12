@@ -38,8 +38,19 @@ public class B_Knapsack {
             gold[i]=scanner.nextInt();
         }
 
+        // Создаём массив DP: dp[capacity] = максимальный вес при вместимости capacity
+        int[] dp = new int[w + 1];
 
-        int result = 0;
+// Идём по каждому слитку
+        for (int i = 0; i < n; i++) {
+            int weight = gold[i];
+            // ВАЖНО: идём справа налево, чтобы не использовать один слиток дважды
+            for (int capacity = w; capacity >= weight; capacity--) {
+                dp[capacity] = Math.max(dp[capacity], dp[capacity - weight] + weight);
+            }
+        }
+
+        int result = dp[w];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }

@@ -1,7 +1,5 @@
 package by.it.group551002.loiko.lesson08;
 
-import by.it.a_khmelev.lesson07.A_EditDist;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -49,7 +47,27 @@ public class A_Knapsack {
         }
 
 
-        int result = 0;
+        // Создаём массив DP: dp[i] = максимальный вес, который можно набрать
+// при вместимости i
+        int[] dp = new int[w + 1];
+
+// Инициализация: dp[0] = 0 (при вместимости 0 можно набрать 0)
+        dp[0] = 0;
+
+// Заполняем массив DP
+        for (int capacity = 1; capacity <= w; capacity++) {
+            // Для каждой вместимости пытаемся добавить каждый слиток
+            for (int i = 0; i < n; i++) {
+                int weight = gold[i];
+                if (capacity >= weight) {
+                    // Если слиток помещается, пробуем его добавить
+                    // dp[capacity - weight] + weight = вес, если взять этот слиток
+                    dp[capacity] = Math.max(dp[capacity], dp[capacity - weight] + weight);
+                }
+            }
+        }
+
+        int result = dp[w];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
