@@ -3,6 +3,8 @@ package by.it.group551002.mazin.lesson03;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
+import java.util.Map;
+import java.util.TreeMap;
 
 // Lesson 3. B_Huffman.
 // Восстановите строку по её коду и беспрефиксному коду символов.
@@ -57,7 +59,25 @@ public class B_Huffman {
         Integer length = scanner.nextInt();
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         //тут запишите ваше решение
+        Map<String, String> codes = new TreeMap<>();
+        scanner.nextLine();
 
+        for(int i = 0; i < count; i++){
+            String line = scanner.nextLine();
+            String[] parts = line.split(": ");
+            codes.put(parts[1], parts[0]);
+        }
+
+        String encoder = scanner.nextLine();
+        StringBuilder temp = new StringBuilder();
+
+        for(int i = 0; i < encoder.length(); i++){
+            temp.append(encoder.charAt(i));
+            if(codes.containsKey(temp.toString())){
+                result.append(codes.get(temp.toString()));
+                temp.setLength(0);
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         return result.toString(); //01001100100111

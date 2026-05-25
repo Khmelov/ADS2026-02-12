@@ -71,26 +71,67 @@ public class C_HeapMax {
     private class MaxHeap {
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         //тут запишите ваше решение.
+
         //Будет мало? Ну тогда можете его собрать как Generic и/или использовать в варианте B
         private List<Long> heap = new ArrayList<>();
 
         int siftDown(int i) { //просеивание вверх
+            int size = heap.size();
+            while (2 * i + 1 < size) {
+                int leftChild = 2 * i + 1;
+                int rightChild = 2 * i + 2;
+                int largest = i;
 
+                if (heap.get(leftChild).compareTo(heap.get(largest)) > 0) {
+                    largest = leftChild;
+                }
+
+                if (rightChild < size && heap.get(rightChild).compareTo(heap.get(largest)) > 0) {
+                    largest = rightChild;
+                }
+
+                if (largest == i) {
+                    break; // Родитель больше детей
+                }
+
+                swap(i, largest);
+                i = largest;
+            }
             return i;
         }
 
         int siftUp(int i) { //просеивание вниз
-
+            while (i > 0) {
+                int parentIndex = (i - 1) / 2;
+                if (heap.get(i).compareTo(heap.get(parentIndex)) <= 0) {
+                    break; // Свойство кучи соблюдено
+                }
+                swap(i, parentIndex);
+                i = parentIndex;
+            }
             return i;
         }
 
         void insert(Long value) { //вставка
+            heap.add(value);
+            siftUp(heap.size() - 1);
         }
 
-        Long extractMax() { //извлечение и удаление максимума
-            Long result = null;
-
+        Long extractMax() {
+            if (heap.isEmpty()) return null;
+            Long result = heap.get(0); // Максимум всегда в корне
+            Long lastElement = heap.remove(heap.size() - 1);
+            if (!heap.isEmpty()) {
+                heap.set(0, lastElement); // Ставим последний элемент в корень
+                siftDown(0);              // Просеиваем его вниз
+            }
             return result;
+        }
+        void swap(int i, int j){
+            Long temp = null;
+            temp = heap.get(i);
+            heap.set(i, heap.get(j));
+            heap.set(j, temp);
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
     }
