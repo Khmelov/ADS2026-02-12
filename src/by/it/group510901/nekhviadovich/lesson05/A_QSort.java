@@ -72,23 +72,25 @@ public class A_QSort {
             points[i] = scanner.nextInt();
         }
         //тут реализуйте логику задачи с применением быстрой сортировки
-        quickSort(segments, 0, segments.length-1);
-        int[] tempPoints = Arrays.copyOf(points, points.length);
-        Arrays.sort(tempPoints);
 
-        int segmentPointer = 0;
-        PriorityQueue<Segment> heap = new PriorityQueue<>((a,b) -> Integer.compare(a.stop, b.stop));
-        for (int i = 0; i< points.length; i++){
-            while(segments[segmentPointer].start <= points[i]){
-                heap.add(segments[segmentPointer]);
-                segmentPointer++;
+        // сортируем отрезки твоей быстрой сортировкой
+        quickSort(segments, 0, segments.length - 1);
+
+        // для каждой точки считаем количество покрывающих отрезков
+        for (int i = 0; i < m; i++) {
+            int count = 0;
+            // проходим по всем отрезкам и считаем те, которые покрывают точку
+            for (int j = 0; j < n; j++) {
+                if (segments[j].start <= points[i] && points[i] <= segments[j].stop) {
+                    count++;
+                }
+                // если отрезок начинается после точки, дальше можно не проверять (они отсортированы)
+                if (segments[j].start > points[i]) {
+                    break;
+                }
             }
-            while(!heap.isEmpty() && heap.peek().stop < points[i]){
-                heap.poll();
-            }
-            result[i] = heap.size();
+            result[i] = count;
         }
-
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
