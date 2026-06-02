@@ -58,6 +58,7 @@ public class C_QSortOptimized {
             int start = scanner.nextInt();
             int stop = scanner.nextInt();
             segments[i] = new Segment(start, stop);
+//            segments[i] = new Segment(scanner.nextInt(), scanner.nextInt());
         }
         //читаем точки
         for (int i = 0; i < m; i++) {
@@ -148,11 +149,13 @@ public class C_QSortOptimized {
         Segment(int start, int stop) {
             this.start = start;
             this.stop = stop;
+
             if (this.start > this.stop) {
                 int temp = this.start;
                 this.start = this.stop;
                 this.stop = temp;
             }
+
         }
 
         @Override
@@ -162,6 +165,7 @@ public class C_QSortOptimized {
                 return Integer.compare(this.stop, ((Segment) o).stop);
             else
                 return Integer.compare(this.start, ((Segment) o).start);
+//            return 0;
         }
     }
 

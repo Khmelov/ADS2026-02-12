@@ -64,6 +64,8 @@ public class A_QSort {
             int start = scanner.nextInt();
             int stop = scanner.nextInt();
             segments[i] = new Segment(start, stop);
+//            segments[i] = new Segment(scanner.nextInt(), scanner.nextInt());
+
         }
         //читаем точки
         for (int i = 0; i < m; i++) {
