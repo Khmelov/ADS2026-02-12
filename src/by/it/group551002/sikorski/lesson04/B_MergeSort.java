@@ -45,8 +45,6 @@ public class B_MergeSort {
         }
         a = mergeSort(a, 0, n - 1);
 
-        // https://ru.wikipedia.org/wiki/Сортировка_слиянием
-
         return a;
     }
     private int[] mergeSort(int[] a, int left, int right) {
