@@ -40,6 +40,20 @@ public class B_CountSort {
         }
         //тут реализуйте логику задачи с применением сортировки подсчетом
 
+            int[] count = new int[11];
+
+            for (int i = 0; i < n; i++) {
+                count[points[i]]++;
+            }
+
+            int index = 0;
+            for (int value = 0; value < count.length; value++) {
+                while (count[value] > 0) {
+                    points[index] = value;
+                    index++;
+                    count[value]--;
+                }
+            }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return points;
