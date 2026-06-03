@@ -36,9 +36,21 @@ public class B_Knapsack {
         for (int i = 0; i < n; i++) {
             gold[i]=scanner.nextInt();
         }
+        int[] dp = new int[w + 1];
 
+        // Итерируемся по каждому слитку
+        for (int i = 0; i < n; i++) {
+            int currentGold = gold[i];
 
-        int result = 0;
+            for (int j = w; j >= currentGold; j--) {
+
+                if (dp[j - currentGold] + currentGold > dp[j]) {
+                    dp[j] = dp[j - currentGold] + currentGold;
+                }
+            }
+        }
+
+        int result = dp[w];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }

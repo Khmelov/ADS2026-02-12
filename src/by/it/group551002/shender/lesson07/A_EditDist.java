@@ -38,16 +38,44 @@ import java.util.Scanner;
 
 public class A_EditDist {
 
+    private int[][] memo;
 
     int getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-        int result = 0;
+        memo = new int[one.length() + 1][two.length() + 1];
+        for (int i = 0; i <= one.length(); i++) {
+            for (int j = 0; j <= two.length(); j++) {
+                memo[i][j] = -1;
+            }
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        return editDistRecursive(one, two, one.length(), two.length());
     }
 
+    private int editDistRecursive(String s1, String s2, int i, int j) {
+
+        if (i == 0) return j;
+        if (j == 0) return i;
+
+
+        if (memo[i][j] != -1) {
+            return memo[i][j];
+        }
+
+        int cost = (s1.charAt(i - 1) == s2.charAt(j - 1)) ? 0 : 1;
+
+
+        int delete = editDistRecursive(s1, s2, i - 1, j) + 1;
+
+        int insert = editDistRecursive(s1, s2, i, j - 1) + 1;
+
+        int replace = editDistRecursive(s1, s2, i - 1, j - 1) + cost;
+
+        int result = Math.min(Math.min(delete, insert), replace);
+        memo[i][j] = result;
+
+        return result;
+    }
 
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = A_EditDist.class.getResourceAsStream("dataABC.txt");
