@@ -39,14 +39,37 @@ import java.util.Scanner;
 public class A_EditDist {
 
 
-    int getDistanceEdinting(String one, String two) {
+    int levenshtein(String one, String two, int i, int j) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
 
+        // базовые случаи
+        if (i == 0) {
+            return j;
+        }
 
-        int result = 0;
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        if (j == 0) {
+            return i;
+        }
+
+        // если символы одинаковые
+        if (one.charAt(i - 1) == two.charAt(j - 1)) {
+            return levenshtein(one, two, i - 1, j - 1);
+        }
+
+        // операции
+        int replace = levenshtein(one, two, i - 1, j - 1);
+        int delete = levenshtein(one, two, i - 1, j);
+        int insert = levenshtein(one, two, i, j - 1);
+
+        return 1 + Math.min(replace, Math.min(delete, insert));
     }
+
+
+    int getDistanceEdinting(String one, String two) {
+
+        return levenshtein(one, two, one.length(), two.length());
+    }
+        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
 
 
     public static void main(String[] args) throws FileNotFoundException {

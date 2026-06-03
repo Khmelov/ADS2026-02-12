@@ -20,7 +20,7 @@ import java.util.Scanner;
      операция("+" вставка, "-" удаление, "~" замена, "#" копирование)
      символ замены или вставки
 
-    Sample Input 1:
+    Sample Input 1: 
     ab
     ab
     Sample Output 1:
@@ -52,10 +52,59 @@ public class C_EditDist {
     String getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
 
+        int o = one.length();
+        int t = two.length();
+        int[][] dp = new int[o + 1][t + 1];
+        for (int i = 0; i <= o; i++) {
+            dp[i][0] = i;
+        }
+        for (int j = 0; j <= t; j++) {
+            dp[0][j] = j;
+        }
+        for (int i = 1; i <= o; i++) {
+            for (int j = 1; j <= t; j++) {
+                if (one.charAt(i - 1) == two.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    int delete = dp[i - 1][j];
+                    int insert = dp[i][j - 1];
+                    int replace = dp[i - 1][j - 1];
+                    dp[i][j] = 1 + Math.min(delete, Math.min(insert, replace));
+                }
+            }
+        }
+        StringBuilder operations = new StringBuilder();
+        int i = o;
+        int j = t;
+        
+        while (i > 0 || j > 0) {
+            if (i > 0 && j > 0 && one.charAt(i - 1) == two.charAt(j - 1)) {
+                operations.append("#,");
+                i--;
+                j--;
+            } else if (i > 0 && j > 0 && dp[i][j] == dp[i - 1][j - 1] + 1) {
+                operations.append("~").append(two.charAt(j - 1)).append(",");
+                i--;
+                j--;
+            } else if (i > 0 && dp[i][j] == dp[i - 1][j] + 1) {
+                operations.append("-").append(one.charAt(i - 1)).append(",");
+                i--;
+            } else if (j > 0 && dp[i][j] == dp[i][j - 1] + 1) {
+                operations.append("+").append(two.charAt(j - 1)).append(",");
+                j--;
+            }
+        }
 
-        String result = "";
+        String[] ops = operations.toString().split(",");
+        StringBuilder result = new StringBuilder();
+        for (int k = ops.length - 1; k >= 0; k--) {
+            if (!ops[k].isEmpty()) {
+                result.append(ops[k]).append(",");
+            }
+        }
+
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        return result.toString();
     }
 
 
