@@ -41,11 +41,44 @@ public class A_EditDist {
 
     int getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-        int result = 0;
+        int o = one.length();
+        int t = two.length();
+        int[][] dp = new int[o+ 1][t + 1];
+        for (int i = 0; i <= o; i++) {
+            for (int j = 0; j <= t; j++) {
+                dp[i][j] = -1;
+            }
+        }
+        
+        return Recursive(one, two, o, t, dp);
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+
+    }
+    private int Recursive(String one, String two, int i, int j, int[][] dp) {
+
+        if (dp[i][j] != -1) {
+            return dp[i][j];
+        }
+        if (i == 0) {
+            dp[i][j] = j;
+            return j;
+        }
+        if (j == 0) {
+            dp[i][j] = i;
+            return i;
+        }
+        
+        if (one.charAt(i - 1) == two.charAt(j - 1)) {
+            dp[i][j] = Recursive(one, two, i - 1, j - 1, dp);
+        } else {
+            int delete = Recursive(one, two, i - 1, j, dp);
+            int insert = Recursive(one, two, i, j - 1, dp);
+            int replace = Recursive(one, two, i - 1, j - 1, dp);
+            
+            dp[i][j] = 1 + Math.min(delete, Math.min(insert, replace));
+        }
+        
+        return dp[i][j];
     }
 
 
