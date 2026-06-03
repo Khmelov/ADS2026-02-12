@@ -1,6 +1,6 @@
 package by.it.group510902.ryzhkov.lesson01;
 
-import java.math.BigInteger;
+//import java.math.BigInteger;
 
 /*
  * Даны целые числа 1<=n<=1E18 и 2<=m<=1E5,

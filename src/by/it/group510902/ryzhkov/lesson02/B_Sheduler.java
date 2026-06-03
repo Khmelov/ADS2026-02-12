@@ -61,6 +61,7 @@ public class B_Sheduler {
                     i--;
                 }
             }
+
             result.add(events_list.get(0));
             events_list.remove(0);
         }
