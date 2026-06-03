@@ -44,10 +44,42 @@ public class B_EditDist {
 
 
         int result = 0;
+
+        int n = one.length();
+        int m = two.length();
+
+        int[][] matrix = new int[n + 1][m + 1];
+
+        for (int i = 0; i <= n; i++)
+            matrix[i][0] = i;
+
+        for (int i = 0; i <= m; i++)
+            matrix[0][i] = i;
+
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                if (one.charAt(i - 1) == two.charAt(j - 1)) {
+                    matrix[i][j] = matrix[i - 1][j - 1];
+                } else {
+                    matrix[i][j] = 1 + min(matrix[i][j - 1], matrix[i - 1][j], matrix[i - 1][j - 1]);
+                }
+            }
+        }
+
+        result = matrix[n][m];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
+
+    int min (int a, int b, int c) {
+        if (a < b && a < c)
+            return a;
+        else if (b < a && b < c)
+            return b;
+        else
+            return c;
+    }
 
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = B_EditDist.class.getResourceAsStream("dataABC.txt");
