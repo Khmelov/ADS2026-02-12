@@ -1,4 +1,4 @@
-package by.it.group510901.rusilevich;
+package by.it.group510901.rusilevich.lesson01;
 
 import org.junit.Test;
 
