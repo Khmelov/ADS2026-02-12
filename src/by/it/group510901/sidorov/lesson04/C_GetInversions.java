@@ -43,6 +43,49 @@ public class C_GetInversions {
         System.out.print(result);
     }
 
+    private int mergeAndCount(int[] a, int left, int mid, int right) {
+        int[] L = new int[mid - left + 1];
+        int[] R = new int[right - mid];
+
+        for (int i = 0; i < L.length; i++) L[i] = a[left + i];
+        for (int j = 0; j < R.length; j++) R[j] = a[mid + 1 + j];
+
+        int i = 0, j = 0, k = left;
+        int swaps = 0;
+
+        while (i < L.length && j < R.length) {
+            if (L[i] <= R[j]) {
+                a[k++] = L[i++];
+            } else {
+                a[k++] = R[j++];
+                // ГЛАВНЫЙ МОМЕНТ:
+                // Если текущий элемент из R меньше элемента из L,
+                // то он меньше ВСЕХ оставшихся элементов в L.
+                swaps += (L.length - i);
+            }
+        }
+
+        while (i < L.length) a[k++] = L[i++];
+        while (j < R.length) a[k++] = R[j++];
+
+        return swaps;
+    }
+
+    private int mergeSortAndCount(int[] a, int left, int right) {
+        int count = 0;
+        if (left < right) {
+            int mid = left + (right - left) / 2;
+
+            // Считаем инверсии в левой и правой частях
+            count += mergeSortAndCount(a, left, mid);
+            count += mergeSortAndCount(a, mid + 1, right);
+
+            // Считаем инверсии при слиянии этих частей
+            count += mergeAndCount(a, left, mid, right);
+        }
+        return count;
+    }
+
     int calc(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
@@ -54,9 +97,7 @@ public class C_GetInversions {
         for (int i = 0; i < n; i++) {
             a[i] = scanner.nextInt();
         }
-        int result = 0;
-        //!!!!!!!!!!!!!!!!!!!!!!!!     тут ваше решение   !!!!!!!!!!!!!!!!!!!!!!!!
-
+        int result = mergeSortAndCount(a, 0, n - 1);
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
