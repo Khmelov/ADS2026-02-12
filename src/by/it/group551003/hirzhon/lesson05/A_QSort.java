@@ -69,9 +69,49 @@ public class A_QSort {
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
+        quickSort(segments, 0, segments.length - 1);
+
+        for (int i = 0; i < m; i++) {
+            result[i] = 0;
+            for (var seg : segments) {
+                if (points[i] >= seg.start && points[i] <= seg.stop)
+                    result[i]++;
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
+    }
+
+    int partition(Segment[] arr, int low, int high) {
+        Segment pivot = arr[high];
+
+        int i = low - 1;
+
+        for (int j = low; j < high; j++) {
+            if (arr[j].compareTo(pivot) < 0) {
+                i++;
+
+                Segment temp = arr[j];
+                arr[j] = arr[i];
+                arr[i] = temp;
+            }
+        }
+
+        Segment temp = arr[high];
+        arr[high] = arr[i + 1];
+        arr[i + 1] = temp;
+
+        return i + 1;
+    }
+
+    void quickSort(Segment[] arr, int low, int high) {
+        if (low < high) {
+            int pi = partition(arr, low, high);
+
+            quickSort(arr, pi + 1, high);
+            quickSort(arr, low, pi - 1);
+        }
     }
 
     //отрезок
@@ -84,14 +124,21 @@ public class A_QSort {
             this.stop = stop;
             //тут вообще-то лучше доделать конструктор на случай если
             //концы отрезков придут в обратном порядке
+
+            if ((stop - start) < 0) {
+                this.start = stop;
+                this.stop = start;
+            }
         }
 
         @Override
         public int compareTo(Segment o) {
             //подумайте, что должен возвращать компаратор отрезков
 
-            return 0;
+            if (this.start != o.start)
+                return this.start - o.start;
+
+            return this.stop - o.stop;
         }
     }
-
 }
