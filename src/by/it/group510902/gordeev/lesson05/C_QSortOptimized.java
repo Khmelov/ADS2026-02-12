@@ -30,6 +30,18 @@ public class C_QSortOptimized {
             segments[i] = new Segment(scanner.nextInt(), scanner.nextInt());
         }
         // Читаем точки
+    int[] getAccessory2(InputStream stream) throws FileNotFoundException {
+        Scanner scanner = new Scanner(stream);
+
+        int n = scanner.nextInt();
+        Segment[] segments = new Segment[n];
+        int m = scanner.nextInt();
+        int[] points = new int[m];
+        int[] result = new int[m];
+
+        for (int i = 0; i < n; i++) {
+            segments[i] = new Segment(scanner.nextInt(), scanner.nextInt());
+        }
         for (int i = 0; i < m; i++) {
             points[i] = scanner.nextInt();
         }
@@ -51,6 +63,13 @@ public class C_QSortOptimized {
             int p = points[i];
             int countStart = upperBound(starts, p);   // кол-во start <= p
             int countEnd = lowerBound(ends, p);       // кол-во end < p
+        quickSort3Way(starts, 0, n - 1);
+        quickSort3Way(ends, 0, n - 1);
+
+        for (int i = 0; i < m; i++) {
+            int p = points[i];
+            int countStart = upperBound(starts, p);
+            int countEnd = lowerBound(ends, p);
             result[i] = countStart - countEnd;
         }
 
@@ -90,6 +109,32 @@ public class C_QSortOptimized {
     }
 
     // Меняет местами два элемента в массиве
+    private void quickSort3Way(int[] arr, int low, int high) {
+        while (low < high) {
+            int lt = low, gt = high;
+            int pivot = arr[low + (high - low) / 2];
+            int i = low;
+
+            while (i <= gt) {
+                if (arr[i] < pivot) {
+                    swap(arr, lt++, i++);
+                } else if (arr[i] > pivot) {
+                    swap(arr, i, gt--);
+                } else {
+                    i++;
+                }
+            }
+
+            if (lt - low < high - gt) {
+                quickSort3Way(arr, low, lt - 1);
+                low = gt + 1;
+            } else {
+                quickSort3Way(arr, gt + 1, high);
+                high = lt - 1;
+            }
+        }
+    }
+
     private void swap(int[] arr, int i, int j) {
         int tmp = arr[i];
         arr[i] = arr[j];

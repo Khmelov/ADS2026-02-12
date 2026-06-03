@@ -31,6 +31,18 @@ public class A_QSort {
             segments[i] = new Segment(scanner.nextInt(), scanner.nextInt());
         }
         // Читаем точки
+    int[] getAccessory(InputStream stream) throws FileNotFoundException {
+        Scanner scanner = new Scanner(stream);
+
+        int n = scanner.nextInt();
+        Segment[] segments = new Segment[n];
+        int m = scanner.nextInt();
+        int[] points = new int[m];
+        int[] result = new int[m];
+
+        for (int i = 0; i < n; i++) {
+            segments[i] = new Segment(scanner.nextInt(), scanner.nextInt());
+        }
         for (int i = 0; i < m; i++) {
             points[i] = scanner.nextInt();
         }
@@ -52,6 +64,13 @@ public class A_QSort {
             int p = points[i];
             int countStart = upperBound(starts, p);   // кол-во start <= p
             int countEnd = lowerBound(ends, p);       // кол-во end < p
+        Arrays.sort(starts);
+        Arrays.sort(ends);
+
+        for (int i = 0; i < m; i++) {
+            int p = points[i];
+            int countStart = upperBound(starts, p);
+            int countEnd = lowerBound(ends, p);
             result[i] = countStart - countEnd;
         }
 
