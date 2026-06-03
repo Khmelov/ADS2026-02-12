@@ -4,6 +4,36 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
 
+/*
+Видеорегистраторы и площадь.
+На площади установлена одна или несколько камер.
+Известны данные о том, когда каждая из них включалась и выключалась (отрезки работы)
+Известен список событий на площади (время начала каждого события).
+Вам необходимо определить для каждого события сколько камер его записали.
+
+В первой строке задано два целых числа:
+    число включений камер (отрезки) 1<=n<=50000
+    число событий (точки) 1<=m<=50000.
+
+Следующие n строк содержат по два целых числа ai и bi (ai<=bi) -
+координаты концов отрезков (время работы одной какой-то камеры).
+Последняя строка содержит m целых чисел - координаты точек.
+Все координаты не превышают 10E8 по модулю (!).
+
+Точка считается принадлежащей отрезку, если она находится внутри него или на границе.
+
+Для каждой точки в порядке их появления во вводе выведите,
+скольким отрезкам она принадлежит.
+    Sample Input:
+    2 3
+    0 5
+    7 10
+    1 6 11
+    Sample Output:
+    1 0 0
+
+*/
+
 public class A_QSort {
 
     public static void main(String[] args) throws FileNotFoundException {
@@ -30,17 +60,14 @@ public class A_QSort {
             points[i] = scanner.nextInt();
         }
 
-        // sort segments by start using quick sort
         quickSort(segments, 0, n - 1);
 
-        // extract and sort stops
         int[] stops = new int[n];
         for (int i = 0; i < n; i++) {
             stops[i] = segments[i].stop;
         }
         quickSort(stops, 0, n - 1);
 
-        // for each point compute answer
         for (int i = 0; i < m; i++) {
             int point = points[i];
             int countStart = countLessOrEqual(segments, point);
@@ -50,7 +77,6 @@ public class A_QSort {
         return result;
     }
 
-    // ----- Quick sort for Segment[] (by start) -----
     private void quickSort(Segment[] arr, int low, int high) {
         if (low >= high) return;
         int i = low, j = high;
@@ -68,7 +94,6 @@ public class A_QSort {
         if (i < high) quickSort(arr, i, high);
     }
 
-    // ----- Quick sort for int[] -----
     private void quickSort(int[] arr, int low, int high) {
         if (low >= high) return;
         int i = low, j = high;
@@ -88,7 +113,6 @@ public class A_QSort {
         if (i < high) quickSort(arr, i, high);
     }
 
-    // count elements with start <= key
     private int countLessOrEqual(Segment[] arr, int key) {
         int low = 0, high = arr.length - 1;
         while (low <= high) {
@@ -99,10 +123,8 @@ public class A_QSort {
                 high = mid - 1;
             }
         }
-        return low; // number of elements <= key
+        return low;
     }
-
-    // count elements with value < key
     private int countLess(int[] arr, int key) {
         int low = 0, high = arr.length - 1;
         while (low <= high) {
@@ -113,7 +135,7 @@ public class A_QSort {
                 high = mid - 1;
             }
         }
-        return low; // number of elements < key
+        return low;
     }
 
     private void swap(Segment[] arr, int i, int j) {
@@ -127,7 +149,7 @@ public class A_QSort {
         int stop;
 
         Segment(int start, int stop) {
-            if (start > stop) { // ensure correct order
+            if (start > stop) {
                 this.start = stop;
                 this.stop = start;
             } else {
@@ -138,7 +160,6 @@ public class A_QSort {
 
         @Override
         public int compareTo(Segment o) {
-            // compare by start, then by stop for stable ordering
             if (this.start != o.start) return Integer.compare(this.start, o.start);
             return Integer.compare(this.stop, o.stop);
         }

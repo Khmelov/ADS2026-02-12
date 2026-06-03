@@ -4,6 +4,30 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
 
+/*
+Видеорегистраторы и площадь 2.
+Условие то же что и в задаче А.
+
+        По сравнению с задачей A доработайте алгоритм так, чтобы
+        1) он оптимально использовал время и память:
+            - за стек отвечает элиминация хвостовой рекурсии
+            - за сам массив отрезков - сортировка на месте
+            - рекурсивные вызовы должны проводиться на основе 3-разбиения
+
+        2) при поиске подходящих отрезков для точки реализуйте метод бинарного поиска
+        для первого отрезка решения, а затем найдите оставшуюся часть решения
+        (т.е. отрезков, подходящих для точки, может быть много)
+
+    Sample Input:
+    2 3
+    0 5
+    7 10
+    1 6 11
+    Sample Output:
+    1 0 0
+
+*/
+
 public class C_QSortOptimized {
 
     public static void main(String[] args) throws FileNotFoundException {
@@ -30,17 +54,14 @@ public class C_QSortOptimized {
             points[i] = scanner.nextInt();
         }
 
-        // optimized quick sort on segments (3-way partition, tail recursion elimination)
         quickSortOptimized(segments, 0, n - 1);
 
-        // extract and sort stops using the same optimized quick sort
         int[] stops = new int[n];
         for (int i = 0; i < n; i++) {
             stops[i] = segments[i].stop;
         }
         quickSortOptimized(stops, 0, n - 1);
 
-        // answer queries with binary search
         for (int i = 0; i < m; i++) {
             int point = points[i];
             int cntStart = countLessOrEqual(segments, point);
@@ -50,12 +71,10 @@ public class C_QSortOptimized {
         return result;
     }
 
-    // ---------- Optimised QuickSort with 3-way partitioning and tail recursion elimination ----------
     private void quickSortOptimized(Segment[] arr, int low, int high) {
         while (low < high) {
-            int[] p = partition3way(arr, low, high); // returns [lt, gt]
+            int[] p = partition3way(arr, low, high);
             int lt = p[0], gt = p[1];
-            // recurse on smaller part, iterate on larger part
             if (lt - low < high - gt) {
                 quickSortOptimized(arr, low, lt - 1);
                 low = gt + 1;
@@ -66,7 +85,6 @@ public class C_QSortOptimized {
         }
     }
 
-    // 3-way partition for Segment[] using start field
     private int[] partition3way(Segment[] arr, int low, int high) {
         int pivot = arr[low].start;  // choose first element as pivot
         int lt = low, i = low, gt = high;
@@ -83,7 +101,6 @@ public class C_QSortOptimized {
         return new int[]{lt, gt};
     }
 
-    // Overloaded for int[] array (stops)
     private void quickSortOptimized(int[] arr, int low, int high) {
         while (low < high) {
             int[] p = partition3wayInt(arr, low, high);
@@ -120,7 +137,6 @@ public class C_QSortOptimized {
         return new int[]{lt, gt};
     }
 
-    // ---------- Binary search helpers ----------
     private int countLessOrEqual(Segment[] arr, int key) {
         int low = 0, high = arr.length - 1;
         while (low <= high) {
