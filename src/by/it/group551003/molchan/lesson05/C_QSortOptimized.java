@@ -84,10 +84,18 @@ public class C_QSortOptimized {
             int i = left;
 
             while (i <= gt) {
-                int cmp = arr[i].compareTo(pivot);
-                if      (cmp < 0) swap(arr, lt++, i++);
-                else if (cmp > 0) swap(arr, i, gt--);
-                else              i++;
+                if (arr[i].compareTo(pivot) < 0) {
+                    swap(arr, lt, i);
+                    lt++;
+                    i++;
+                }
+                else if (arr[i].compareTo(pivot) > 0) {
+                    swap(arr, i, gt);
+                    gt--;
+                }
+                else {
+                    i++;
+                }
             }
 
             if (lt - left < right - gt) {

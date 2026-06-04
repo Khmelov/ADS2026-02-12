@@ -66,7 +66,7 @@ public class A_QSort {
             }
         }
 
-        // Рекурсивно сортируем левую и правую части
+        // повторяем для левой и правой частей
         quickSort(segments, left, j);
         quickSort(segments, i, right);
     }
