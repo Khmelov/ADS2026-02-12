@@ -38,8 +38,15 @@ public class B_Knapsack {
             gold[i]=scanner.nextInt();
         }
 
-
-        int result = 0;
+        int[] dp = new int[w + 1];
+        for (int k = 0; k < n; k++) {
+            for (int cap = w; cap >= gold[k]; cap--) {
+                if (dp[cap - gold[k]] + gold[k] > dp[cap]) {
+                    dp[cap] = dp[cap - gold[k]] + gold[k];
+                }
+            }
+        }
+        int result = dp[w];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
