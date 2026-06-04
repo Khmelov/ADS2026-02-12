@@ -61,28 +61,97 @@ public class C_QSortOptimized {
         for (int i = 0; i < m; i++) {
             points[i] = scanner.nextInt();
         }
-        //тут реализуйте логику задачи с применением быстрой сортировки
-        //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
+        quickSort3Way(segments, 0, segments.length - 1);
+
+        // Поиск с помощью бинарного поиска
+        for (int i = 0; i < m; i++) {
+            int p = points[i];
+
+            int left = 0;
+            int right = n - 1;
+            int searchIndex = -1;
+
+            while (left <= right) {
+                int mid = left + (right - left) / 2;
+                if (segments[mid].start <= p) {
+                    searchIndex = mid;
+                    left = mid + 1; // Ищем дальше вправо
+                } else {
+                    right = mid - 1;
+                }
+            }
+
+            int count = 0;
+            for (int j = 0; j <= searchIndex; j++) {
+                if (segments[j].stop >= p) {
+                    count++;
+                }
+            }
+            result[i] = count;
+        }
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
+    private void quickSort3Way(Segment[] arr, int low, int high) {
+        while (low < high) {
+
+            Segment pivot = arr[low + (high - low) / 2];
+
+            int lt = low;
+            int i = low;
+            int gt = high;
+
+            while (i <= gt) {
+                int cmp = arr[i].compareTo(pivot);
+                if (cmp < 0) {
+                    swap(arr, lt++, i++);
+                } else if (cmp > 0) {
+                    swap(arr, i, gt--);
+                } else {
+                    i++;
+                }
+            }
+
+            if (lt - low < high - gt) {
+                quickSort3Way(arr, low, lt - 1);
+                low = gt + 1;
+            } else {
+                quickSort3Way(arr, gt + 1, high);
+                high = lt - 1;
+            }
+        }
+    }
+
+    private void swap(Segment[] arr, int i, int j) {
+        Segment temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
     //отрезок
     private class Segment implements Comparable {
         int start;
         int stop;
 
         Segment(int start, int stop) {
-            this.start = start;
-            this.stop = stop;
+            if (start <= stop) {
+                this.start = start;
+                this.stop = stop;
+            } else {
+                this.start = stop;
+                this.stop = start;
+            }
         }
 
         @Override
         public int compareTo(Object o) {
-            //подумайте, что должен возвращать компаратор отрезков
-            return 0;
+            Segment other = (Segment) o;
+            if (this.start != other.start) {
+                return Integer.compare(this.start, other.start);
+            }
+            return Integer.compare(this.stop, other.stop);
         }
     }
 
