@@ -1,4 +1,4 @@
-package by.it.a_khmelev.lesson02;
+package by.it.group510902.petrenko.lesson02;
 /*
 Даны
 1) объем рюкзака 4
@@ -30,28 +30,36 @@ public class C_GreedyKnapsack {
         Scanner input = new Scanner(inputStream);
         int n = input.nextInt();      //сколько предметов в файле
         int W = input.nextInt();      //какой вес у рюкзака
-        Item[] items = new Item[n];   //получим список предметов
-        for (int i = 0; i < n; i++) { //создавая каждый конструктором
+        Item[] items = new Item[n];
+        for (int i = 0; i < n; i++) {
             items[i] = new Item(input.nextInt(), input.nextInt());
         }
-        //покажем предметы
+
         for (Item item : items) {
             System.out.println(item);
         }
         System.out.printf("Всего предметов: %d. Рюкзак вмещает %d кг.\n", n, W);
 
-        //тут необходимо реализовать решение задачи
-        //итогом является максимально воможная стоимость вещей в рюкзаке
-        //вещи можно резать на кусочки (непрерывный рюкзак)
+        java.util.Arrays.sort(items);
+
         double result = 0;
-        //тут реализуйте алгоритм сбора рюкзака
-        //будет особенно хорошо, если с собственной сортировкой
-        //кроме того, можете описать свой компаратор в классе Item
+        int remainingCapacity = W;
 
-        //ваше решение.
+        for (Item item : items) {
+            if (remainingCapacity <= 0) break;  // рюкзак полон
 
+            if (item.weight <= remainingCapacity) {
 
-        System.out.printf("Удалось собрать рюкзак на сумму %f\n", result);
+                result += item.cost;
+                remainingCapacity -= item.weight;
+            } else {
+
+                double fraction = (double) remainingCapacity / item.weight;
+                result += item.cost * fraction;
+                remainingCapacity = 0;
+            }
+        }
+
         return result;
     }
 
@@ -67,17 +75,17 @@ public class C_GreedyKnapsack {
         @Override
         public String toString() {
             return "Item{" +
-                   "cost=" + cost +
-                   ", weight=" + weight +
-                   '}';
+                    "cost=" + cost +
+                    ", weight=" + weight +
+                    '}';
         }
 
         @Override
         public int compareTo(Item o) {
-            //тут может быть ваш компаратор
-
-
-            return 0;
+            long left = (long) this.cost * o.weight;
+            long right = (long) o.cost * this.weight;
+            return Long.compare(right, left);
         }
     }
 }
+
