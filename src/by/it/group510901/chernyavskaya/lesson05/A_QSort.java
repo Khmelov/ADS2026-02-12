@@ -60,18 +60,92 @@ public class A_QSort {
         //читаем сами отрезки
         for (int i = 0; i < n; i++) {
             //читаем начало и конец каждого отрезка
-            segments[i] = new Segment(scanner.nextInt(), scanner.nextInt());
+            int start = scanner.nextInt();
+            int end = scanner.nextInt();
+            // если конец меньше начала — меняем местами
+            if (start > end) {
+                int temp = start;
+                start = end;
+                end = temp;
+            }
+            segments[i] = new Segment(start, end);
         }
         //читаем точки
         for (int i = 0; i < m; i++) {
             points[i] = scanner.nextInt();
         }
+
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
+        // Шаг 1: Сортируем отрезки по началу используя быструю сортировку
+        quickSortSegments(segments, 0, segments.length - 1);
+
+        // Шаг 2: Для каждой точки считаем количество отрезков, которым она принадлежит
+        for (int i = 0; i < m; i++) {
+            int point = points[i];
+            int count = 0;
+
+            // так как отрезки отсортированы по началу, можно остановиться когда начало отрезка > точки
+            for (int j = 0; j < n; j++) {
+                // Если начало текущего отрезка больше точки, дальше можно не проверять
+                // (так как отрезки отсортированы по возрастанию начала)
+                if (segments[j].start > point) {
+                    break;
+                }
+                // Проверяем, принадлежит ли точка отрезку (включая границы)
+                if (point >= segments[j].start && point <= segments[j].stop) {
+                    count++;
+                }
+            }
+            result[i] = count;
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
+    }
+
+    // Реализация быстрой сортировки для массива отрезков
+    private void quickSortSegments(Segment[] arr, int left, int right) {
+        if (left < right) {
+            // Находим опорный элемент и разбиваем массив
+            int pivotIndex = partition(arr, left, right);
+            // Рекурсивно сортируем левую и правую части
+            quickSortSegments(arr, left, pivotIndex - 1);
+            quickSortSegments(arr, pivotIndex + 1, right);
+        }
+    }
+
+    // Функция разделения массива для быстрой сортировки
+    private int partition(Segment[] arr, int left, int right) {
+        // Выбираем опорный элемент - средний элемент для улучшения производительности
+        int mid = left + (right - left) / 2;
+        Segment pivot = arr[mid];
+
+        // Меняем местами опорный элемент с последним
+        Segment temp = arr[mid];
+        arr[mid] = arr[right];
+        arr[right] = temp;
+
+        int i = left;
+
+        // Перемещаем все элементы, меньшие опорного, в левую часть
+        for (int j = left; j < right; j++) {
+            if (arr[j].compareTo(pivot) <= 0) {
+                // Меняем местами arr[i] и arr[j]
+                temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+                i++;
+            }
+        }
+
+        // Возвращаем опорный элемент на его место
+        temp = arr[i];
+        arr[i] = arr[right];
+        arr[right] = temp;
+
+        return i;
     }
 
     //отрезок
@@ -82,15 +156,17 @@ public class A_QSort {
         Segment(int start, int stop) {
             this.start = start;
             this.stop = stop;
-            //тут вообще-то лучше доделать конструктор на случай если
-            //концы отрезков придут в обратном порядке
         }
 
         @Override
         public int compareTo(Segment o) {
-            //подумайте, что должен возвращать компаратор отрезков
-
-            return 0;
+            // Сравниваем отрезки по началу (start)
+            // Если начала равны, то сравниваем по концу (stop)
+            if (this.start != o.start) {
+                return Integer.compare(this.start, o.start);
+            } else {
+                return Integer.compare(this.stop, o.stop);
+            }
         }
     }
 

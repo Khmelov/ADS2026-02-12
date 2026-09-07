@@ -1,4 +1,4 @@
-package by.it.a_khmelev.lesson02;
+package by.it.group510902.petrenko.lesson02;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +31,24 @@ public class B_Sheduler {
         //Начало и конец событий могут совпадать.
         List<Event> result;
         result = new ArrayList<>();
-        //ваше решение.
 
+        java.util.Arrays.sort(events, (a, b) -> {
+            if (a.stop != b.stop) {
+                return Integer.compare(a.stop, b.stop);
+            }
+
+            return Integer.compare(a.start, b.start);
+        });
+
+        int lastEnd = from;
+
+
+        for (Event event : events) {
+            if (event.start >= lastEnd && event.stop <= to) {
+                result.add(event);
+                lastEnd = event.stop;
+            }
+        }
 
         return result;          //вернем итог
     }
