@@ -45,6 +45,7 @@ public class B_MergeSort {
             System.out.println(a[i]);
         }
 
+        a = mergeSort(a,0,n-1);
         // тут ваше решение (реализуйте сортировку слиянием)
         // https://ru.wikipedia.org/wiki/Сортировка_слиянием
 
@@ -52,6 +53,31 @@ public class B_MergeSort {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return a;
     }
-
+    int[] mergeSort(int arr[], int l, int r){
+        int[] resarr = new int[r-l+1];
+        if(l == r){
+            resarr[0] = arr[l];
+            return arr;
+        }
+        int m = (l + r)/2;
+        int[] l_buf = mergeSort(arr, l, m);
+        int[] r_buf = mergeSort(arr, m+1, r);
+        int i = 0, k = 0, j = 0;
+        while(i <= (r - l)/2 && j < (r - l)/2 && k < r-l+1){
+            if (l_buf[i] > r_buf[j]){
+                resarr[k] = r_buf[j];
+                j++;
+            }else if(l_buf[i] < r_buf[j]){
+                resarr[k] = l_buf[i];
+                i++;
+            }else{
+                resarr[k] = l_buf[i];
+                i++;
+                j++;
+            }
+            k++;
+        }
+        return resarr;
+    }
 
 }
