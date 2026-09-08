@@ -54,7 +54,7 @@ public class C_HeapMax {
             if (s.equalsIgnoreCase("extractMax")) {
                 Long res = heap.extractMax();
                 if (res != null && res > maxValue) maxValue = res;
-                System.out.println();
+                System.out.println(res); //добавил вывод res, так как раньше было: System.out.println();
                 i++;
             }
             if (s.contains(" ")) {
@@ -74,25 +74,47 @@ public class C_HeapMax {
         //Будет мало? Ну тогда можете его собрать как Generic и/или использовать в варианте B
         private List<Long> heap = new ArrayList<>();
 
-        int siftDown(int i) { //просеивание вверх
-
-            return i;
+        void swap(int i, int j) {
+            Long temp = heap.get(i);
+            heap.set(i, heap.get(j));
+            heap.set(j, temp);
         }
 
-        int siftUp(int i) { //просеивание вниз
+        void siftDown(int i) {
+            int child = 2 * i + 1;
+            if (child >= heap.size())
+                return;
 
-            return i;
+            if (child + 1 < heap.size() && heap.get(child) < heap.get(child + 1))
+                ++child;
+            if (heap.get(child) > heap.get(i)) {
+                swap(child, i);
+                siftDown(child);
+            }
         }
 
-        void insert(Long value) { //вставка
+        void siftUp(int i) {
+            if (i == 0)
+                return;
+
+            int parent = (i - 1) / 2;
+            if (heap.get(parent) < heap.get(i)) {
+                swap(parent, i);
+                siftUp(parent);
+            }
         }
 
-        Long extractMax() { //извлечение и удаление максимума
-            Long result = null;
+        void insert(Long value) {
+            heap.add(value);
+            siftUp(heap.size() - 1);
+        }
 
+        Long extractMax() {
+            Long result = heap.get(0);
+            heap.set(0, heap.remove(heap.size() - 1));
+            siftDown(0);
             return result;
         }
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
     }
 
     // РЕМАРКА. Это задание исключительно учебное.

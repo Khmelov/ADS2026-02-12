@@ -1,4 +1,4 @@
-package lesson02;
+package by.it.group551004.bulavin.lesson02;
 
 import java.util.ArrayList;
 import java.util.List;

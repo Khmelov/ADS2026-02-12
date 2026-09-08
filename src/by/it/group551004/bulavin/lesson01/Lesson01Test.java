@@ -1,4 +1,4 @@
-package lesson01;
+package by.it.group551004.bulavin.lesson01;
 
 import org.junit.Test;
 
