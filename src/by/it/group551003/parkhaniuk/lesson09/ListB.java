@@ -5,6 +5,15 @@ import java.util.*;
 public class ListB<E> implements List<E> {
 
 
+    private int size;
+    private int capacity;
+    private E[] data;
+
+    public ListB() {
+        size = 0;
+        capacity = 10;
+        data = (E[]) new Object[capacity];
+    }
     //Создайте аналог списка БЕЗ использования других классов СТАНДАРТНОЙ БИБЛИОТЕКИ
 
     /////////////////////////////////////////////////////////////////////////
@@ -14,69 +23,125 @@ public class ListB<E> implements List<E> {
     /////////////////////////////////////////////////////////////////////////
     @Override
     public String toString() {
-        return "";
+        if (size == 0)
+            return "[]";
+        String res = "";
+
+        res += ("[" + data[0]);
+        for(int i = 1; i < size; i++)
+            res += (", " + data[i].toString());
+        res += "]";
+        return res;
+    }
+
+    private void ensureCapacity()
+    {
+        capacity *= 2;
+        E[] newData = (E[]) new Object[capacity];
+        System.arraycopy(data, 0, newData, 0, size);
+
+        data = newData;
     }
 
     @Override
     public boolean add(E e) {
-        return false;
+        if (size == capacity)
+            ensureCapacity();
+
+        data[size++] = e;
+        return true;
     }
 
     @Override
     public E remove(int index) {
+        if (index >= 0 && index < size) {
+            E deleteVal = data[index];
+            System.arraycopy(data, index + 1, data, index, size - index - 1);
+            data[size--] = null;
+            return deleteVal;
+        }
         return null;
     }
 
     @Override
     public int size() {
-        return 0;
+        return this.size;
     }
 
     @Override
     public void add(int index, E element) {
-
+        if (size == capacity)
+            ensureCapacity();
+        System.arraycopy(data, index, data, index + 1, size - index);
+        data[index] = element;
+        size++;
     }
 
     @Override
     public boolean remove(Object o) {
-        return false;
+        boolean found = false;
+        for(int i = 0; i < size && !found; i++) {
+            if (o.equals(data[i])) {
+                remove(i);
+                found = true;
+            }
+        }
+        return found;
     }
 
     @Override
     public E set(int index, E element) {
-        return null;
+        E removed = data[index];
+        data[index] = element;
+        return removed;
     }
 
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return (size == 0);
     }
 
 
     @Override
     public void clear() {
-
+        for(int i = 0; i < size; i++)
+            data[i] = null;
+        size = 0;
     }
 
     @Override
     public int indexOf(Object o) {
-        return 0;
+        if (o != null)
+            for (int i = 0; i < size; i++)
+                if (o.equals(data[i]))
+                    return i;
+        return -1;
     }
 
     @Override
     public E get(int index) {
+        if (index >= 0 && index < size)
+            return data[index];
         return null;
     }
 
     @Override
     public boolean contains(Object o) {
+        if (o != null)
+            for (int i = 0; i < size; i++)
+                if (o.equals(data[i]))
+                    return true;
         return false;
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        return 0;
+        if (o != null)
+            for (int i = size - 1; i >= 0; i--)
+                if (o.equals(data[i]))
+                    return i;
+        return -1;
     }
 
 
