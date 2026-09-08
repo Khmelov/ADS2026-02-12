@@ -50,11 +50,57 @@ public class C_EditDist {
 
     String getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        //String result = "";
+        int n = one.length();
+        int m = two.length();
 
+        // построение матрицы
+        int[][] d = new int[n + 1][m + 1];
+        for (int i = 0; i <= n; i++) d[i][0] = i;
+        for (int j = 0; j <= m; j++) d[0][j] = j;
 
-        String result = "";
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                int cost = (one.charAt(i - 1) == two.charAt(j - 1)) ? 0 : 1;
+                d[i][j] = Math.min(
+                        Math.min(d[i - 1][j] + 1,
+                                d[i][j - 1] + 1),
+                                d[i - 1][j - 1] + cost);
+            }
+        }
+
+        // обратный ход для восстановления пути
+        StringBuilder sb = new StringBuilder();
+        int i = n;
+        int j = m;
+
+        while (i > 0 || j > 0) {
+            int current = d[i][j];
+
+            // проверяка диагонали - на совпадение или замену
+            if (i > 0 && j > 0 && current == d[i - 1][j - 1] + (one.charAt(i - 1) == two.charAt(j - 1) ? 0 : 1)) {
+                if (one.charAt(i - 1) == two.charAt(j - 1)) {
+                    sb.insert(0, "#,"); // совпадение
+                } else {
+                    sb.insert(0, "~" + two.charAt(j - 1) + ","); // запмена
+                }
+                i--; j--;
+            }
+            // удаления
+            else if (i > 0 && current == d[i - 1][j] + 1) {
+                sb.insert(0, "-" + one.charAt(i - 1) + ",");
+                i--;
+            }
+            // вставки
+            else if (j > 0 && current == d[i][j - 1] + 1) {
+                sb.insert(0, "+" + two.charAt(j - 1) + ",");
+                j--;
+            }
+        }
+
+        return sb.toString();
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        //return result;
     }
 
 

@@ -40,14 +40,26 @@ public class B_EditDist {
 
 
     int getDistanceEdinting(String one, String two) {
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        int[][] dp = new int[one.length()+1][two.length()+1];
+        dp[0][0] = 0;
 
+        for (int row = 1; row <= one.length(); row++)
+            dp[row][0] = row;
 
-        int result = 0;
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        for (int col = 1; col <= two.length(); col++)
+            dp[0][col] = col;
+
+        for (int row = 1; row <= one.length(); row++) {
+            for (int col = 1; col <= two.length(); col++) {
+                int cost = (one.charAt(row-1) == two.charAt(col-1)) ? 0 : 1;
+                dp[row][col] = Math.min(
+                        Math.min(dp[row-1][col] + 1, dp[row][col-1] + 1),
+                        dp[row-1][col-1] + cost
+                );
+            }
+        }
+        return dp[one.length()][two.length()];
     }
-
 
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = B_EditDist.class.getResourceAsStream("dataABC.txt");
