@@ -1,8 +1,5 @@
-package by.it.group551003.kakhno;
+package by.it.group551003.kakhno.lesson08;
 
-import by.it.group551003.kakhno.A_Knapsack;
-
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
