@@ -41,25 +41,35 @@ public class A_EditDist {
 
     int getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        int n, m;
-        n = one.length();
-        m = two.length();
+        int m = one.length();
+        int n = two.length();
 
-        int[][] dp = new int[n + 1][m + 1];
+        int[][] memo = new int[m + 1][n + 1];
 
-        for (int i = 0; i <= n; i++)
-            dp[i][0] = i;
-        for (int j = 0; j <= m; j++)
-            dp[0][j] = j;
-
-        for (int i = 1; i <= n; i++)
-            for (int j = 1; j <= m; j++)
-                if (one.charAt(i - 1) == two.charAt(j - 1))
-                    dp[i][j] = dp[i - 1][j - 1];
-                else
-                    dp[i][j] = 1 + Math.min(dp[i - 1][j - 1], Math.min(dp[i][j - 1], dp[i - 1][j]));
+        for (int i = 1; i <= m; i++)
+            for (int j = 1; j <= n; j++)
+                memo[i][j] = -1;
+        return editDistance(one, two, m, n, memo);
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return dp[n][m];
+    }
+
+    int editDistance(String s1, String s2, int i, int j, int[][] memo) {
+        if (i == 0)
+            return j;
+        if (j == 0)
+            return i;
+        if (memo[i][j] != -1)
+            return memo[i][j];
+
+        if (s1.charAt(i - 1) == s2.charAt(j - 1))
+            memo[i][j] = editDistance(s1, s2, i - 1, j - 1, memo);
+        else {
+            int replace = editDistance(s1, s2, i - 1, j - 1, memo);
+            int insert = editDistance(s1, s2, i, j - 1, memo);
+            int delete = editDistance(s1, s2, i - 1, j, memo);
+            memo[i][j] = 1 + Math.min(replace, Math.min(insert, delete));
+        }
+        return memo[i][j];
     }
 
 
