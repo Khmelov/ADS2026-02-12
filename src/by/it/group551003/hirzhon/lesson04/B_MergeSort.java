@@ -45,13 +45,65 @@ public class B_MergeSort {
             System.out.println(a[i]);
         }
 
+        mergeSort(a,0, n-1);
+        for (int i = 0; i < n; i++){
+            System.out.println(a[i]);
+        }
+
         // тут ваше решение (реализуйте сортировку слиянием)
         // https://ru.wikipedia.org/wiki/Сортировка_слиянием
-
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return a;
     }
 
+    public static void mergeSort(int[] arr, int left, int right) {
+        if (left >= right) {
+            return;
+        }
+
+        int mid = (left + right) / 2;
+
+        mergeSort(arr, left, mid);
+        mergeSort(arr, mid + 1, right);
+
+        merge(arr, left, mid, right);
+    }
+
+    public static void merge(int[] arr, int left, int mid, int right) {
+        int[] temp = new int[right - left + 1];
+
+        int i = left;
+        int j = mid + 1;
+        int k = 0;
+
+        while (i <= mid && j <= right) {
+            if (arr[i] <= arr[j]) {
+                temp[k] = arr[i];
+                k++;
+                i++;
+            } else {
+                temp[k] = arr[j];
+                k++;
+                j++;
+            }
+        }
+
+        while (i<=mid) {
+            temp[k] = arr[i];
+            k++;
+            i++;
+        }
+
+        while (j <= right) {
+            temp[k] = arr[j];
+            k++;
+            j++;
+        }
+
+        for (int t = 0; t < temp.length; t++) {
+            arr[left + t] = temp[t];
+        }
+    }
 
 }
