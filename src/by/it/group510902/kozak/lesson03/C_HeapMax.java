@@ -78,28 +78,28 @@ public class C_HeapMax {
             int size = heap.size();
 
             while (true) {
-                int left  = 2 * i + 1; // индекс левого ребёнка
-                int right = 2 * i + 2; // индекс правого ребёнка
-                int largest = i;       // предполагаем, что текущий — наибольший
+                int left  = 2 * i + 1;
+                int right = 2 * i + 2;
+                int largest = i;
 
-                // Если левый ребёнок существует И больше текущего
+
                 if (left < size && heap.get(left) > heap.get(largest)) {
                     largest = left;
                 }
-                // Если правый ребёнок существует И больше текущего наибольшего
+
                 if (right < size && heap.get(right) > heap.get(largest)) {
                     largest = right;
                 }
 
-                // Если текущий уже наибольший — куча восстановлена, стоп
+
                 if (largest == i) break;
 
-                // Меняем местами текущий и наибольший ребёнок
+
                 Long tmp = heap.get(i);
                 heap.set(i, heap.get(largest));
                 heap.set(largest, tmp);
 
-                // Продолжаем просеивание уже на новой позиции
+
                 i = largest;
             }
             return i;
@@ -107,19 +107,19 @@ public class C_HeapMax {
 
         int siftUp(int i) { //просеивание вниз
             while (i > 0) {
-                int parent = (i - 1) / 2; // индекс родителя
+                int parent = (i - 1) / 2;
 
-                // Если текущий элемент больше родителя — нарушение кучи!
+
                 if (heap.get(i) > heap.get(parent)) {
-                    // Меняем местами с родителем
+
                     Long tmp = heap.get(i);
                     heap.set(i, heap.get(parent));
                     heap.set(parent, tmp);
 
-                    // Продолжаем всплытие уже с позиции родителя
+
                     i = parent;
                 } else {
-                    // Родитель >= текущего — куча в порядке, стоп
+
                     break;
                 }
             }
@@ -127,8 +127,8 @@ public class C_HeapMax {
         }
 
         void insert(Long value) { //вставка
-            heap.add(value);              // шаг 1: добавить в конец
-            siftUp(heap.size() - 1);     // шаг 2: восстановить кучу всплытием
+            heap.add(value);
+            siftUp(heap.size() - 1);
         }
 
         Long extractMax() { //извлечение и удаление максимума
@@ -136,12 +136,12 @@ public class C_HeapMax {
             Long result = heap.get(0);
             int last = heap.size() - 1;
 
-            heap.set(0, heap.get(last));           // шаг 2: переставить последний в корень
-            heap.remove(last);                     // шаг 3: удалить последний
+            heap.set(0, heap.get(last));
+            heap.remove(last);
 
-            if (!heap.isEmpty()) siftDown(0);      // шаг 4: восстановить кучу погружением
+            if (!heap.isEmpty()) siftDown(0);
 
-            System.out.print(result);              // вывод согласно findMaxValue
+            System.out.print(result);
             return result;
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
