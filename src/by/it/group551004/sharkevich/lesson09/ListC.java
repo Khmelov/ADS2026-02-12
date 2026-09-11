@@ -144,11 +144,11 @@ public class ListC<E> implements List<E> {
 
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
-        int shift = 0;
         boolean isModified = false;
-        for (E o : c)
-            add(index + shift++, o);
-        isModified = true;
+        for (E o : c) {
+            add(index++, o);
+            isModified = true;
+        }
         return isModified;
     }
 
