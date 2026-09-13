@@ -49,12 +49,60 @@ import java.util.Scanner;
 public class C_EditDist {
 
     String getDistanceEdinting(String one, String two) {
+
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        int m = one.length();
+        int n = two.length();
 
+        int[][] dp = new int[m + 1][n + 1];
 
-        String result = "";
+        for (int i = 0; i <= m; i++) dp[i][0] = i;
+        for (int j = 0; j <= n; j++) dp[0][j] = j;
+
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (one.charAt(i - 1) == two.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = 1 + Math.min(
+                            dp[i - 1][j - 1],
+                            Math.min(dp[i - 1][j], dp[i][j - 1])
+                    );
+                }
+            }
+        }
+
+        // Collect operations in a list, then reverse the list (not the string!)
+        java.util.ArrayList<String> ops = new java.util.ArrayList<>();
+        int i = m, j = n;
+
+        while (i > 0 || j > 0) {
+            if (i > 0 && j > 0 && one.charAt(i - 1) == two.charAt(j - 1)) {
+                ops.add("#,");
+                i--; j--;
+            } else if (i > 0 && j > 0 && dp[i][j] == dp[i - 1][j - 1] + 1) {
+                ops.add("~" + two.charAt(j - 1) + ",");
+                i--; j--;
+            } else if (i > 0 && dp[i][j] == dp[i - 1][j] + 1) {
+                ops.add("-" + one.charAt(i - 1) + ",");
+                i--;
+            } else {
+                ops.add("+" + two.charAt(j - 1) + ",");
+                j--;
+            }
+        }
+
+        // Reverse the list of operations to get correct order
+        java.util.Collections.reverse(ops);
+
+        StringBuilder result = new StringBuilder();
+        for (String op : ops) {
+            result.append(op);
+        }
+
+        return result.toString();
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+
     }
 
 

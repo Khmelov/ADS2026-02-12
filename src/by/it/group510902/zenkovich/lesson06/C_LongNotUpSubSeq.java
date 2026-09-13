@@ -56,11 +56,81 @@ public class C_LongNotUpSubSeq {
             m[i] = scanner.nextInt();
         }
         //тут реализуйте логику задачи методами динамического программирования (!!!)
-        int result = 0;
+
+
+        int[] tails = new int[n];
+        int[] storeIndex = new int[n];
+        int[] posInTails = new int[n];
+        int[] prev = new int[n];
+
+        int length = 0;
+
+        for (int i = 0; i < n; i++) {
+            int x = m[i];
+
+
+            int left = 0;
+            int right = length;
+
+            while (left < right) {
+                int mid = (left + right) / 2;
+
+                if (tails[mid] < x) {
+                    right = mid;
+                } else {
+                    left = mid + 1;
+                }
+            }
+
+            int pos = left;  // позиция вставки
+
+
+            tails[pos] = x;
+            storeIndex[pos] = i;
+            posInTails[i] = pos;
+
+
+            if (pos == 0) {
+                prev[i] = -1;
+            } else {
+
+                prev[i] = -1;
+                for (int j = i - 1; j >= 0; j--) {
+                    if (posInTails[j] == pos - 1 && m[j] >= x) {
+                        prev[i] = j;
+                        break;
+                    }
+                }
+            }
+
+            if (pos == length) {
+                length++;
+            }
+        }
+
+
+        int[] resultIndices = new int[length];
+        int lastIndex = storeIndex[length - 1];
+
+        for (int i = length - 1; i >= 0; i--) {
+            resultIndices[i] = lastIndex + 1;
+            lastIndex = prev[lastIndex];
+        }
+
+
+        System.out.println(length);
+        for (int i = 0; i < length; i++) {
+            System.out.print(resultIndices[i] + (i == length - 1 ? "\n" : " "));
+        }
+
+
+        return length;
+
+
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+
     }
 
 }

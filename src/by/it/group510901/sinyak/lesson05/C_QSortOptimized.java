@@ -64,6 +64,39 @@ public class C_QSortOptimized {
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
+        quickSort(segments, 0, n - 1);
+
+        for (int i = 0; i < m; i++) {
+            int point = points[i];
+            int count = 0;
+
+            // Бинарный поиск: ищем самый правый индекс, где segments[index].start <= point
+            int low = 0;
+            int high = n - 1;
+            int lastPossibleIdx = -1;
+
+            while (low <= high) {
+
+                int mid = low + (high - low) / 2;
+                if (segments[mid].start <= point) {
+
+                    lastPossibleIdx = mid;
+                    low = mid + 1;
+                } else {
+                    high = mid - 1;
+                }
+            }
+
+            // Теперь проверяем все отрезки от 0 до lastPossibleIdx
+            if (lastPossibleIdx != -1) {
+                for (int k = lastPossibleIdx; k >= 0; k--) {
+                    if (segments[k].stop >= point) {
+                        count++;
+                    }
+                }
+            }
+            result[i] = count;
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
@@ -82,8 +115,47 @@ public class C_QSortOptimized {
         @Override
         public int compareTo(Object o) {
             //подумайте, что должен возвращать компаратор отрезков
-            return 0;
+            Segment other = (Segment) o;
+            return Integer.compare(this.start, other.start);
         }
+    }
+
+    public void quickSort(Segment[] arr, int left, int right) {
+        while (left < right) {
+            // Опорные индексы для 3-разбиения
+            int lt = left; // Граница конца элементов < pivot
+            int gt = right; // Граница начала элементов > pivot
+            int i = left + 1;
+
+            Segment pivot = arr[left];
+
+            while (i <= gt) {
+                int cmp = arr[i].compareTo(pivot);
+                if (cmp < 0) {
+                    swap(arr, lt++, i++);
+                } else if (cmp > 0) {
+                    swap(arr, i, gt--);
+                } else {
+                    i++;
+                }
+            }
+            // Элиминация хвостовой рекурсии:
+            // Сначала рекурсивно сортируем меньшую часть,
+            // а большую оставляем для следующей итерации цикла
+            if (lt - left < right - gt) {
+                quickSort(arr, left, lt - 1);
+                left = gt + 1;
+            } else {
+                quickSort(arr, gt + 1, right);
+                right = lt - 1;
+            }
+        }
+    }
+
+    private void swap(Segment[] arr, int i, int j) {
+        Segment temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
     }
 
 }

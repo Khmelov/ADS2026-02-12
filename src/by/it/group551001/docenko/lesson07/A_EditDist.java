@@ -40,14 +40,21 @@ public class A_EditDist {
 
 
     int getDistanceEdinting(String one, String two) {
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-        int result = 0;
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        return levDistance(one, two, one.length(), two.length());
     }
 
+    int levDistance(String one, String two, int i, int j) {
+        if (i == 0)
+            return j;
+        if (j == 0)
+            return i;
+
+        int cost = (one.charAt(i-1) == two.charAt(j-1)) ? 0 : 1;
+        int v1 = levDistance(one, two, i-1, j);
+        int v2 = levDistance(one, two, i, j-1);
+        int v3 = levDistance(one, two, i-1, j-1);
+        return Math.min(Math.min(v1+1, v2+1),v3+cost);
+    }
 
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = A_EditDist.class.getResourceAsStream("dataABC.txt");

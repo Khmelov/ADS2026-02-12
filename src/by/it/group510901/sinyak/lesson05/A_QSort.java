@@ -69,6 +69,23 @@ public class A_QSort {
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
+        int[] before = new int [n];
+        int[] after = new int [n];
+
+        for (int i = 0; i<n; i++) {
+           before[i] = segments[i].start;
+           after[i] = segments[i].stop;
+        }
+
+        QuickSort(before, 0, n-1);
+        QuickSort(after, 0, n-1);
+
+        for (int i = 0; i<m; i++) {
+
+            int startC = BinarySearch(before, points[i],true);
+            int stopC = BinarySearch(after, points[i],false);
+            result[i] = startC - stopC;
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
@@ -80,18 +97,86 @@ public class A_QSort {
         int stop;
 
         Segment(int start, int stop) {
-            this.start = start;
-            this.stop = stop;
             //тут вообще-то лучше доделать конструктор на случай если
             //концы отрезков придут в обратном порядке
+            if (start > stop) {
+                this.start = stop;
+                this.stop = start;
+            }
+            else {
+                this.start = start;
+                this.stop = stop;
+            }
         }
 
         @Override
         public int compareTo(Segment o) {
             //подумайте, что должен возвращать компаратор отрезков
-
             return 0;
         }
+    }
+
+    public int[] QuickSort(int[] arr, int left, int right) {
+
+        if (left >= right) return arr;
+
+        int i = left;
+        int j = right;
+        int pivot = arr[left + (right - left)/2];
+
+        while (i <= j) {
+
+            while (arr[i] < pivot) {
+                i++;
+            }
+
+            while (arr[j] > pivot) {
+                j--;
+            }
+
+            if (i <= j) {
+
+                int buf = arr[j];
+                arr[j] = arr[i];
+                arr[i] = buf;
+
+                i++;
+                j--;
+            }
+        }
+
+        QuickSort(arr, left, j);
+        QuickSort(arr, i, right);
+
+        return arr;
+    }
+
+    public int BinarySearch(int[] arr, int key, boolean isStart) {
+        int low = 0;
+        int high = arr.length - 1;
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+
+            boolean condition;
+            if (isStart) {
+
+                condition = arr[mid] <= key;
+            } else {
+
+                condition = arr[mid] < key;
+            }
+
+            if (condition) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+
+        int num = low;
+
+        return num;
     }
 
 }

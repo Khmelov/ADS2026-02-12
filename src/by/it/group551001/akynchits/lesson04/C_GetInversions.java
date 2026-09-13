@@ -42,6 +42,55 @@ public class C_GetInversions {
         //long finishTime = System.currentTimeMillis();
         System.out.print(result);
     }
+    int merge(int[] array, int left, int right, int mid){
+        int[] LowHalf = new int[mid - left + 1];
+        int[] HighHalf = new int[right - mid];
+        for(int i = 0; i < mid - left + 1; i++){
+            LowHalf[i] = array[left + i];
+        }
+        for(int j = 0; j < right - mid; j++){
+            HighHalf[j] = array[mid + 1 + j];
+        }
+        int k = left;
+        int i = 0;
+        int j = 0;
+        int invCount = 0;
+        while(i < LowHalf.length && j < HighHalf.length){
+            if (LowHalf[i] > HighHalf[j]){
+                array[k] = HighHalf[j];
+                k++;
+                j++;
+                invCount += (LowHalf.length - i);
+            } else  {
+                array[k] = LowHalf[i];
+                k++;
+                i++;
+
+            }
+        }
+        while(i < LowHalf.length){
+            array[k] = LowHalf[i];
+            k++;
+            i++;
+        }
+        while(j < HighHalf.length){
+            array[k] = HighHalf[j];
+            k++;
+            j++;
+        }
+        return invCount;
+    }
+
+    int mergesort(int[] array,int p,int r){
+        int count = 0;
+        if (p < r){
+            int q = (p+r) / 2;
+            count = mergesort(array,p, q);
+            count = mergesort(array, q+1, r);
+            count = merge(array, p, r, q);
+        }
+        return count;
+    }
 
     int calc(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
@@ -56,7 +105,7 @@ public class C_GetInversions {
         }
         int result = 0;
         //!!!!!!!!!!!!!!!!!!!!!!!!     тут ваше решение   !!!!!!!!!!!!!!!!!!!!!!!!
-
+        result = mergesort(a, 0, n -1 );
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
