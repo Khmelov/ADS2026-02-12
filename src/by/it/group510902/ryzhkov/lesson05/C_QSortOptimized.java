@@ -62,9 +62,116 @@ public class C_QSortOptimized {
         }
         // тут реализуйте логику задачи с применением быстрой сортировки
         // в классе отрезка Segment реализуйте нужный для этой задачи компаратор
+         quickSortSegments(segments, 0, n - 1);
 
-        // !!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!
+        int[] starts = new int[n];
+        int[] stops  = new int[n];
+        for (int i = 0; i < n; i++) {
+            starts[i] = segments[i].start;
+            stops[i]  = segments[i].stop;
+        }
+
+        quickSortInt(stops, 0, n - 1);
+
+        for (int j = 0; j < m; j++) {
+            int x = points[j];
+            int countStarts = countLessOrEqual(starts, x);
+            int countEndsLess = countStrictlyLess(stops, x);
+            result[j] = countStarts - countEndsLess;
+        }
+        
         return result;
+    }
+
+    private void quickSortSegments(Segment[] arr, int lo, int hi) {
+        while (lo < hi) {
+
+            Segment pivot = arr[lo];
+            int lt = lo, gt = hi;
+            int i = lo + 1;
+
+            while (i <= gt) {
+                int cmp = arr[i].compareTo(pivot);
+                if (cmp < 0) {
+                    swap(arr, lt++, i++);
+                } else if (cmp > 0) {
+                    swap(arr, i, gt--);
+                } else {
+                    i++;
+                }
+            }
+
+            if (lt - lo < hi - gt) {
+                quickSortSegments(arr, lo, lt - 1);  
+                lo = gt + 1;                       
+            } else {
+                quickSortSegments(arr, gt + 1, hi);
+                hi = lt - 1;
+            }
+        }
+    }
+
+    private void quickSortInt(int[] arr, int lo, int hi) {
+        while (lo < hi) {
+            int pivot = arr[lo];
+            int lt = lo, gt = hi;
+            int i = lo + 1;
+            while (i <= gt) {
+                if (arr[i] < pivot) {
+                    swapInt(arr, lt++, i++);
+                } else if (arr[i] > pivot) {
+                    swapInt(arr, i, gt--);
+                } else {
+                    i++;
+                }
+            }
+            if (lt - lo < hi - gt) {
+                quickSortInt(arr, lo, lt - 1);
+                lo = gt + 1;
+            } else {
+                quickSortInt(arr, gt + 1, hi);
+                hi = lt - 1;
+            }
+        }
+    }
+
+    private void swap(Segment[] arr, int i, int j) {
+        Segment tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+    }
+
+    private void swapInt(int[] arr, int i, int j) {
+        int tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+    }
+
+
+    private int countLessOrEqual(int[] arr, int x) {
+        int lo = 0, hi = arr.length;
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (arr[mid] <= x) {
+                lo = mid + 1;
+            } else {
+                hi = mid;
+            }
+        }
+        return lo; 
+    }
+
+    private int countStrictlyLess(int[] arr, int x) {
+        int lo = 0, hi = arr.length;
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (arr[mid] < x) {
+                lo = mid + 1;
+            } else {
+                hi = mid;
+            }
+        }
+        return lo;
     }
 
     // отрезок
