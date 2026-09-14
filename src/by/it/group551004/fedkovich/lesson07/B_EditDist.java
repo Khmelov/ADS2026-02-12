@@ -1,4 +1,4 @@
-package by.it.group551001.biarezina.lesson07;
+package by.it.group551004.fedkovich.lesson07;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -38,36 +38,47 @@ import java.util.Scanner;
 
 public class B_EditDist {
 
+    static int Minimum(int a, int b, int c) {
+        return Math.min(a, Math.min(b, c));
+    }
 
-    int getDistanceEdinting(String one, String two) {
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        int n = one.length();
-        int m = two.length();
+    int LevenshteinDistance(String str1, String str2) {
+        int n = str1.length() + 1;
+        int m = str2.length() + 1;
+        int[][] matrixD = new int[n][m];
 
-        int[][] d = new int[n + 1][m + 1];
-
-        for (int i = 0; i <= n; i++) {
-            d[i][0] = i;
+        for (int i = 0; i < n; ++i) {
+            matrixD[i][0] = i;
         }
 
-        for (int j = 0; j <= m; j++) {
-            d[0][j] = j;
+        for (int j = 0; j < m; ++j) {
+            matrixD[0][j] = j;
         }
 
-        for (int i = 1; i <= n; i++) {
-            for (int j = 1; j <= m; j++) {
+        for (int i = 1; i < n; i++) {
+            for (int j = 1; j < m; j++) {
+                int subCost;
 
-                int cost = (one.charAt(i - 1) == two.charAt(j - 1)) ? 0 : 1;
+                if (str1.charAt(i - 1) == str2.charAt(j - 1)) {
+                    subCost = 0;
+                } else {
+                    subCost = 1;
+                }
 
-                int deletion = d[i - 1][j] + 1;
-                int insertion = d[i][j - 1] + 1;
-                int substitution = d[i - 1][j - 1] + cost;
-
-                d[i][j] = Math.min(Math.min(deletion, insertion), substitution);
+                matrixD[i][j] = Minimum(
+                        matrixD[i - 1][j] + 1,
+                        matrixD[i][j - 1] + 1,
+                        matrixD[i - 1][j - 1] + subCost
+                );
             }
         }
 
-        int result = d[n][m];
+        return matrixD[n - 1][m - 1];
+    }
+
+    int getDistanceEdinting(String one, String two) {
+        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        int result = LevenshteinDistance(one, two);
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
