@@ -1,6 +1,5 @@
 package by.it.group551003.kakhno.lesson08;
 
-import by.it.group551003.kakhno.A_Knapsack;
 import org.junit.Test;
 
 import java.io.InputStream;
