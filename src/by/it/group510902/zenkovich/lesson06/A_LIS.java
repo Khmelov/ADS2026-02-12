@@ -50,7 +50,26 @@ public class A_LIS {
         for (int i = 0; i < n; i++) {
             m[i] = scanner.nextInt();
         }
+
+        int[] dp = new int[n];
+
+
         int result = 0;
+        for (int i = 0; i < n ; i++){ // 1 3 3 2 6
+            dp[i] = 1;                // 1 2 2 2 3
+
+
+            for (int j = 0; j < i; j++){
+                if (m[j] < m[i]){
+                    dp[i] = Math.max(dp[i], dp[j]+1);
+                }
+            }
+            result = Math.max(result, dp[i]);
+        }
+
+
+
+
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
