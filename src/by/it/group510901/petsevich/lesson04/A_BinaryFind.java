@@ -55,13 +55,26 @@ public class A_BinaryFind {
         int[] result = new int[k];
         for (int i = 0; i < k; i++) {
             int value = scanner.nextInt();
-            //тут реализуйте бинарный поиск индекса
-
-
-            result[i] = 0;
+            result[i] = binarySearch(a, value);
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
+    }
+
+    int binarySearch(int[] arr, int value)
+    {
+        int left = 0;
+        int right = arr.length-1;
+        int center = 0;
+        while(left <= right)
+        {
+            center = (left + right) / 2;
+            if(arr[center] > value) right = center-1;
+            else if(arr[center] < value) left = center+1;
+            else return center+1;
+        }
+
+        return -1;
     }
 
 }
