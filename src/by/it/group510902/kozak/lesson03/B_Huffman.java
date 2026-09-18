@@ -59,42 +59,34 @@ public class B_Huffman {
         Integer length = scanner.nextInt();
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         //тут запишите ваше решение
-        // =====================================================
-        // ШАГ 1: Читаем таблицу кодов и "переворачиваем" её.
-        // В A_Huffman было:  буква  → код   (чтобы кодировать)
-        // Здесь нам нужно:   код    → буква (чтобы декодировать)
-        // =====================================================
+
         Map<String, Character> codeToChar = new HashMap<>();
 
         for (int i = 0; i < count; i++) {
-            // Каждая строка выглядит так: "a: 0"
-            String letter = scanner.next();          // читаем "a:"
-            char symbol = letter.charAt(0);          // берём саму букву 'a'
-            String code = scanner.next();            // читаем "0"
-            codeToChar.put(code, symbol);            // сохраняем "0" → 'a'
+
+            String letter = scanner.next();
+            char symbol = letter.charAt(0);
+            String code = scanner.next();
+            codeToChar.put(code, symbol);
         }
 
-        // =====================================================
-        // ШАГ 2: Читаем закодированную строку битов
-        // =====================================================
-        String encoded = scanner.next(); // например "01001100100111"
 
-        // =====================================================
-        // ШАГ 3: Идём по битам и декодируем
-        // =====================================================
+        String encoded = scanner.next();
+
+
         StringBuilder buffer = new StringBuilder(); // текущий накопленный код
 
         for (int i = 0; i < encoded.length(); i++) {
             buffer.append(encoded.charAt(i)); // добавляем очередной бит в буфер
 
-            // Проверяем: есть ли такой код в нашей таблице?
+
             if (codeToChar.containsKey(buffer.toString())) {
-                // Нашли! Добавляем букву в результат
+
                 result.append(codeToChar.get(buffer.toString()));
-                // Сбрасываем буфер — начинаем собирать следующий код
+
                 buffer.setLength(0);
             }
-            // Если не нашли — продолжаем накапливать биты
+
         }
 
 
