@@ -14,98 +14,193 @@ public class ListC<E> implements List<E> {
     //////               Обязательные к реализации методы             ///////
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
+
+    private Object[] elements = new Object[10];
+    private int size = 0;
+
     @Override
     public String toString() {
-        return "";
+        StringBuilder res = new StringBuilder("[");
+        if (size > 0){
+            res.append(elements[0]);
+        }
+        for (int i = 1; i < size; i++){
+            res.append(", ");
+            res.append(elements[i]);
+        }
+        res.append("]");
+
+        return res.toString();
     }
 
     @Override
     public boolean add(E e) {
-        return false;
+        if (size >= elements.length){
+            Object[] bigger = new Object[elements.length * 2];
+            System.arraycopy(elements, 0, bigger, 0, size);
+            elements = bigger;
+        }
+        elements[size] = e;
+        size++;
+        return true;
     }
 
     @Override
     public E remove(int index) {
-        return null;
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("index: " + index + ", size: " + size);
+        }
+        E old = (E) elements[index];
+        for (int i = index; i < size - 1; i++) {
+            elements[i] = elements[i + 1];
+        }
+        elements[--size] = null;
+        return old;
     }
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
     public void add(int index, E element) {
-
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("index: " + index + ", size: " + size);
+        }
+        if (size == elements.length) {
+            Object[] bigger = new Object[elements.length * 2];
+            System.arraycopy(elements, 0, bigger, 0, size);
+            elements = bigger;
+        }
+        for (int i = size; i > index; i--) {
+            elements[i] = elements[i - 1];
+        }
+        elements[index] = element;
+        size++;
     }
 
     @Override
     public boolean remove(Object o) {
-        return false;
+        int i = indexOf(o);
+        if (i < 0) return false;
+        remove(i);
+        return true;
     }
 
     @Override
     public E set(int index, E element) {
-        return null;
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("index: " + index + ", size: " + size);
+        }
+        E old = (E) elements[index];
+        elements[index] = element;
+        return old;
     }
 
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return size ==0;
     }
 
 
     @Override
     public void clear() {
-
+        for (int i = 0; i < size; i++){
+            elements[i] = null;
+        }
+        size = 0;
     }
 
     @Override
     public int indexOf(Object o) {
-        return 0;
+        for (int i = 0; i< size; i++){
+            if (o.equals(elements[i])){
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
     public E get(int index) {
-        return null;
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("index: " + index + ", size: " + size);
+        }
+        return (E)elements[index];
     }
 
     @Override
     public boolean contains(Object o) {
+        for (int i = 0; i < size; i++){
+            if (o.equals(elements[i])){
+                return true;
+            }
+        }
         return false;
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        return 0;
+        for (int i = size - 1; i >= 0; i--){
+            if (o.equals(elements[i])){
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        return false;
+        for (Object item : c){
+            if (!contains(item)){
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
-        return false;
+        for (E item : c){
+            add(item);
+        }
+        return true;
     }
 
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
-        return false;
+        for (E item : c){
+            add(index++, item);
+        }
+        return !c.isEmpty();
     }
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        return false;
+        boolean changed = false;
+        for (int i = size - 1; i >= 0; i--) {
+            if (c.contains(elements[i])) {
+                remove(i);
+                changed = true;
+            }
+        }
+        return changed;
     }
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        return false;
+        boolean changed = false;
+        for (int i = size - 1; i >= 0; i--) {
+            if (!c.contains(elements[i])) {
+                remove(i);
+                changed = true;
+            }
+        }
+        return changed;
     }
-
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
     //////               Опциональные к реализации методы             ///////

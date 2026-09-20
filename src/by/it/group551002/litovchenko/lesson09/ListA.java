@@ -8,7 +8,8 @@ import java.util.ListIterator;
 public class ListA<E> implements List<E> {
 
     //Создайте аналог списка БНОЙ БИБЛИЕЗ использования других классов СТАНДАРТОТЕКИ
-
+    private Object[] elements = new Object[10];
+    private int size = 0;
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
     //////               Обязательные к реализации методы             ///////
@@ -16,22 +17,46 @@ public class ListA<E> implements List<E> {
     /////////////////////////////////////////////////////////////////////////
     @Override
     public String toString() {
-        return "";
+        StringBuilder res = new StringBuilder("[");
+        if (size > 0){
+            res.append(elements[0]);
+        }
+        for (int i = 1; i < size; i++){
+            res.append(", ");
+            res.append(elements[i]);
+        }
+        res.append("]");
+
+        return res.toString();
     }
 
     @Override
     public boolean add(E e) {
-        return false;
+        if (size >= elements.length){
+            Object[] bigger = new Object[elements.length * 2];
+            System.arraycopy(elements, 0, bigger, 0, size);
+            elements = bigger;
+        }
+        elements[size] = e;
+        size++;
+        return true;
     }
 
     @Override
     public E remove(int index) {
-        return null;
+        E old = (E) elements[index];
+        size--;
+
+        for (int i = index; i < size; i++){
+            elements[i] = elements[i + 1];
+        }
+        elements[size] = null;
+        return old;
     }
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     /////////////////////////////////////////////////////////////////////////
