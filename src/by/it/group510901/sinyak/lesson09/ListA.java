@@ -9,6 +9,18 @@ public class ListA<E> implements List<E> {
 
     //Создайте аналог списка БЕЗ использования других классов СТАНДАРТНОЙ БИБЛИОТЕКИ
 
+    private Object[] values;
+    private int size = 0;
+
+    public ListA() {
+        this.values = new Object[10];
+    }
+
+    public ListA(int initialSize) {
+        if (initialSize < 0) throw new IllegalArgumentException("Размер не может быть отрицательным:" + initialSize);
+        this.values = new Object[initialSize];
+    }
+
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
     //////               Обязательные к реализации методы             ///////
@@ -16,22 +28,55 @@ public class ListA<E> implements List<E> {
     /////////////////////////////////////////////////////////////////////////
     @Override
     public String toString() {
-        return "";
+
+        String result = "[";
+
+        if(size == 0) result = "[]";
+
+        for(int i = 0; i < size-1; i++) {
+
+            result += String.valueOf(values[i] + ", ");
+        }
+        result += values[size-1] + "]";
+
+        return result;
     }
 
     @Override
     public boolean add(E e) {
-        return false;
+
+        if (size == values.length) {
+
+            Object[] boof = new Object[size];
+            for (int i = 0; i < size; i++) {
+                boof[i] = values[i];
+            }
+
+            values = new Object[values.length > 0 ? (size + size/2) : 10];
+
+            for (int i = 0; i < size; i++) {
+                values[i] = boof[i];
+            }
+        }
+
+        values[size++] = e;
+
+        return true; //<------------------ ?
     }
 
     @Override
     public E remove(int index) {
-        return null;
+
+        E el = (E) values[index];
+        size--;
+        for (int i = index; i < size; i++)  values[i] = values[i+1];
+        values[size] = null;
+        return el;
     }
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     /////////////////////////////////////////////////////////////////////////
