@@ -41,13 +41,32 @@ public class A_EditDist {
 
     int getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        int n = one.length();
+        int m = two.length();
 
-
-        int result = 0;
+        int[][] memo = new int[n + 1][m + 1];
+        for (int i = 0; i <= n; i++) {
+            for (int j = 0; j <= m; j++) {
+                memo[i][j] = -1;
+            }
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        return getDistanceEdintingRecursive(one, two, n, m, memo);
     }
 
+    int getDistanceEdintingRecursive(String one, String two, int i, int j, int[][] memo) {
+        if (memo[i][j] == -1) {
+            if (i == 0) memo[i][j] = j;
+            else if (j == 0) memo[i][j] = i;
+            else {
+                int del = getDistanceEdintingRecursive(one, two, i - 1, j, memo) + 1;
+                int ins = getDistanceEdintingRecursive(one, two, i, j - 1, memo) + 1;
+                int sub = getDistanceEdintingRecursive(one, two, i - 1, j - 1, memo) + (one.charAt(i - 1) == two.charAt(j - 1) ? 0 : 1);
+                memo[i][j] = Math.min(del, Math.min(ins, sub));
+            }
+        }
+        return memo[i][j];
+    }
 
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = A_EditDist.class.getResourceAsStream("dataABC.txt");
