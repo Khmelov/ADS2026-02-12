@@ -39,10 +39,30 @@ public class B_Knapsack {
 
 
         int result = 0;
+
+        int[][] matrix = new int[n + 1][w + 1];
+
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= w; j++) {
+                matrix[i][j] = matrix[i - 1][j];
+
+                if (gold[i - 1] <= j)
+                    matrix[i][j] = max(matrix[i][j], matrix[i - 1][j - gold[i - 1]] + gold[i - 1]);
+            }
+        }
+
+        result = matrix[n][w];
+
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
+    int max(int a, int b) {
+        if (a < b)
+            return b;
+        else
+            return a;
+    }
 
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = B_Knapsack.class.getResourceAsStream("dataB.txt");
