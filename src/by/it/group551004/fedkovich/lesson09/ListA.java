@@ -21,6 +21,34 @@ public class ListA<E> implements List<E> {
         return newCap;
     }
 
+    private void increaseCapacity(int minCapacity) {
+        int newCap = getNewCapacity(minCapacity);
+        Object[] newData = new Object[newCap];
+
+        System.arraycopy(data, 0, newData, 0, len);
+
+        cap = newCap;
+        data = newData;
+    }
+
+    private void increaseCapacityWithGap(int minCapacity, int gapStartIdx, int gapLen) {
+        int newCap = getNewCapacity(minCapacity);
+        Object[] newData = new Object[newCap];
+
+        System.arraycopy(
+                data, 0,
+                newData, 0,
+                gapStartIdx);
+
+        System.arraycopy(
+                data, gapStartIdx,
+                newData, gapStartIdx + gapLen,
+                len - gapStartIdx);
+
+        cap = newCap;
+        data = newData;
+    }
+
     private void shiftLeft(int index, int amount) {
         int elementsToShift = len - index - amount;
 
@@ -78,18 +106,10 @@ public class ListA<E> implements List<E> {
 
     @Override
     public boolean add(E e) {
-        if (len == cap) {
-            int newCap = getNewCapacity(len + 1);
-            Object[] newData = new Object[newCap];
-
-            System.arraycopy(data, 0, newData, 0, len);
-
-            cap = newCap;
-            data = newData;
-        }
+        if (len == cap)
+            increaseCapacity(len + 1);
 
         data[len++] = e;
-
         return true;
     }
 
@@ -118,22 +138,19 @@ public class ListA<E> implements List<E> {
 
     @Override
     public void add(int index, E element) {
+        final int GAP_LEN = 1;
+
         if (index < 0 || index > len)
             throw new IndexOutOfBoundsException(index);
 
         if (len == cap) {
-            int newCap = getNewCapacity(len + 1);
-            Object[] newData = new Object[newCap];
-
-            System.arraycopy(data, 0, newData, 0, len);
-
-            cap = newCap;
-            data = newData;
+            increaseCapacityWithGap(len + GAP_LEN, index, GAP_LEN);
+        } else {
+            shiftRight(index, 1);
         }
 
-        shiftRight(index, 1);
-        ++len;
         data[index] = element;
+        ++len;
     }
 
     @Override
@@ -225,15 +242,8 @@ public class ListA<E> implements List<E> {
 
         Object[] arr = c.toArray();
 
-        if (len + lenAdded > cap) {
-            int newCap = getNewCapacity(len + lenAdded);
-            Object[] newData = new Object[newCap];
-
-            System.arraycopy(data, 0, newData, 0, len);
-
-            cap = newCap;
-            data = newData;
-        }
+        if (len + lenAdded > cap)
+            increaseCapacity(len + lenAdded);
 
         int i = len;
         for (Object o : arr) {
@@ -256,21 +266,7 @@ public class ListA<E> implements List<E> {
         Object[] arr = c.toArray();
 
         if (len + lenAdded > cap) {
-            int newCap = getNewCapacity(len + lenAdded);
-            Object[] newData = new Object[newCap];
-
-            System.arraycopy(
-                    data, 0,
-                    newData, 0,
-                    index);
-
-            System.arraycopy(
-                    data, index,
-                    newData, index + lenAdded,
-                    len - index);
-
-            cap = newCap;
-            data = newData;
+            increaseCapacityWithGap(len + lenAdded, index, lenAdded);
         } else {
             shiftRight(index, lenAdded);
         }
