@@ -72,7 +72,6 @@ public class ListB<E> implements List<E> {
 
     @Override
     public void add(int index, E element) {
-        // Если массив заполнен, увеличиваем его
         if (size == elements.length) {
             Object[] newElements = new Object[elements.length * 2];
             for (int i = 0; i < elements.length; i++) {
@@ -81,22 +80,19 @@ public class ListB<E> implements List<E> {
             elements = newElements;
         }
 
-        // Сдвигаем элементы вправо, освобождая место по индексу index
         for (int i = size; i > index; i--) {
             elements[i] = elements[i - 1];
         }
 
-        // Вставляем новый элемент и увеличиваем размер
         elements[index] = element;
         size++;
     }
 
     @Override
     public boolean remove(Object o) {
-        // Находим индекс элемента по значению
         int index = indexOf(o);
         if (index != -1) {
-            remove(index); // Удаляем по индексу
+            remove(index);
             return true;
         }
         return false;
@@ -104,9 +100,9 @@ public class ListB<E> implements List<E> {
 
     @Override
     public E set(int index, E element) {
-        E oldElement = (E) elements[index]; // Запоминаем старый элемент
-        elements[index] = element;          // Записываем новый
-        return oldElement;                  // Возвращаем старый
+        E oldElement = (E) elements[index];
+        elements[index] = element;
+        return oldElement;
     }
 
 
@@ -118,7 +114,6 @@ public class ListB<E> implements List<E> {
 
     @Override
     public void clear() {
-        // Очищаем массив и сбрасываем размер
         for (int i = 0; i < size; i++) {
             elements[i] = null;
         }
@@ -127,7 +122,6 @@ public class ListB<E> implements List<E> {
 
     @Override
     public int indexOf(Object o) {
-        // Поиск первого совпадения (с учетом null)
         if (o == null) {
             for (int i = 0; i < size; i++) {
                 if (elements[i] == null) {
@@ -141,7 +135,7 @@ public class ListB<E> implements List<E> {
                 }
             }
         }
-        return -1; // Не нашли
+        return -1;
     }
 
     @Override
@@ -156,7 +150,6 @@ public class ListB<E> implements List<E> {
 
     @Override
     public int lastIndexOf(Object o) {
-        // Поиск с конца массива к началу (с учетом null)
         if (o == null) {
             for (int i = size - 1; i >= 0; i--) {
                 if (elements[i] == null) {
@@ -170,7 +163,7 @@ public class ListB<E> implements List<E> {
                 }
             }
         }
-        return -1; // Не нашли
+        return -1;
     }
 
 
