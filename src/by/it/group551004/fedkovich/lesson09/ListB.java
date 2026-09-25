@@ -6,7 +6,7 @@ public class ListB<E> implements List<E> {
     private static final int INITIAL_CAPACITY = 2;
     private Object[] data = new Object[INITIAL_CAPACITY];
     private int cap = INITIAL_CAPACITY;
-    private int len;
+    private int len = 0;
 
     private int getNewCapacity(int minCapacity) {
         int newCap = cap + (cap >> 1);
