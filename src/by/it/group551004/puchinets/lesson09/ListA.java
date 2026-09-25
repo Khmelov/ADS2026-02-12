@@ -1,4 +1,4 @@
-package by.it.a_khmelev.lesson09;
+package by.it.group551004.puchinets.lesson09;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -8,7 +8,15 @@ import java.util.ListIterator;
 public class ListA<E> implements List<E> {
 
     //Создайте аналог списка БЕЗ использования других классов СТАНДАРТНОЙ БИБЛИОТЕКИ
+    private int size;
+    private int capacity;
+    private E[] data;
 
+    public ListA() {
+        size = 0;
+        capacity = 10;
+        data = (E[]) new Object[capacity];
+    }
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
     //////               Обязательные к реализации методы             ///////
@@ -16,22 +24,49 @@ public class ListA<E> implements List<E> {
     /////////////////////////////////////////////////////////////////////////
     @Override
     public String toString() {
-        return "";
+        if (size == 0)
+            return "[]";
+        String res = "";
+
+        res += ("[" + data[0]);
+        for(int i = 1; i < size; i++)
+            res += (", " + data[i].toString());
+        res += "]";
+        return res;
+    }
+
+    private void ensureCapacity()
+    {
+        capacity *= 2;
+        E[] newData = (E[]) new Object[capacity];
+        System.arraycopy(data, 0, newData, 0, size);
+
+        data = newData;
     }
 
     @Override
     public boolean add(E e) {
-        return false;
+        if (size == capacity)
+            ensureCapacity();
+
+        data[size++] = e;
+        return true;
     }
 
     @Override
     public E remove(int index) {
+        if (index >= 0 && index < size) {
+            E deleteVal = data[index];
+            System.arraycopy(data, index + 1, data, index, size - index - 1);
+            data[size--] = null;
+            return deleteVal;
+        }
         return null;
     }
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     /////////////////////////////////////////////////////////////////////////
