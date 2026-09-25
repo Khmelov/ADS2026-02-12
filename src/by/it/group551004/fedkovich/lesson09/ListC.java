@@ -276,19 +276,26 @@ public class ListC<E> implements List<E> {
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        boolean removed = false;
+        int r = 0;
+        int w = 0;
 
-        int i = 0;
-        while (i < len) {
-            if (c.contains(data[i])) {
-                remove(i);
-                removed = true;
-            } else {
-                ++i;
+        while (r < len) {
+            if (!c.contains(data[r])) {
+                data[w] = data[r];
+                ++w;
             }
+            ++r;
         }
 
-        return removed;
+        if (w == len)
+            return false;
+
+        for (int i = w; i < len; ++i) {
+            data[i] = null;
+        }
+        len = w;
+
+        return true;
     }
 
     @Override
