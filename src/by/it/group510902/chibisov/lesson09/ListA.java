@@ -13,7 +13,14 @@ public class ListA<E> implements List<E> {
     private int size;
 
     public ListA() {
-        elementData = new Object[DEFAULT_CAPACITY];
+        this(DEFAULT_CAPACITY);
+    }
+
+    public ListA(int initialCapacity) {
+        if (initialCapacity < 0) {
+            throw new IllegalArgumentException();
+        }
+        elementData = new Object[initialCapacity];
     }
 
     private void ensureCapacity(int minCapacity) {
@@ -28,7 +35,7 @@ public class ListA<E> implements List<E> {
 
     private void checkIndex(int index) {
         if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException(String.format("Индекс %d вне диапазона 0..%d", index, size - 1));
+            throw new IndexOutOfBoundsException();
         }
     }
 

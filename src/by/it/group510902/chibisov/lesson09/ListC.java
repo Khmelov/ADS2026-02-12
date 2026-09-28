@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
 public class ListC<E> implements List<E> {
 
@@ -13,7 +14,14 @@ public class ListC<E> implements List<E> {
     private int size;
 
     public ListC() {
-        elementData = new Object[DEFAULT_CAPACITY];
+        this(DEFAULT_CAPACITY);
+    }
+
+    public ListC(int initialCapacity) {
+        if (initialCapacity < 0) {
+            throw new IllegalArgumentException();
+        }
+        elementData = new Object[initialCapacity];
     }
 
     private void ensureCapacity(int minCapacity) {
@@ -28,13 +36,13 @@ public class ListC<E> implements List<E> {
 
     private void checkIndex(int index) {
         if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException(String.format("Индекс %d вне диапазона 0..%d", index, size - 1));
+            throw new IndexOutOfBoundsException();
         }
     }
 
     private void checkIndexForAdd(int index) {
         if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException(String.format("Индекс %d вне диапазона 0..%d", index, size));
+            throw new IndexOutOfBoundsException();
         }
     }
 
@@ -170,7 +178,7 @@ public class ListC<E> implements List<E> {
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        if (c == null) throw new NullPointerException("Коллекция равна null");
+        if (c == null) throw new NullPointerException();
         for (Object e : c) {
             if (!contains(e)) return false;
         }
@@ -179,7 +187,7 @@ public class ListC<E> implements List<E> {
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
-        if (c == null) throw new NullPointerException("Коллекция равна null");
+        if (c == null) throw new NullPointerException();
         if (c.isEmpty()) return false;
         Object[] a = c.toArray();
         int num = a.length;
@@ -192,7 +200,7 @@ public class ListC<E> implements List<E> {
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
         checkIndexForAdd(index);
-        if (c == null) throw new NullPointerException("Коллекция равна null");
+        if (c == null) throw new NullPointerException();
         if (c.isEmpty()) return false;
         Object[] a = c.toArray();
         int num = a.length;
@@ -214,7 +222,7 @@ public class ListC<E> implements List<E> {
     }
 
     private boolean batchRemove(Collection<?> c, boolean keepIfContains) {
-        if (c == null) throw new NullPointerException("Коллекция равна null");
+        if (c == null) throw new NullPointerException();
         int r = 0;
         for (;; r++) {
             if (r == size) return false;
@@ -261,7 +269,9 @@ public class ListC<E> implements List<E> {
 
     @Override
     public Object[] toArray() {
-        return new Object[0];
+        Object[] result = new Object[size];
+        System.arraycopy(elementData,0,result,0,size);
+        return result;
     }
 
     /////////////////////////////////////////////////////////////////////////
@@ -272,7 +282,24 @@ public class ListC<E> implements List<E> {
     /////////////////////////////////////////////////////////////////////////
     @Override
     public Iterator<E> iterator() {
-        return null;
+        return new Itr();
     }
 
+    private class Itr implements Iterator<E> {
+
+        int cursor = 0;
+
+        @Override
+        public boolean hasNext() {
+            return cursor < size;
+        }
+
+        @Override
+        public E next() {
+            if (cursor >= size) {
+                throw new NoSuchElementException();
+            }
+            return elementAt(cursor++);
+        }
+    }
 }
