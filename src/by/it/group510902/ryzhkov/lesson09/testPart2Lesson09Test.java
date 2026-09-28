@@ -1,5 +1,4 @@
-package by.it.a_khmelev.lesson09;
-
+package by.it.group510902.ryzhkov.lesson09;
 
 import by.it.HomeWork;
 import org.junit.Test;
@@ -18,8 +17,9 @@ import static org.junit.Assert.fail;
 
 @SuppressWarnings("all")
 
-//поставьте курсор на следующую строку и нажмите Ctrl+Shift+F10
-//для корректной сборки теста добавьте библиотеку init.jar в проект (она находится в корне)
+// поставьте курсор на следующую строку и нажмите Ctrl+Shift+F10
+// для корректной сборки теста добавьте библиотеку init.jar в проект (она
+// находится в корне)
 public class testPart2Lesson09Test extends HomeWork {
 
     private static final int RND_SEED = 123;
@@ -49,7 +49,7 @@ public class testPart2Lesson09Test extends HomeWork {
                 add(Object)
                 remove(int)
                 size()
-                                
+
                 remove(Object)
                 add(int,Object)
                 remove(Object)
@@ -71,7 +71,7 @@ public class testPart2Lesson09Test extends HomeWork {
                 add(Object)
                 remove(int)
                 size()
-                                
+
                 remove(Object)
                 add(int,Object)
                 remove(Object)
@@ -82,10 +82,10 @@ public class testPart2Lesson09Test extends HomeWork {
                 get(int)
                 contains(Object)
                 lastIndexOf(Object)
-                                
+
                 containsAll(Collection)
                 addAll(Collection)
-                addAll(int,Collection)                
+                addAll(int,Collection)
                 removeAll(Collection)
                 retainAll(Collection)
                 retainAll(Collection)
@@ -93,18 +93,20 @@ public class testPart2Lesson09Test extends HomeWork {
         randomCheck("ListC", methods);
     }
 
-    private void randomCheck(String className, String... methods) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    private void randomCheck(String className, String... methods)
+            throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         TreeSet<String> methodNames = new TreeSet<>(Arrays.asList(methods));
         Class<?> aClass = findClass(className);
         checkStructure(aClass);
-        System.out.printf("\nStart test methods in class %s%n",aClass);
+        System.out.printf("\nStart test methods in class %s%n", aClass);
         eObject = ArrayList.class.getDeclaredConstructor().newInstance();
         aObject = (List<Integer>) aClass.getDeclaredConstructor().newInstance();
 
         Map<String, Method> methodsA = fill(aClass, methodNames);
         Map<String, Method> methodsE = fill(eObject.getClass(), methodNames);
 
-        assertEquals("Not found methods for test in:\n" + getSignatures(ArrayList.class), methodNames.size(), methodsA.size());
+        assertEquals("Not found methods for test in:\n" + getSignatures(ArrayList.class), methodNames.size(),
+                methodsA.size());
 
         for (int testNumber = 0; testNumber < INVOCATION_COUNT_PER_METHOD * methodNames.size(); testNumber++) {
             int count = rnd.nextInt(INVOCATION_COUNT_PER_METHOD * 10);
@@ -174,7 +176,6 @@ public class testPart2Lesson09Test extends HomeWork {
         return rnd.nextInt(eObject.size());
     }
 
-
     private void checkStructure(Class<?> aClass) {
         if (aClass.getSimpleName().startsWith("List")) {
             assertEquals("Incorrect parent", Object.class, aClass.getSuperclass());
@@ -193,7 +194,6 @@ public class testPart2Lesson09Test extends HomeWork {
         }
     }
 
-
     private Map<String, Method> fill(Class<?> c, TreeSet<String> methodNames) {
         return Stream.of(c.getMethods(), c.getDeclaredMethods())
                 .flatMap(Arrays::stream)
@@ -203,12 +203,11 @@ public class testPart2Lesson09Test extends HomeWork {
                 .collect(Collectors.toMap(this::getSignature, m -> m));
     }
 
-
     private boolean notComparable(Method m) {
         return m.getReturnType() != Comparable.class &&
-               0 == Arrays.stream(m.getParameterTypes())
-                       .filter(p -> p == Comparable.class)
-                       .count();
+                0 == Arrays.stream(m.getParameterTypes())
+                        .filter(p -> p == Comparable.class)
+                        .count();
     }
 
     private String getSignature(Method method) {
@@ -217,15 +216,13 @@ public class testPart2Lesson09Test extends HomeWork {
             StringJoiner out = new StringJoiner(
                     ",",
                     method.getReturnType().getSimpleName() + " " + method.getName() + "(",
-                    ")"
-            );
+                    ")");
             for (int i = 0, parameterTypesLength = parameterTypes.length; i < parameterTypesLength; i++) {
                 out.add(parameterTypes[i].getSimpleName());
             }
             return out.toString();
         });
     }
-
 
     public String getSignatures(Class<?> aClass) {
         return Stream.of(aClass.getMethods(), aClass.getDeclaredMethods())

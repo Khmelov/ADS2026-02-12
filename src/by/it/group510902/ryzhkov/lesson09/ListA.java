@@ -1,4 +1,4 @@
-package by.it.a_khmelev.lesson09;
+package by.it.group510902.ryzhkov.lesson09;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -7,36 +7,75 @@ import java.util.ListIterator;
 
 public class ListA<E> implements List<E> {
 
-    //Создайте аналог списка БЕЗ использования других классов СТАНДАРТНОЙ БИБЛИОТЕКИ
+    // Создайте аналог списка БЕЗ использования других классов СТАНДАРТНОЙ
+    // БИБЛИОТЕКИ
 
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
-    //////               Обязательные к реализации методы             ///////
+    ////// Обязательные к реализации методы ///////
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
+    private final int DEFAULT_CAPACITY = 10;
+
+    private Object[] elements;
+    private int size;
+
+    private void increaseCapacity() {
+        Object[] newElements = new Object[size * 2];
+        System.arraycopy(elements, 0, newElements, 0, size);
+        elements = newElements;
+    }
+
+    public ListA() {
+        elements = new Object[DEFAULT_CAPACITY];
+    }
+
     @Override
     public String toString() {
-        return "";
+        if (size == 0)
+            return "[]";
+
+        StringBuilder result = new StringBuilder();
+        result.append("[");
+
+        for (int i = 0; i < size; i++) {
+            result.append(elements[i]);
+            if (i < size - 1) {
+                result.append(", ");
+            }
+        }
+
+        result.append("]");
+        return result.toString();
     }
 
     @Override
     public boolean add(E e) {
-        return false;
+        if (size == elements.length)
+            increaseCapacity();
+        elements[size++] = e;
+        return true;
     }
 
     @Override
     public E remove(int index) {
-        return null;
+        if (index < 0 || index >= size)
+            throw new IndexOutOfBoundsException("Index out of range");
+        E removed = (E) elements[index];
+        System.arraycopy(elements, index + 1, elements, index, size - index - 1);
+        size--;
+        elements[size] = null;
+        return removed;
     }
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
-    //////               Опциональные к реализации методы             ///////
+    ////// Опциональные к реализации методы ///////
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
 
@@ -55,12 +94,10 @@ public class ListA<E> implements List<E> {
         return null;
     }
 
-
     @Override
     public boolean isEmpty() {
         return false;
     }
-
 
     @Override
     public void clear() {
@@ -112,7 +149,6 @@ public class ListA<E> implements List<E> {
         return false;
     }
 
-
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
         return null;
@@ -140,8 +176,8 @@ public class ListA<E> implements List<E> {
 
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
-    ////////        Эти методы имплементировать необязательно    ////////////
-    ////////        но они будут нужны для корректной отладки    ////////////
+    //////// Эти методы имплементировать необязательно ////////////
+    //////// но они будут нужны для корректной отладки ////////////
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
     @Override
