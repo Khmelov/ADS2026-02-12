@@ -57,14 +57,12 @@ public class MyPriorityQueue<E extends Comparable<E>> implements Queue<E> {
         }
     }
 
-    // Один раз перестраивает кучу снизу вверх (как PriorityQueue.heapify)
     private void heapify() {
-        for (int i = (size >>> 1) - 1; i >= 0; i--) {
+        for (int i = (size - 2) / 2; i >= 0; i--) {
             siftDown(i);
         }
     }
 
-    // Повторяет PriorityQueue.bulkRemove: сжимаем массив с сохранением порядка, затем один heapify
     private boolean bulkRemove(Collection<?> c, boolean removeMatching) {
         int newSize = 0;
         for (int i = 0; i < size; i++) {
