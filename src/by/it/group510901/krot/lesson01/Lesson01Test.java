@@ -1,4 +1,4 @@
-package by.it.a_khmelev.lesson01;
+package by.it.group510901.krot.lesson01;
 
 import org.junit.Test;
 
