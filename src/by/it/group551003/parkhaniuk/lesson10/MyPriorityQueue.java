@@ -11,12 +11,10 @@ public class MyPriorityQueue<E extends Comparable<E>> implements Queue<E> {
     private E[] data;
     private int size = 0;
 
-    @SuppressWarnings("unchecked")
     public MyPriorityQueue() {
         data = (E[]) new Comparable[10];
     }
 
-    @SuppressWarnings("unchecked")
     private void ensureCapacity() {
         if (size == data.length) {
             E[] newArr = (E[]) new Comparable[data.length * 2];
@@ -67,18 +65,18 @@ public class MyPriorityQueue<E extends Comparable<E>> implements Queue<E> {
         int newSize = 0;
         for (int i = 0; i < size; i++) {
             boolean inC = c.contains(data[i]);
-            if (inC != removeMatching) {      // элемент остаётся
+            if (inC != removeMatching) {
                 data[newSize++] = data[i];
             }
         }
         boolean changed = newSize != size;
-        for (int i = newSize; i < size; i++) data[i] = null;
+        for (int i = newSize; i < size; i++)
+            data[i] = null;
         size = newSize;
         if (changed) heapify();
         return changed;
     }
 
-    // Повторяет PriorityQueue.removeAt: siftDown, затем siftUp, если элемент не сдвинулся
     private void removeAt(int i) {
         int s = --size;
         if (s == i) {
@@ -115,7 +113,8 @@ public class MyPriorityQueue<E extends Comparable<E>> implements Queue<E> {
 
     @Override
     public void clear() {
-        for (int i = 0; i < size; i++) data[i] = null;
+        for (int i = 0; i < size; i++)
+            data[i] = null;
         size = 0;
     }
 
@@ -218,6 +217,20 @@ public class MyPriorityQueue<E extends Comparable<E>> implements Queue<E> {
         return false;
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @Override
     public Iterator<E> iterator() {
         return new Iterator<E>() {
@@ -242,7 +255,6 @@ public class MyPriorityQueue<E extends Comparable<E>> implements Queue<E> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <T> T[] toArray(T[] a) {
         if (a.length < size) {
             return (T[]) Arrays.copyOf(data, size, a.getClass());

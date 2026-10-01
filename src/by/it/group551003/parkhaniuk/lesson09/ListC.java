@@ -8,7 +8,7 @@ import java.util.ListIterator;
 public class ListC<E> implements List<E> {
 
     private int size;
-    private int capacity;
+    private int capacity = 10;
     private E[] data;
 
     public ListC() {
