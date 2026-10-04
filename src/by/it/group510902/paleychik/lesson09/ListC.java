@@ -9,11 +9,9 @@ public class ListC<E> implements List<E> {
 
     //Создайте аналог списка БЕЗ использования других классов СТАНДАРТНОЙ БИБЛИОТЕКИ
 
-    // Внутренний динамический массив и указатель размера
     private Object[] elements = new Object[10];
     private int size = 0;
 
-    // Автоматическое расширение емкости
     private void ensureCapacity() {
         if (size == elements.length) {
             Object[] newElements = new Object[elements.length * 2];
@@ -53,7 +51,6 @@ public class ListC<E> implements List<E> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public E remove(int index) {
         if (index < 0 || index >= size) {
             return null;
@@ -95,7 +92,6 @@ public class ListC<E> implements List<E> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public E set(int index, E element) {
         if (index < 0 || index >= size) {
             return null;
@@ -129,7 +125,6 @@ public class ListC<E> implements List<E> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public E get(int index) {
         if (index < 0 || index >= size) {
             return null;
@@ -204,7 +199,7 @@ public class ListC<E> implements List<E> {
         for (int i = 0; i < size; i++) {
             if (!c.contains(elements[i])) {
                 remove(i);
-                i--; // Сдвигаем индекс назад, так как элементы сместились
+                i--;
                 modified = true;
             }
         }

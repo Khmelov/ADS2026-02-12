@@ -53,7 +53,6 @@ public class ListB<E> implements List<E> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public E remove(int index) {
         if (index < 0 || index >= size) {
             return null;
@@ -95,7 +94,6 @@ public class ListB<E> implements List<E> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public E set(int index, E element) {
         if (index < 0 || index >= size) {
             return null;
@@ -129,7 +127,6 @@ public class ListB<E> implements List<E> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public E get(int index) {
         if (index < 0 || index >= size) {
             return null;
