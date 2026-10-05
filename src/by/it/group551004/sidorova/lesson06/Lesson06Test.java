@@ -1,4 +1,4 @@
-package by.it.group551003.kovalchuk.lesson06;
+package by.it.group551004.sidorova.lesson06;
 
 import org.junit.Test;
 
@@ -13,10 +13,6 @@ public class Lesson06Test {
         A_LIS instance = new A_LIS();
         int result = instance.getSeqSize(inputStream);
         boolean ok = (result == 3);
-
-
-
-
         assertTrue("A failed", ok);
     }
 
