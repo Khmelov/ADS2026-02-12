@@ -1,4 +1,4 @@
-package by.it.group510902.ryzhkov.lesson07;
+package by.it.group510902.sorokoletov.lesson07;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 Необходимо:
     Решить задачу МЕТОДАМИ ДИНАМИЧЕСКОГО ПРОГРАММИРОВАНИЯ
-    Рекурсивно вычислить расстояние редактирования двух данных непустых строк
+    Итерационно вычислить расстояние редактирования двух данных непустых строк
 
     Sample Input 1:
     ab
@@ -36,54 +36,53 @@ import java.util.Scanner;
 
 */
 
-public class A_EditDist {
+public class B_EditDist {
 
 
     int getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+
         int m = one.length();
         int n = two.length();
-        
-        Integer[][] memo = new Integer[m + 1][n + 1];
-        
-        int result = editDistanceRecursive(one, two, m, n, memo);
+
+
+        int[][] dp = new int[m + 1][n + 1];
+
+
+        for (int i = 0; i <= m; i++) {
+            dp[i][0] = i;
+        }
+        for (int j = 0; j <= n; j++) {
+            dp[0][j] = j;
+        }
+
+        // Заполнение таблицы
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (one.charAt(i - 1) == two.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    int insert = dp[i][j - 1] + 1;
+                    int delete = dp[i - 1][j] + 1;
+                    int replace = dp[i - 1][j - 1] + 1;
+                    dp[i][j] = Math.min(Math.min(insert, delete), replace);
+                }
+            }
+        }
+
+        int result = dp[m][n];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
-    private int editDistanceRecursive(String one, String two, int i, int j, Integer[][] memo) {
-        if (i == 0) {
-            return j;
-        }
-        
-        if (j == 0) {
-            return i;
-        }
-        
-        if (memo[i][j] != null) {
-            return memo[i][j];
-        }
-        
-        if (one.charAt(i - 1) == two.charAt(j - 1)) {
-            memo[i][j] = editDistanceRecursive(one, two, i - 1, j - 1, memo);
-        } else {
-            int insert = editDistanceRecursive(one, two, i, j - 1, memo);     
-            int delete = editDistanceRecursive(one, two, i - 1, j, memo);    
-            int replace = editDistanceRecursive(one, two, i - 1, j - 1, memo);
-            
-            memo[i][j] = 1 + Math.min(Math.min(insert, delete), replace);
-        }
-        
-        return memo[i][j];
-    }
-
 
     public static void main(String[] args) throws FileNotFoundException {
-        InputStream stream = A_EditDist.class.getResourceAsStream("dataABC.txt");
-        A_EditDist instance = new A_EditDist();
+        InputStream stream = B_EditDist.class.getResourceAsStream("dataABC.txt");
+        B_EditDist instance = new B_EditDist();
         Scanner scanner = new Scanner(stream);
         System.out.println(instance.getDistanceEdinting(scanner.nextLine(), scanner.nextLine()));
         System.out.println(instance.getDistanceEdinting(scanner.nextLine(), scanner.nextLine()));
         System.out.println(instance.getDistanceEdinting(scanner.nextLine(), scanner.nextLine()));
     }
+
 }
