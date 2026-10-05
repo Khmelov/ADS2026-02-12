@@ -8,7 +8,7 @@ import java.util.ListIterator;
 public class ListC<E> implements List<E> {
 
     //Создайте аналог списка БЕЗ использования других классов СТАНДАРТНОЙ БИБЛИОТЕКИ
-    private static final int DEFAULT_CAPACITY = 10;
+    private static int DEFAULT_CAPACITY = 10;
 
     private Object[] elements = new Object[DEFAULT_CAPACITY];
     private int size;
