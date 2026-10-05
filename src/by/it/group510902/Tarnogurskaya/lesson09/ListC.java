@@ -1,0 +1,256 @@
+package by.it.group510902.Tarnogurskaya.lesson09;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
+public class ListC<E> implements List<E> {
+    private Object[] elements = new Object[10];
+    private int size = 0;
+
+    @Override
+    public String toString() {
+        String result = "[";
+        for (int i=0; i<size; i++){
+            if (i==size-1){
+                result+=elements[i];
+            }
+            else result+=elements[i]+", ";
+        }
+        return result+"]";
+    }
+
+    @Override
+    public boolean add(E e) {
+        if (elements.length==size){
+            Object[] newElements=new Object[elements.length*2];
+            for (int i = 0; i < elements.length; i++){
+                newElements[i]=elements[i];
+            }
+            elements=newElements;
+        }
+        elements[size]=e;
+        size++;
+        return true;
+    }
+
+    @Override
+    public E remove(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("index=" + index + " size=" + size);
+        }
+        E result = (E) elements[index];
+            for (int i=index;i<size-1; i++){
+            elements[i]=elements[i+1];
+        }
+        size--;
+        elements[size]=null;
+        return result;
+    }
+
+    @Override
+    public int size() {
+        return size;
+    }
+
+    @Override
+    public void add(int index, E element) {
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("index=" + index + " size=" + size);
+        }
+        if (elements.length==size) {
+            Object[] newElements = new Object[elements.length * 2];
+            for (int i = 0; i < elements.length; i++) {
+                newElements[i] = elements[i];
+            }
+            elements = newElements;
+        }
+        for (int i=size;i>index;i--){
+            elements[i]=elements[i-1];
+        }
+        elements[index]=element;
+        size++;
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        int idx = indexOf(o);
+        if (idx == -1) {
+            return false;
+        }
+        remove(idx);
+        return true;
+    }
+
+    @Override
+    public E set(int index, E element) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("index=" + index + " size=" + size);
+        }
+        E old = (E) elements[index];
+        elements[index]=element;
+        return old;
+    }
+
+
+    @Override
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+
+    @Override
+    public void clear() {
+        for (int i=0; i<size; i++){
+            elements[i]=null;
+        }
+        size=0;
+    }
+
+    @Override
+    public int indexOf(Object o) {
+        if (o == null) {
+            for (int i = 0; i < size; i++) {
+                if (elements[i] == null) return i;
+            }
+        } else {
+            for (int i = 0; i < size; i++) {
+                if (o.equals(elements[i])) return i;
+            }
+        }
+        return -1; //Возвращает индекс первого элемента, равного o, либо -1, если его нет.
+    }
+
+
+    @Override
+    public E get(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("index=" + index + " size=" + size);
+        }
+        return (E) elements[index];
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        return indexOf(o) != -1; //присутствует ли в списке
+    }
+
+    @Override
+    public int lastIndexOf(Object o) {
+        if (o == null) {
+            for (int i = size - 1; i >= 0; i--) {
+                if (elements[i] == null) {
+                    return i;
+                }
+            }
+        } else {
+            for (int i = size - 1; i >= 0; i--) {
+                if (o.equals(elements[i])) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        for (Object o : c) {
+            if (!contains(o)) return false;
+        }
+        return true; //каждый элемент коллекции c присутствует в списке.
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends E> c) {
+        if(c.isEmpty()) return false;
+        for (E e : c) add(e);
+        return true; //все элементы в конец, возвращает true, если список изменился.
+    }
+
+    @Override
+    public boolean addAll(int index, Collection<? extends E> c) {
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("index=" + index + " size=" + size);
+        }
+        if(c.isEmpty()) return false;
+        for (E e : c) add(index++, e);
+        return true;
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        boolean changed = false;
+        for (int i = size-1; i >= 0; i--) {
+            if (c.contains(get(i))) {
+                remove(i);
+                changed = true;
+            }
+        }
+        return changed;
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c) {
+        boolean changed = false;
+        for (int i = size-1; i >= 0; i--) {
+            if (!c.contains(get(i))) {
+                remove(i);
+                changed = true;
+            }
+        }
+        return changed;
+    }
+
+    /////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    //////               Опциональные к реализации методы             ///////
+    /////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+
+    @Override
+    public List<E> subList(int fromIndex, int toIndex) {
+        return null;
+    }
+
+    @Override
+    public ListIterator<E> listIterator(int index) {
+        return null;
+    }
+
+    @Override
+    public ListIterator<E> listIterator() {
+        return null;
+    }
+
+    @Override
+    public <T> T[] toArray(T[] a) {
+        return null;
+    }
+
+    @Override
+    public Object[] toArray() {
+        return new Object[0];
+    }
+
+    /////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    ////////        Эти методы имплементировать необязательно    ////////////
+    ////////        но они будут нужны для корректной отладки    ////////////
+    /////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    @Override
+    public Iterator<E> iterator() {
+        return new Iterator<E>() {
+            private int pos = 0;
+            public boolean hasNext() {
+                return pos < size;
+            }
+            public E next() {
+                return get(pos++);
+            }
+        };
+    }
+
+}
