@@ -86,6 +86,7 @@ public class Test_Part2_Lesson11Test extends HomeWork {
         randomCheck("MyTreeSet", methods);
     }
 
+
     private void randomCheck(String aClassName, String... methods) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         Set<String> methodNames = new TreeSet<>(Arrays.asList(methods));
         methodNames.removeIf(key -> key == null || key.isBlank());

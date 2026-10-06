@@ -50,6 +50,7 @@ public class MyHashSet<E> implements Set<E> {
         size = 0;
     }
 
+
     @Override
     public boolean contains(Object o) {
         if (o == null) return false;
