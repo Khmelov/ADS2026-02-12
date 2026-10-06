@@ -17,8 +17,6 @@ public class A_VideoRegistrator {
 	List<Double> calcStartTimes(double[] events, double workDuration) {
 		List<Double> result = new ArrayList<>();
 
-		if (events == null || events.length == 0) return result;
-
 		java.util.Arrays.sort(events);
 
 		int i = 0;
