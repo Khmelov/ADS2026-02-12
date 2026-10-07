@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 public class MyLinkedHashSet<E> implements Set<E> {
-
+//множество на хэш таблице, помнящее порядок добавления
     // узел: next - односвязный список коллизий в корзине,
     // before/after - двусвязный список для хранения порядка добавления
     private static class Node<E> {
@@ -189,7 +189,7 @@ public class MyLinkedHashSet<E> implements Set<E> {
     }
 
     @Override
-    public boolean retainAll(Collection<?> c) {
+    public boolean retainAll(Collection<?> c) { //оставляет те элементы, что есть в коллекции
         boolean changed = false;
         Node<E> cur = head;
         while (cur != null) {
@@ -208,7 +208,7 @@ public class MyLinkedHashSet<E> implements Set<E> {
     ////////////////////////////////////////////////////////////////////////
 
     @Override
-    public Iterator<E> iterator() {
+    public Iterator<E> iterator() { //выдает элементы множества по одному с начала
         return new Iterator<E>() {
             private Node<E> cur = head;
 
