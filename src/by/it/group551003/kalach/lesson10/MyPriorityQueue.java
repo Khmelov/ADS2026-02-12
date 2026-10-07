@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
 import java.util.Queue;
 
 public class MyPriorityQueue<E> implements Queue<E> {
-
+//очередь с приоритетом(хранится как бинарное дерево)
     private E[] heap;          // бинарная мин-куча: родитель всегда <= потомков
     private int size = 0;
     private final Comparator<? super E> comparator;
@@ -170,7 +170,7 @@ public class MyPriorityQueue<E> implements Queue<E> {
     }
 
     @Override
-    public E peek() {
+    public E peek() { //показываем минимум не удаляя
         return size == 0 ? null : heap[0];
     }
 

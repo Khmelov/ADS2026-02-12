@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class MyArrayDeque<E> implements Deque<E> {
-
+//двусторонняя очередь
     private E[] elements;
     private int head = 0;   // индекс первого элемента
     private int size = 0;
@@ -150,7 +150,7 @@ public class MyArrayDeque<E> implements Deque<E> {
     }
 
     @Override
-    public E peekFirst() {
+    public E peekFirst() { //просмотр
         return size == 0 ? null : elements[head];
     }
 
@@ -281,7 +281,7 @@ public class MyArrayDeque<E> implements Deque<E> {
     }
 
     @Override
-    public Iterator<E> iterator() {
+    public Iterator<E> iterator() {   //выдает элементы множества по одному с конца
         return new Iterator<E>() {
             private int i = 0;
 
