@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class MyArrayDeque<E> implements Deque<E> {
-//двусторонняя очередь
+
     private E[] elements;
     private int head = 0;   // индекс первого элемента
     private int size = 0;
