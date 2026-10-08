@@ -53,33 +53,25 @@ public class C_LongNotUpSubSeq {
         //общая длина последовательности
         int n = scanner.nextInt();
         int[] m = new int[n];
-        //читаем всю последовательность
+
         for (int i = 0; i < n; i++) {
             m[i] = scanner.nextInt();
         }
-
-        // ========== АЛГОРИТМ ДИНАМИЧЕСКОГО ПРОГРАММИРОВАНИЯ ==========
-        // Для n до 100000 используем алгоритм за O(n log n)
-
-        // tails[i] - минимальный последний элемент НЕВОЗРАСТАЮЩЕЙ подпоследовательности длины i+1
+        // tails[i] - минимальный последний элемент
         ArrayList<Integer> tails = new ArrayList<>();
 
         // tailsIndex[i] - индекс в исходном массиве элемента tails[i]
         ArrayList<Integer> tailsIndex = new ArrayList<>();
 
-        // prev[i] - индекс предыдущего элемента в ННП для элемента i
+        // prev[i] - индекс предыдущего элемента
         int[] prev = new int[n];
 
-        // Основной цикл: обрабатываем каждый элемент массива
         for (int i = 0; i < n; i++) {
-            // Бинарный поиск позиции для вставки m[i]
-            // Ищем первую позицию pos, такую что tails[pos] < m[i]
             int left = 0;
             int right = tails.size();
 
             while (left < right) {
                 int mid = (left + right) / 2;
-                // Для невозрастающей последовательности (>=)
                 // Если текущий элемент больше элемента в tails, идем влево
                 if (tails.get(mid) < m[i]) {
                     right = mid;
@@ -107,23 +99,21 @@ public class C_LongNotUpSubSeq {
             }
         }
 
-        // Длина наибольшей невозрастающей подпоследовательности
         int length = tails.size();
 
         // Восстанавливаем индексы последовательности
         int[] indices = new int[length];
         int lastIndex = tailsIndex.get(length - 1);
 
-        // Идем от последнего элемента к первому, используя prev
+        // Идем от последнего элемента к первому
         for (int i = length - 1; i >= 0; i--) {
             indices[i] = lastIndex + 1; // +1, так как индексы в задаче начинаются с 1
             lastIndex = prev[lastIndex];
         }
 
-        // Выводим результат
-        System.out.println(length); // Первая строка: длина
+        System.out.println(length); // длина
         for (int i = 0; i < length; i++) {
-            System.out.print(indices[i] + " "); // Вторая строка: индексы
+            System.out.print(indices[i] + " "); // индексы
         }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
