@@ -76,7 +76,7 @@ public class MyHashSet<E> implements Set<E> {
 
 
     private boolean appendVal(int code, E val) {
-        for(Node<E> cur = data[code]; (cur != null); cur = cur.next) {
+        for(Node<E> cur = data[code]; cur != null; cur = cur.next) {
             if (cur.item.equals(val)) {
                 return false;
             }

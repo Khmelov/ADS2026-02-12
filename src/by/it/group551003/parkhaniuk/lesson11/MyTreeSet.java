@@ -167,7 +167,7 @@ public class MyTreeSet<E> implements Set<E> {
         for (int i = 0; i < size; i++) {
             if (!c.contains(elements[i])) {
                 remove(elements[i]);
-                i--; // Корректируем индекс после удаления элемента
+                i--;
                 changed = true;
             }
         }

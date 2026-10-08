@@ -24,7 +24,7 @@ public class MyLinkedHashSet<E> implements Set<E> {
     private Node<E> head = null;
     private Node<E> tail = null;
 
-    @SuppressWarnings("unchecked")
+
     public MyLinkedHashSet() {
         data = (Node<E>[]) new Node[capacity];
     }
@@ -56,7 +56,7 @@ public class MyLinkedHashSet<E> implements Set<E> {
         return size == 0;
     }
 
-    @SuppressWarnings("unchecked")
+
     private void ensureCapacity() {
         if ((double) size / capacity >= 0.75) {
             capacity *= 2;
