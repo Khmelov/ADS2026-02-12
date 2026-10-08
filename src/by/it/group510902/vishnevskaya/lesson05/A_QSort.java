@@ -34,8 +34,8 @@ import java.util.Arrays;
 
 */
 
-public class A_QSort {
-
+public class A_QSort { /*поиск кол-ва отрезков, покрывающх заданные точки*/
+/*берем отрезки которые начинаются и вычисляем то которые уже успели закончится до той точки*/
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = A_QSort.class.getResourceAsStream("dataA.txt");
         A_QSort instance = new A_QSort();
@@ -44,8 +44,9 @@ public class A_QSort {
             System.out.print(index + " ");
         }
     }
-
-    private int countLessOrEqual(int[] arr, int value) {
+ /*оба массива сортируются по возрасттанию*/
+    private int countLessOrEqual(int[] arr, int value) { /*бинарный поиск для нахождения кол-ва
+    элементов в массиве коттрые меньше или раны значению точек*/
         int left = 0, right = arr.length;
         while (left < right) {
             int mid = (left + right) / 2;
@@ -58,7 +59,7 @@ public class A_QSort {
         return left;
     }
 
-    private int countLess(int[] arr, int value) {
+    private int countLess(int[] arr, int value) { /*бинарный поиск для ... котрые меньше*/
         int left = 0, right = arr.length;
         while (left < right) {
             int mid = (left + right) / 2;
@@ -89,7 +90,7 @@ public class A_QSort {
         int[] starts = new int[n];
         int[] ends = new int[n];
         for (int i = 0; i < n; i++) {
-            starts[i] = segments[i].start;
+            starts[i] = segments[i].start; /*тут начала и конецотрезки сохраняются в массиве*/
             ends[i] = segments[i].stop;
         }
 
