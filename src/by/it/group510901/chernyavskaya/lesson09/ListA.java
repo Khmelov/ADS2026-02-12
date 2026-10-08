@@ -37,6 +37,7 @@ public class ListA<E> implements List<E> {
 
     @Override
     public boolean add(E e) {
+        // Если массив полностью заполнен, увеличиваем его размер в 2 раза
         if (size == elements.length) {
             Object[] newElements = new Object[elements.length * 2];
             for (int i = 0; i < elements.length; i++) {
@@ -44,6 +45,8 @@ public class ListA<E> implements List<E> {
             }
             elements = newElements;
         }
+
+        // Добавляем новый элемент в конец и увеличиваем размер
         elements[size] = e;
         size++;
         return true;
@@ -51,12 +54,15 @@ public class ListA<E> implements List<E> {
 
     @Override
     public E remove(int index) {
+        // Сохраняем элемент, который собираемся удалить, чтобы вернуть его
         E removedElement = (E) elements[index];
 
+        // Сдвигаем все элементы после index на одну позицию влево
         for (int i = index; i < size - 1; i++) {
             elements[i] = elements[i + 1];
         }
 
+        // Очищаем последнюю ячейку и уменьшаем счетчик элементов
         elements[size - 1] = null;
         size--;
 

@@ -167,6 +167,7 @@ public class ListC<E> implements List<E> {
 
     @Override
     public boolean containsAll(Collection<?> c) {
+        // Проверяем, содержится ли каждый элемент коллекции c в нашем списке
         for (Object element : c) {
             if (!contains(element)) {
                 return false;
@@ -180,6 +181,7 @@ public class ListC<E> implements List<E> {
         if (c.isEmpty()) {
             return false;
         }
+        // Добавляем каждый элемент из коллекции в конец нашего списка
         for (E element : c) {
             add(element);
         }
@@ -191,6 +193,7 @@ public class ListC<E> implements List<E> {
         if (c.isEmpty()) {
             return false;
         }
+        // Вставляем элементы коллекции по очереди, сдвигая индекс
         int currentIndex = index;
         for (E element : c) {
             add(currentIndex, element);
@@ -202,6 +205,7 @@ public class ListC<E> implements List<E> {
     @Override
     public boolean removeAll(Collection<?> c) {
         boolean modified = false;
+        // Проходим по нашему списку с конца к началу, чтобы корректно удалять по индексу
         for (int i = size - 1; i >= 0; i--) {
             if (c.contains(elements[i])) {
                 remove(i);
@@ -214,6 +218,7 @@ public class ListC<E> implements List<E> {
     @Override
     public boolean retainAll(Collection<?> c) {
         boolean modified = false;
+        // Оставляем только те элементы, которые есть в переданной коллекции c
         for (int i = size - 1; i >= 0; i--) {
             if (!c.contains(elements[i])) {
                 remove(i);
