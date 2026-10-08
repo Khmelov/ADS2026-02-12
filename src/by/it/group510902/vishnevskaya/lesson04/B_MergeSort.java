@@ -28,18 +28,20 @@ public class B_MergeSort {
             System.out.print(index + " ");
         }
     }
-
-    private void mergeSort(int[] arr, int left, int right) {
+/*сотрировка слияня */
+    private void mergeSort(int[] arr, int left, int right) { /*метод делит массив поплам
+     до лдного элемента*/
         if (left >= right) {
             return;
         }
         int mid = left + (right - left) / 2;
         mergeSort(arr, left, mid);
         mergeSort(arr, mid + 1, right);
-        merge(arr, left, mid, right);
+        merge(arr, left, mid, right); /* сливает отсортированные части через временный массив*/
     }
 
-    private void merge(int[] arr, int left, int mid, int right) {
+    private void merge(int[] arr, int left, int mid, int right) {/*когда массив разбит
+    начинает соеденять части обратно*/
         int[] temp = new int[right - left + 1];
         int i = left;
         int j = mid + 1;
@@ -66,7 +68,7 @@ public class B_MergeSort {
         }
     }
 
-    int[] getMergeSort(InputStream stream) throws FileNotFoundException {
+    int[] getMergeSort(InputStream stream) throws FileNotFoundException {/*считает размер массива н*/
         Scanner scanner = new Scanner(stream);
 
         int n = scanner.nextInt();
