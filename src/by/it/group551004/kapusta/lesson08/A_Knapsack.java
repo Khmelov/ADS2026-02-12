@@ -20,11 +20,10 @@ public class A_Knapsack {
         // dp[w] = максимальный вес, который можно набрать при вместимости w
         int[] dp = new int[W + 1];
 
-        for (int w = 0; w <= W; w++) {
-            for (int g : gold) {
-                if (g <= w) {
-                    dp[w] = Math.max(dp[w], dp[w - g] + g);
-                }
+        for (int g : gold) {
+            if (g > W) continue; // нельзя брать слитки, которые не помещаются
+            for (int w = g; w <= W; w++) {
+                dp[w] = Math.max(dp[w], dp[w - g] + g);
             }
         }
 

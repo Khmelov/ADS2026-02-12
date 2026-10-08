@@ -43,13 +43,28 @@ public class C_Stairs {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         int result = 0;
 
+        int[] sums = new int[n];
 
+        sums[0] = stairs[0];
+        sums[1] = max(stairs[0] + stairs[1], stairs[1]);
+
+        for (int i = 2; i < n; i++)
+            sums[i] = max(sums[i - 1], sums[i - 2]) + stairs[i];
+
+        result = sums[n - 1];
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
+
+    int max(int a, int b) {
+        if (a < b)
+            return b;
+        else
+            return a;
+    }
 
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = C_Stairs.class.getResourceAsStream("dataC.txt");

@@ -49,12 +49,46 @@ import java.util.Scanner;
 public class C_EditDist {
 
     String getDistanceEdinting(String one, String two) {
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        int[][] dp = new int[one.length()+1][two.length()+1];
+        dp[0][0] = 0;
 
+        for (int row = 1; row <= one.length(); row++)
+            dp[row][0] = row;
 
-        String result = "";
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        for (int col = 1; col <= two.length(); col++)
+            dp[0][col] = col;
+
+        for (int row = 1; row <= one.length(); row++) {
+            for (int col = 1; col <= two.length(); col++) {
+                int cost = (one.charAt(row-1) == two.charAt(col-1)) ? 0 : 1;
+                dp[row][col] = Math.min(Math.min(dp[row-1][col]+1, dp[row][col-1]+1), dp[row-1][col-1]+cost);
+            }
+        }
+
+        StringBuilder result = new StringBuilder();
+        int row = one.length(), col = two.length();
+
+        while (row > 0 || col > 0) {
+            if (row > 0 && col > 0 && one.charAt(row-1) == two.charAt(col-1)) {
+                result.insert(0, "#,");
+                row--;
+                col--;
+            }
+            else if (row > 0 && col > 0 && dp[row][col] == dp[row-1][col-1] + 1) {
+                result.insert(0, "~" + two.charAt(col-1) + ",");
+                row--;
+                col--;
+            }
+            else if (row > 0 && dp[row][col] == dp[row-1][col] + 1) {
+                result.insert(0, "-" + one.charAt(row-1) + ",");
+                row--;
+            }
+            else {
+                result.insert(0, "+" + two.charAt(col-1) + ",");
+                col--;
+            }
+        }
+        return result.toString();
     }
 
 

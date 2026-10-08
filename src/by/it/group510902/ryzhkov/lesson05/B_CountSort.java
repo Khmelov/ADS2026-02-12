@@ -39,6 +39,24 @@ public class B_CountSort {
         }
         // тут реализуйте логику задачи с применением сортировки подсчетом
 
+        
+        int[] count = new int[11];
+
+        for (int i = 0; i < n; i++) {
+            int value = points[i];
+            count[value]++;
+        }
+
+        int[] sorted = new int[n];
+        int index = 0;
+
+        for (int value = 1; value <= 10; value++) {
+            for (int k = 0; k < count[value]; k++) {
+                sorted[index++] = value;
+            }
+        }
+
+        points = sorted;
         // !!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!
         return points;
     }

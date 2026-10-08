@@ -1,6 +1,5 @@
 package by.it.group510902.petrenko.lesson01;
 
-
 import org.junit.Test;
 
 import java.math.BigInteger;

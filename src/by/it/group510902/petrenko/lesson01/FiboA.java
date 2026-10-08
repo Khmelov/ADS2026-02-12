@@ -1,5 +1,4 @@
 package by.it.group510902.petrenko.lesson01;
-
 import java.math.BigInteger;
 
 /*
@@ -29,6 +28,7 @@ public class FiboA {
     }
 
     private int calc(int n) {
+
         if (n == 0) {
             return 0;
         }
@@ -51,7 +51,4 @@ public class FiboA {
         return slowA(n - 1).add(slowA(n - 2));
 
     }
-
-
 }
-

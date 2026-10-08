@@ -41,9 +41,35 @@ public class A_EditDist {
 
     int getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-
-
         int result = 0;
+        int n = one.length();
+        int m = two.length();
+
+        //создаю матрицу расстояний
+        //d[i][j] - расстояние между префиксом one длины i и префиксом two длины j
+        int [][] d = new int [n+1][m+1];
+
+        //пустая стр превращ в другую путём вставок
+        for (int i = 0; i <= n; i++) {
+            d[i][0] = i;
+        }
+        for (int j = 0; j <= m; j++) {
+            d[0][j] = j;
+        }
+
+        //заполенеие матрицы
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                //если совпадают - оставляем
+                int value = (one.charAt(i - 1) == two.charAt(j - 1)) ? 0 : 1;
+
+                d[i][j] = Math.min ( Math.min(d[i - 1][j] + 1,      // сверху - удаление
+                                            d[i][j - 1] + 1),       // слева - вставка
+                                            d[i - 1][j - 1] + value // диагональ - замена
+                );
+            }
+        }
+        result = d[n][m];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }

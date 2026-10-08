@@ -47,24 +47,29 @@ public class C_QSortOptimized {
         //число отрезков отсортированного массива
         int n = scanner.nextInt();
         Segment[] segments = new Segment[n];
+        int[] starts = new int[n];
+        int[] stops = new int[n];
         //число точек
         int m = scanner.nextInt();
         int[] points = new int[m];
         int[] result = new int[m];
-
-        //читаем сами отрезки
         for (int i = 0; i < n; i++) {
             //читаем начало и конец каждого отрезка
             segments[i] = new Segment(scanner.nextInt(), scanner.nextInt());
+            starts[i] = segments[i].start;
+            stops[i] = segments[i].stop;
         }
+
+        quickSort(starts, 0, n - 1);
+        quickSort(stops, 0, n - 1);
+
         //читаем точки
         for (int i = 0; i < m; i++) {
             points[i] = scanner.nextInt();
+            int countStart = count(starts, points[i] + 1);
+            int countStop = count(stops, points[i]);
+            result[i] = countStart - countStop;
         }
-        //тут реализуйте логику задачи с применением быстрой сортировки
-        //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
-
-
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
@@ -83,6 +88,47 @@ public class C_QSortOptimized {
         public int compareTo(Object o) {
             //подумайте, что должен возвращать компаратор отрезков
             return 0;
+        }
+    }
+    private int count(int[] arr, int value) {
+        int l = 0, r = arr.length - 1;
+        int cnt = 0;
+        while (l <= r) {
+            int m = (l + r) / 2;
+            if (arr[m] < value) {
+                cnt = m + 1;
+                l = m + 1;
+            } else {
+                r = m - 1;
+            }
+        }
+        return cnt;
+    }
+
+    private void quickSort(int[] arr, int low, int high) {
+        while (low < high) {
+            int pivot = arr[low];
+            int lt = low, gt = high, i = low + 1;
+
+            while (i <= gt) {
+                if (arr[i] < pivot) {
+                    int temp = arr[lt]; arr[lt] = arr[i]; arr[i] = temp;
+                    lt++; i++;
+                } else if (arr[i] > pivot) {
+                    int temp = arr[i]; arr[i] = arr[gt]; arr[gt] = temp;
+                    gt--;
+                } else {
+                    i++;
+                }
+            }
+
+            if (lt - low < high - gt) {
+                quickSort(arr, low, lt - 1);
+                low = gt + 1;
+            } else {
+                quickSort(arr, gt + 1, high);
+                high = lt - 1;
+            }
         }
     }
 
