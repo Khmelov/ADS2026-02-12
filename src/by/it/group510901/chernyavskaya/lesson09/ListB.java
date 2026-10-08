@@ -96,7 +96,6 @@ public class ListB<E> implements List<E> {
         // Находим индекс элемента по значению
         int index = indexOf(o);
         if (index != -1) {
-            remove(index); // Удаляем по индексу
             return true;
         }
         return false;
@@ -104,9 +103,6 @@ public class ListB<E> implements List<E> {
 
     @Override
     public E set(int index, E element) {
-        E oldElement = (E) elements[index]; // Запоминаем старый элемент
-        elements[index] = element;          // Записываем новый
-        return oldElement;                  // Возвращаем старый
     }
 
 
@@ -141,7 +137,6 @@ public class ListB<E> implements List<E> {
                 }
             }
         }
-        return -1; // Не нашли
     }
 
     @Override
@@ -170,7 +165,6 @@ public class ListB<E> implements List<E> {
                 }
             }
         }
-        return -1; // Не нашли
     }
 
 
