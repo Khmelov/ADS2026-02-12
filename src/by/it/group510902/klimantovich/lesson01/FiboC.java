@@ -1,4 +1,4 @@
-package by.it.group551002.marochkov.lesson01;
+package by.it.group510902.klimantovich.lesson01;
 
 /*
  * Даны целые числа 1<=n<=1E18 и 2<=m<=1E5,
@@ -24,37 +24,38 @@ public class FiboC {
     long fasterC(long n, int m) {
         //Интуитивно найти решение не всегда просто и
         //возможно потребуется дополнительный поиск информации
-        if (n < 2) return n % m;
-        long[][] tMat = {{1, 1}, {1, 0}};
-        long[][] fibMat = powMat(tMat, n - 1, m);
-        return fibMat[0][0];
+        int pisanoper = getPianoPeriod(m);
+        long reducedN = n%pisanoper;
+        return getFibonacciMod(reducedN, m);
     }
-
-    long[][] mulMatr(long[][] A, long[][] B, int m) {
-        long[][] C = {{0, 0}, {0, 0}};
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 2; j++) {
-                for (int k = 0; k < 2; k++) {
-                    long res = (A[i][k] % m) * (B[k][j] % m);
-                    C[i][j] = (C[i][j] + res) % m;
-                }
+    private int getPianoPeriod(int m){
+        int prev = 0;
+        int curr = 1;
+        int period = 0;
+        for (int i =0; i < m*6; i++){
+            int next = (prev + curr)% m;
+            prev = curr;
+            curr = next;
+            if(prev == 0 && curr == 1){
+                period = i+1;
+                break;
             }
         }
-        return arrC;
+        return period;
     }
-
-    long[][] powMat(long[][] A, long n, int m) {
-        long[][] arrRes = {{1, 0}, {0, 1}};
-        while (n > 0) {
-            if (n % 2 == 1)
-                arrRes = mulMatr(arrRes, A, m);
-            A = mulMatr(A, A, m);
-            n /= 2;
+    private long getFibonacciMod(long n, int m){
+        if(n<=1){
+            return n;
         }
-        return arrRes;
+        long prev = 0;
+        long curr = 1;
+        for (long i =2; i<=n; i++ ){
+            long next = (prev + curr)%m;
+            prev = curr;
+            curr = next;
+        }
+        return curr;
     }
-
-
 
 }
 
