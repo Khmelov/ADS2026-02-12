@@ -44,7 +44,6 @@ public class A_EditDist {
         int m = one.length();
         int n = two.length();
         
-        // Create memoization table
         Integer[][] memo = new Integer[m + 1][n + 1];
         
         int result = editDistanceRecursive(one, two, m, n, memo);
