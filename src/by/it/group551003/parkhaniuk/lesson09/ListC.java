@@ -8,7 +8,7 @@ import java.util.ListIterator;
 public class ListC<E> implements List<E> {
 
     private int size;
-    private int capacity;
+    private int capacity = 10;
     private E[] data;
 
     public ListC() {
@@ -44,17 +44,19 @@ public class ListC<E> implements List<E> {
 
     private void ensureCapacity()
     {
-        capacity *= 2;
-        E[] newData = (E[]) new Object[capacity];
-        System.arraycopy(data, 0, newData, 0, size);
+        if (size == capacity) {
+            capacity *= 2;
+            E[] newData = (E[]) new Object[capacity];
+            System.arraycopy(data, 0, newData, 0, size);
 
-        data = newData;
+            data = newData;
+        }
     }
 
     @Override
     public boolean add(E e) {
-        if (size == capacity)
-            ensureCapacity();
+
+        ensureCapacity();
 
         data[size++] = e;
         return true;
@@ -78,8 +80,8 @@ public class ListC<E> implements List<E> {
 
     @Override
     public void add(int index, E element) {
-        if (size == capacity)
-            ensureCapacity();
+        ensureCapacity();
+
         System.arraycopy(data, index, data, index + 1, size - index);
         data[index] = element;
         size++;
