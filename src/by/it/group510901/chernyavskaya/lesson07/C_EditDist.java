@@ -9,28 +9,26 @@ public class C_EditDist {
     String getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
 
-        int m = one.length();  // длина первой строки
-        int n = two.length();  // длина второй строки
+        int m = one.length();
+        int n = two.length();
 
         // Таблица для расстояний Левенштейна
         int[][] dp = new int[m + 1][n + 1];
 
-        // Инициализация: превращение в пустую строку
+        // Инициализация
         for (int i = 0; i <= m; i++) {
             dp[i][0] = i;  // удалить i символов
         }
         for (int j = 0; j <= n; j++) {
             dp[0][j] = j;  // вставить j символов
         }
-
         // Заполняем таблицу
         for (int i = 1; i <= m; i++) {
             for (int j = 1; j <= n; j++) {
                 // Если символы равны, замена не нужна (0), иначе нужна (1)
                 int cost = (one.charAt(i - 1) == two.charAt(j - 1)) ? 0 : 1;
 
-                // Минимум из трех операций:
-                // удаление, вставка, замена/копирование
+                // Минимум из трех операций
                 dp[i][j] = Math.min(
                         Math.min(dp[i - 1][j] + 1,     // удаление
                                 dp[i][j - 1] + 1),    // вставка
@@ -38,15 +36,12 @@ public class C_EditDist {
                 );
             }
         }
-
         // Восстанавливаем последовательность операций
         StringBuilder result = new StringBuilder();
         int i = m;
         int j = n;
-
         // Идем от конца к началу
         while (i > 0 || j > 0) {
-            // Если одна из строк закончилась
             if (i == 0) {
                 // Только вставки
                 result.insert(0, "+" + two.charAt(j - 1) + ",");
