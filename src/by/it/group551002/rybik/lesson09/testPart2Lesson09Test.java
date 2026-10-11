@@ -186,8 +186,7 @@ public class testPart2Lesson09Test extends HomeWork {
             }
         }
     }
-
-    private void checkField(Field field) {
+   private void checkField(Field field) {
         if (Collection.class.isAssignableFrom(field.getType())) {
             fail("Incorrect field: " + field);
         }
