@@ -100,6 +100,45 @@ public class MyArrayDeque<E> implements Deque<E>{
     }
 
     @Override
+    public boolean add(E e) {
+        addLast(e);
+        return true;
+    }
+
+    @Override
+    public void clear() {
+        for(int i = 0; i < size; i++)
+            objects[(i + front) % objects.length] = null;
+        size = 0;
+        front = rear = -1;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append('[');
+        for(int i = 0; i < size; i++) {
+            builder.append(objects[(i + front) % objects.length]);
+            if(i != size - 1) builder.append(", ");
+        }
+        builder.append(']');
+        return builder.toString();
+    }
+
+    private void ensureCapacity() {
+        int capacity = objects.length;
+        int newCapacity = 2 * capacity;
+        Object[] bigger = new Object[newCapacity];
+
+        for(int i = 0; i < size; i++)
+            bigger[i] = objects[(i + front) % capacity];
+
+        front = 0;
+        rear = size - 1;
+        objects = bigger;
+    }
+
+    @Override
     public E peekFirst() {
         return null;
     }
@@ -120,12 +159,6 @@ public class MyArrayDeque<E> implements Deque<E>{
     }
 
     @Override
-    public boolean add(E e) {
-        addLast(e);
-        return true;
-    }
-
-    @Override
     public boolean offer(E e) {
         return false;
     }
@@ -133,14 +166,6 @@ public class MyArrayDeque<E> implements Deque<E>{
     @Override
     public E remove() {
         return null;
-    }
-
-    @Override
-    public void clear() {
-        for(int i = 0; i < size; i++)
-            objects[(i + front) % objects.length] = null;
-        size = 0;
-        front = rear = -1;
     }
 
     @Override
@@ -174,9 +199,7 @@ public class MyArrayDeque<E> implements Deque<E>{
     }
 
     @Override
-    public void push(E e) {
-
-    }
+    public void push(E e) {}
 
     @Override
     public E pop() {
@@ -214,10 +237,7 @@ public class MyArrayDeque<E> implements Deque<E>{
     }
 
     @Override
-    public E removeLast() {
-        return null;
-    }
-
+    public E removeLast() { return null; }
     @Override
     public int size() {
         return size;
@@ -246,30 +266,5 @@ public class MyArrayDeque<E> implements Deque<E>{
     @Override
     public Iterator<E> descendingIterator() {
         return null;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append('[');
-        for(int i = 0; i < size; i++) {
-            builder.append(objects[(i + front) % objects.length]);
-            if(i != size - 1) builder.append(", ");
-        }
-        builder.append(']');
-        return builder.toString();
-    }
-
-    private void ensureCapacity() {
-        int capacity = objects.length;
-        int newCapacity = 2 * capacity;
-        Object[] bigger = new Object[newCapacity];
-
-        for(int i = 0; i < size; i++)
-            bigger[i] = objects[(i + front) % capacity];
-
-        front = 0;
-        rear = size - 1;
-        objects = bigger;
     }
 }

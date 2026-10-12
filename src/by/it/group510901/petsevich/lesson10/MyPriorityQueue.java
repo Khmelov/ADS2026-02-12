@@ -75,18 +75,19 @@ public class MyPriorityQueue<E> implements Queue<E> {
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
+        boolean isChanged = false;
         for(Object e : c) {
-            if (!add((E) e))
-                return false;
+            if (add((E) e))
+                isChanged = true;
         }
-        return true;
+        return isChanged;
     }
 
     @Override
     public boolean removeAll(Collection<?> c) {
         Object[] newArray = new Object[objects.length];
         int it = 0;
-        Boolean isChanged = false;
+        boolean isChanged = false;
         for(int i = 0; i < size; i++) {
             if(!c.contains(objects[i])) {
                 newArray[it] = objects[i];
@@ -109,7 +110,7 @@ public class MyPriorityQueue<E> implements Queue<E> {
     public boolean retainAll(Collection<?> c) {
         Object[] newArray = new Object[objects.length];
         int it = 0;
-        Boolean isChanged = false;
+        boolean isChanged = false;
         for(int i = 0; i < size; i++) {
             if(c.contains(objects[i])) {
                 newArray[it] = objects[i];
