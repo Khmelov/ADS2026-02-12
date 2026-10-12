@@ -1,4 +1,4 @@
-package by.it.a_khmelev.lesson09;
+package by.it.group551004.frantskevich.lesson09;
 
 import java.util.*;
 
@@ -7,6 +7,9 @@ public class ListB<E> implements List<E> {
 
     //Создайте аналог списка БЕЗ использования других классов СТАНДАРТНОЙ БИБЛИОТЕКИ
 
+    private Object[] elements = new Object[10];
+    private int size = 0;
+
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
     //////               Обязательные к реализации методы             ///////
@@ -14,69 +17,171 @@ public class ListB<E> implements List<E> {
     /////////////////////////////////////////////////////////////////////////
     @Override
     public String toString() {
-        return "";
+        if (size == 0){
+            return "[]";
+        }
+        StringBuilder sb = new StringBuilder("[");
+        for (int i=0; i<size; i++){
+            sb.append(elements[i]);
+
+            if (i < size - 1) {
+                sb.append(", ");
+            }
+        }
+        sb.append("]");
+
+        return sb.toString();
     }
 
     @Override
     public boolean add(E e) {
-        return false;
+        if (size == elements.length){
+            Object[] elements_new = new Object[elements.length*2];
+            for (int i=0; i < size; i++) {
+                elements_new[i] = elements[i];
+            }
+
+            elements = elements_new;
+        }
+
+        elements[size] = e;
+        size++;
+
+        return true;
     }
 
     @Override
     public E remove(int index) {
-        return null;
+        if (index < 0 || index >= size){
+            return null;
+        }
+
+        E result = (E) elements[index];
+
+        for (int i=index; i<size-1; i++){
+            elements[i] = elements[i+1];
+        }
+
+        size--;
+        elements[size] = null;
+
+        return result;
     }
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
     public void add(int index, E element) {
+        if (index < 0 || index > size){
+            throw new IndexOutOfBoundsException();
+        }
+
+        if (size == elements.length){
+            Object[] elements_new = new Object[elements.length*2];
+            for (int i=0; i < size; i++) {
+                elements_new[i] = elements[i];
+            }
+
+            elements = elements_new;
+        }
+
+        for (int i=size; i > index; i--){
+            elements[i] = elements[i-1];
+        }
+
+        elements[index] = element;
+        size++;
 
     }
 
     @Override
     public boolean remove(Object o) {
+        int index = indexOf(o);
+        if (index != -1){
+            E el = remove(index);
+            return true;
+        }
         return false;
     }
 
     @Override
     public E set(int index, E element) {
-        return null;
+        if (index <0 || index >= size){
+            return null;
+        }
+
+        E old_element = (E) elements[index];
+        elements[index] = element;
+        return old_element;
     }
 
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return size == 0;
     }
 
 
     @Override
     public void clear() {
+        for (int i=0; i<size; i++){
+            elements[i] = null;
+        }
 
+        size = 0;
     }
 
     @Override
     public int indexOf(Object o) {
-        return 0;
+        if (o == null) {
+            for (int i = 0; i < size; i++) {
+                if (elements[i] == null) {
+                    return i;
+                }
+            }
+        } else {
+            for (int i = 0; i < size; i++) {
+                if (o.equals(elements[i])) {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
     @Override
     public E get(int index) {
-        return null;
+        if (index < 0 || index >= size){
+            return null;
+        }
+
+        return (E) elements[index];
     }
 
     @Override
     public boolean contains(Object o) {
-        return false;
+        return indexOf(o) != -1;
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        return 0;
+        if (o == null) {
+            for (int i = size - 1; i >= 0; i--) {
+                if (elements[i] == null) {
+                    return i;
+                }
+            }
+        } else {
+            for (int i = size - 1; i >= 0; i--) {
+                if (o.equals(elements[i])) {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
 
