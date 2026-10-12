@@ -18,7 +18,7 @@ public class ListC<E> implements List<E> {
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
     @Override
-    public String toString() {
+    public String toString() { //вывод на экран
         if (size == 0) {
             return "[]";
         }
@@ -34,7 +34,7 @@ public class ListC<E> implements List<E> {
     }
 
     @Override
-    public boolean add(E e) {
+    public boolean add(E e) { //добавление элемента
         if (size == elements.length) {
             Object[] newElements = new Object[elements.length * 2];
             for (int i = 0; i < size; i++) {
@@ -48,7 +48,7 @@ public class ListC<E> implements List<E> {
     }
 
     @Override
-    public E remove(int index) {
+    public E remove(int index) { // удаление по номеру
         if (index < 0 || index >= size) {
             return null;
         }
@@ -64,10 +64,10 @@ public class ListC<E> implements List<E> {
     @Override
     public int size() {
         return size;
-    }
+    } //количество элементов
 
     @Override
-    public void add(int index, E element) {
+    public void add(int index, E element) { //вставка в определенное место
         if (index < 0 || index > size) {
             return;
         }
@@ -86,7 +86,7 @@ public class ListC<E> implements List<E> {
     }
 
     @Override
-    public boolean remove(Object o) {
+    public boolean remove(Object o) { //удаление по значению
         int index = indexOf(o);
         if (index != -1) {
             remove(index);
@@ -96,7 +96,7 @@ public class ListC<E> implements List<E> {
     }
 
     @Override
-    public E set(int index, E element) {
+    public E set(int index, E element) { //подмена вещи
         if (index < 0 || index >= size) {
             return null;
         }
@@ -109,11 +109,11 @@ public class ListC<E> implements List<E> {
     @Override
     public boolean isEmpty() {
         return size == 0;
-    }
+    } //пустой ли список
 
 
     @Override
-    public void clear() {
+    public void clear() { // очистка
         for (int i = 0; i < size; i++) {
             elements[i] = null;
         }
@@ -121,7 +121,7 @@ public class ListC<E> implements List<E> {
     }
 
     @Override
-    public int indexOf(Object o) {
+    public int indexOf(Object o) { //поиск слева направо
         if (o == null) {
             for (int i = 0; i < size; i++) {
                 if (elements[i] == null) {
@@ -139,7 +139,7 @@ public class ListC<E> implements List<E> {
     }
 
     @Override
-    public E get(int index) {
+    public E get(int index) { //чтение массива
         if (index < 0 || index >= size) {
             return null;
         }
@@ -149,10 +149,10 @@ public class ListC<E> implements List<E> {
     @Override
     public boolean contains(Object o) {
         return indexOf(o) != -1;
-    }
+    } //проверка есть ли элемент
 
     @Override
-    public int lastIndexOf(Object o) {
+    public int lastIndexOf(Object o) { // поиск справа налево
         if (o == null) {
             for (int i = size - 1; i >= 0; i--) {
                 if (elements[i] == null) {
@@ -170,7 +170,7 @@ public class ListC<E> implements List<E> {
     }
 
     @Override
-    public boolean containsAll(Collection<?> c) {
+    public boolean containsAll(Collection<?> c) { // сверка по списку
         for (Object item : c) {
             if (!contains(item)) {
                 return false;
@@ -180,7 +180,7 @@ public class ListC<E> implements List<E> {
     }
 
     @Override
-    public boolean addAll(Collection<? extends E> c) {
+    public boolean addAll(Collection<? extends E> c) { // добавление из спика всего
         if (c.isEmpty()) {
             return false;
         }
@@ -191,7 +191,7 @@ public class ListC<E> implements List<E> {
     }
 
     @Override
-    public boolean addAll(int index, Collection<? extends E> c) {
+    public boolean addAll(int index, Collection<? extends E> c) { // вклинить в очередь
         if (index < 0 || index > size || c.isEmpty()) {
             return false;
         }
@@ -203,7 +203,7 @@ public class ListC<E> implements List<E> {
     }
 
     @Override
-    public boolean removeAll(Collection<?> c) {
+    public boolean removeAll(Collection<?> c) { //черный список
         boolean modified = false;
         int i = 0;
         while (i < size) {
@@ -218,7 +218,7 @@ public class ListC<E> implements List<E> {
     }
 
     @Override
-    public boolean retainAll(Collection<?> c) {
+    public boolean retainAll(Collection<?> c) { //белый список
         boolean modified = false;
         int i = 0;
         while (i < size) {
