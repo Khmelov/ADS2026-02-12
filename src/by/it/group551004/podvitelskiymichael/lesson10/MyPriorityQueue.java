@@ -5,12 +5,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 
-/**
- * Очередь с приоритетом на основе бинарной min-кучи в приватном массиве E[].
- * Порядок элементов в куче намеренно повторяет алгоритмы java.util.PriorityQueue
- * (siftUp / siftDown / removeAt / heapify), чтобы toString() совпадал с образцом.
- * Используются только типы, необходимые для сигнатур интерфейса Queue<E>.
- */
 public class MyPriorityQueue<E> implements Queue<E> {
 
     private static final int DEFAULT_CAPACITY = 11;
@@ -22,10 +16,6 @@ public class MyPriorityQueue<E> implements Queue<E> {
     public MyPriorityQueue() {
         heap = (E[]) new Object[DEFAULT_CAPACITY];
     }
-
-    // ------------------------------------------------------------------
-    // Внутренняя механика кучи
-    // ------------------------------------------------------------------
 
     @SuppressWarnings("unchecked")
     private int compare(E a, E b) {
@@ -41,7 +31,6 @@ public class MyPriorityQueue<E> implements Queue<E> {
         heap = bigger;
     }
 
-    // Всплытие элемента x, который должен оказаться в позиции k
     private void siftUp(int k, E x) {
         while (k > 0) {
             int parent = (k - 1) >>> 1;
@@ -55,11 +44,10 @@ public class MyPriorityQueue<E> implements Queue<E> {
         heap[k] = x;
     }
 
-    // Погружение элемента x, который должен оказаться в позиции k (n - текущий размер кучи)
     private void siftDown(int k, E x, int n) {
-        int half = n >>> 1; // пока у узла есть хотя бы один потомок
+        int half = n >>> 1;
         while (k < half) {
-            int child = (k << 1) + 1; // левый потомок
+            int child = (k << 1) + 1;
             E c = heap[child];
             int right = child + 1;
             if (right < n && compare(c, heap[right]) > 0) {
@@ -106,7 +94,6 @@ public class MyPriorityQueue<E> implements Queue<E> {
         }
     }
 
-    // Общая часть removeAll / retainAll за O(n): отметить, сжать с сохранением порядка, перестроить кучу
     private boolean removeMatching(Collection<?> c, boolean removeIfContained) {
         if (c == null) {
             throw new NullPointerException();
@@ -136,10 +123,6 @@ public class MyPriorityQueue<E> implements Queue<E> {
         heapify();
         return true;
     }
-
-    // ------------------------------------------------------------------
-    // Обязательные методы
-    // ------------------------------------------------------------------
 
     @Override
     public String toString() {
@@ -272,10 +255,6 @@ public class MyPriorityQueue<E> implements Queue<E> {
         return removeMatching(c, false);
     }
 
-    // ------------------------------------------------------------------
-    // Простые дополнительные методы
-    // ------------------------------------------------------------------
-
     @Override
     public boolean remove(Object o) {
         int i = indexOf(o);
@@ -294,10 +273,6 @@ public class MyPriorityQueue<E> implements Queue<E> {
         }
         return result;
     }
-
-    // ------------------------------------------------------------------
-    // Необязательные методы — не реализованы
-    // ------------------------------------------------------------------
 
     @Override
     public Iterator<E> iterator() {
