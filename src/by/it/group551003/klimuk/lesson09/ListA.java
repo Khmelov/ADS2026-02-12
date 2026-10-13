@@ -14,24 +14,68 @@ public class ListA<E> implements List<E> {
     //////               Обязательные к реализации методы             ///////
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
+    private Object[] elements;
+    private int size = 0;
+
+    public ListA() {
+        elements = new Object[10];
+    }
+
     @Override
     public String toString() {
-        return "";
+        StringBuilder build = new StringBuilder();
+        build.append("[");
+        for(int i = 0; i < this.size(); i++){
+            build.append(this.elements[i]);
+            if (i < this.size() - 1) {
+                build.append(", ");
+            }
+        }
+        build.append("]");
+        return build.toString();
     }
 
     @Override
     public boolean add(E e) {
-        return false;
+        try{
+            ensureLeng();
+            elements[size] = e;
+            size++;
+        } catch (Throwable er) {
+            return false;
+        }
+        return true;
+
+
     }
 
     @Override
     public E remove(int index) {
+        if(index >= 0 && index < this.size()){
+            Object elem = elements[index];
+            for (int i = index; i < size - 1 ; i++) {
+                elements[i] = elements[i+1];
+            }
+            elements[--size] = null;
+            return (E) elem;
+        }
         return null;
     }
 
     @Override
     public int size() {
-        return 0;
+        return size;
+    }
+
+    private void ensureLeng(){
+        if(size == elements.length){
+            int newSize = elements.length + (elements.length >> 1);
+            Object[] newArr = new Object[newSize];
+            for(int i = 0; i < size; i++){
+                newArr[i] = elements[i];
+            }
+            elements = newArr;
+        }
     }
 
     /////////////////////////////////////////////////////////////////////////
