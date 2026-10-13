@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
+// Хэш-таблица (быстрый поиск, но порядок элементов произвольный)
+
 public class MyHashSet<E> implements Set<E> {
 
     private static class Node<E> {
@@ -87,7 +89,6 @@ public class MyHashSet<E> implements Set<E> {
         return sb.append("]").toString();
     }
 
-    // --- Остальные методы интерфейса Set (заглушки для компиляции) ---
     @Override public boolean addAll(Collection<? extends E> c) { throw new UnsupportedOperationException(); }
     @Override public boolean containsAll(Collection<?> c) { throw new UnsupportedOperationException(); }
     @Override public Iterator<E> iterator() { throw new UnsupportedOperationException(); }

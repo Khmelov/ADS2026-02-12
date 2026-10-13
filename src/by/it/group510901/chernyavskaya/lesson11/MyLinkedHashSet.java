@@ -4,12 +4,14 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
+// Связанный хэш-сет (быстрый поиск + сохранение порядка добавления)
+
 public class MyLinkedHashSet<E> implements Set<E> {
 
     private static class Node<E> {
         E data;
-        Node<E> bucketNext; // Ссылка для коллизий в хеш-таблице
-        Node<E> before, after; // Ссылки для сохранения порядка добавления
+        Node<E> bucketNext;
+        Node<E> before, after;
 
         Node(E data) {
             this.data = data;
@@ -18,8 +20,8 @@ public class MyLinkedHashSet<E> implements Set<E> {
 
     private Node<E>[] buckets = (Node<E>[]) new Node[16];
     private int size = 0;
-    private Node<E> head = null; // Первый добавленный элемент
-    private Node<E> tail = null; // Последний добавленный элемент
+    private Node<E> head = null;
+    private Node<E> tail = null;
 
     private int getIndex(Object o) {
         return o == null ? 0 : Math.abs(o.hashCode() % buckets.length);
@@ -53,11 +55,9 @@ public class MyLinkedHashSet<E> implements Set<E> {
 
         Node<E> newNode = new Node<>(e);
 
-        // Добавление в цепочку хеш-таблицы
         newNode.bucketNext = buckets[idx];
         buckets[idx] = newNode;
 
-        // Добавление в конец списка порядка вставки
         if (head == null) {
             head = tail = newNode;
         } else {
@@ -87,7 +87,6 @@ public class MyLinkedHashSet<E> implements Set<E> {
 
         if (target == null) return false;
 
-        // Удаление из списка порядка вставки
         if (target.before != null) target.before.after = target.after;
         else head = target.after;
 
@@ -160,7 +159,6 @@ public class MyLinkedHashSet<E> implements Set<E> {
         return modified;
     }
 
-    // --- Остальные методы интерфейса Set (заглушки) ---
     @Override public Iterator<E> iterator() { throw new UnsupportedOperationException(); }
     @Override public Object[] toArray() { throw new UnsupportedOperationException(); }
     @Override public <T> T[] toArray(T[] a) { throw new UnsupportedOperationException(); }

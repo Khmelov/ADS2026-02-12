@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
+//Отсортированный массив (элементы всегда хранятся по возрастанию/алфавиту)
+
 public class MyTreeSet<E> implements Set<E> {
 
     private Object[] elements = new Object[16];
@@ -19,7 +21,6 @@ public class MyTreeSet<E> implements Set<E> {
         return size == 0;
     }
 
-    // Собственная реализация бинарного поиска для отсортированного массива
     private int binarySearch(Object o) {
         int low = 0;
         int high = size - 1;
@@ -48,7 +49,7 @@ public class MyTreeSet<E> implements Set<E> {
                 return mid; // Элемент найден
             }
         }
-        return -(low + 1); // Элемент не найден, возвращаем точку вставки
+        return -(low + 1);
     }
 
     @Override
@@ -60,13 +61,12 @@ public class MyTreeSet<E> implements Set<E> {
     public boolean add(E e) {
         int res = binarySearch(e);
         if (res >= 0) {
-            return false; // Элемент уже существует
+            return false;
         }
 
         int idx = -res - 1;
         ensureCapacity();
 
-        // Сдвиг элементов вправо для освобождения места
         for (int i = size; i > idx; i--) {
             elements[i] = elements[i - 1];
         }
@@ -90,16 +90,16 @@ public class MyTreeSet<E> implements Set<E> {
     public boolean remove(Object o) {
         int res = binarySearch(o);
         if (res < 0) {
-            return false; // Элемент не найден
+            return false;
         }
 
         int idx = res;
-        // Сдвиг элементов влево для удаления
+
         for (int i = idx; i < size - 1; i++) {
             elements[i] = elements[i + 1];
         }
 
-        elements[--size] = null; // Очищаем ссылку для сборщика мусора
+        elements[--size] = null;
         return true;
     }
 
@@ -159,7 +159,6 @@ public class MyTreeSet<E> implements Set<E> {
         return modified;
     }
 
-    // --- Заглушки для остальных методов интерфейса Set ---
     @Override public Iterator<E> iterator() { throw new UnsupportedOperationException(); }
     @Override public Object[] toArray() { throw new UnsupportedOperationException(); }
     @Override public <T> T[] toArray(T[] a) { throw new UnsupportedOperationException(); }
