@@ -2,6 +2,8 @@ package by.it.group510901.chernyavskaya.lesson12;
 
 import java.util.*;
 
+//Красно-черное дерево / LLRB
+
 public class MyRbMap implements SortedMap<Integer, String> {
     private static final boolean RED = true, BLACK = false;
     private static class Node {

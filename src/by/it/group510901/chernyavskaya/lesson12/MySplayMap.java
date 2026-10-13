@@ -9,6 +9,8 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedMap;
 
+//Splay-дерево(Самоподстраивающееся)
+
 public class MySplayMap implements NavigableMap<Integer, String> {
 
     private static class Node {

@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+//АВЛ-дерево
+
 public class MyAvlMap implements Map<Integer, String> {
 
     private static class Node {
