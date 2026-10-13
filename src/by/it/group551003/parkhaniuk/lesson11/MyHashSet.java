@@ -42,26 +42,6 @@ public class MyHashSet<E> implements Set<E> {
         return size == 0;
     }
 
-
-    private void rehash(Node<E>[] oldData, int oldCapacity) {
-        size = 0;
-        for(int i = 0; i < oldCapacity; i++) {
-            if (oldData[i] != null)
-                for (Node<E> cur = oldData[i]; cur != null; cur = cur.next) {
-                    int code = cur.item.hashCode() % capacity;
-
-                    if (data[code] == null) {
-                        data[code] = new Node(cur.item);
-                        size++;
-                    } else {
-                        if (appendVal(code, cur.item)){
-                            size++;
-                        }
-                    }
-                }
-        }
-    }
-
     private void ensureCapacity() {
         if ((double) size / capacity >= 0.75) {
             Node<E>[] oldData = (Node<E>[]) new Node[capacity];
@@ -74,6 +54,24 @@ public class MyHashSet<E> implements Set<E> {
         }
     }
 
+    private void rehash(Node<E>[] oldData, int oldCapacity) {
+        size = 0;
+        for (int i = 0; i < oldCapacity; i++) {
+            if (oldData[i] != null)
+                for (Node<E> cur = oldData[i]; cur != null; cur = cur.next) {
+                    int code = cur.item.hashCode() % capacity;
+
+                    if (data[code] == null) {
+                        data[code] = new Node(cur.item);
+                        size++;
+                    } else {
+                        if (appendVal(code, cur.item)) {
+                            size++;
+                        }
+                    }
+                }
+        }
+    }
 
     private boolean appendVal(int code, E val) {
         for(Node<E> cur = data[code]; cur != null; cur = cur.next) {

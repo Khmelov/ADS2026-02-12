@@ -56,7 +56,6 @@ public class MyLinkedHashSet<E> implements Set<E> {
         return size == 0;
     }
 
-
     private void ensureCapacity() {
         if ((double) size / capacity >= 0.75) {
             capacity *= 2;
