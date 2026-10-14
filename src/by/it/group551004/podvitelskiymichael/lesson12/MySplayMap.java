@@ -30,12 +30,6 @@ public class MySplayMap implements NavigableMap<Integer, String> {
     private Node root;
     private int size;
 
-    /////////////////////////////////////////////////////////////////////
-    //                         splay (top-down)                        //
-    /////////////////////////////////////////////////////////////////////
-
-    // После вызова в корне оказывается узел с ключом key,
-    // а если такого нет - последний узел на пути поиска
     private void splay(int key) {
         if (root == null) return;
         Node header = new Node(null, null);
@@ -43,26 +37,26 @@ public class MySplayMap implements NavigableMap<Integer, String> {
         while (true) {
             if (key < t.key) {
                 if (t.left == null) break;
-                if (key < t.left.key) {            // zig-zig: поворот вправо
+                if (key < t.left.key) {
                     Node y = t.left;
                     t.left = y.right;
                     y.right = t;
                     t = y;
                     if (t.left == null) break;
                 }
-                r.left = t;                        // привязать к правому дереву
+                r.left = t;
                 r = t;
                 t = t.left;
             } else if (key > t.key) {
                 if (t.right == null) break;
-                if (key > t.right.key) {           // zig-zig: поворот влево
+                if (key > t.right.key) {
                     Node y = t.right;
                     t.right = y.left;
                     y.left = t;
                     t = y;
                     if (t.right == null) break;
                 }
-                l.right = t;                       // привязать к левому дереву
+                l.right = t;
                 l = t;
                 t = t.right;
             } else {
@@ -75,10 +69,6 @@ public class MySplayMap implements NavigableMap<Integer, String> {
         t.right = header.left;
         root = t;
     }
-
-    /////////////////////////////////////////////////////////////////////
-    //                    обязательные методы                          //
-    /////////////////////////////////////////////////////////////////////
 
     @Override
     public String toString() {
@@ -135,7 +125,7 @@ public class MySplayMap implements NavigableMap<Integer, String> {
         } else {
             Node rightPart = root.right;
             root = root.left;
-            splay(key);             // key больше всех в левом поддереве -> максимум в корне
+            splay(key);
             root.right = rightPart;
         }
         size--;
@@ -183,11 +173,6 @@ public class MySplayMap implements NavigableMap<Integer, String> {
         return size == 0;
     }
 
-    /////////////////////////////////////////////////////////////////////
-    //                  headMap / tailMap / first / last               //
-    /////////////////////////////////////////////////////////////////////
-
-    // Диапазон возвращается в виде нового отображения (копии)
     private MySplayMap range(Integer lo, boolean loInc, Integer hi, boolean hiInc) {
         MySplayMap res = new MySplayMap();
         fillRange(root, lo, loInc, hi, hiInc, res);
@@ -264,11 +249,7 @@ public class MySplayMap implements NavigableMap<Integer, String> {
         return n.key;
     }
 
-    /////////////////////////////////////////////////////////////////////
-    //                lower / floor / ceiling / higher                 //
-    /////////////////////////////////////////////////////////////////////
-
-    private Node lowerNode(int key) {      // наибольший < key
+    private Node lowerNode(int key) {
         Node t = root, res = null;
         while (t != null) {
             if (t.key < key) { res = t; t = t.right; } else t = t.left;
@@ -276,7 +257,7 @@ public class MySplayMap implements NavigableMap<Integer, String> {
         return res;
     }
 
-    private Node floorNode(int key) {      // наибольший <= key
+    private Node floorNode(int key) {
         Node t = root, res = null;
         while (t != null) {
             if (t.key <= key) { res = t; t = t.right; } else t = t.left;
@@ -284,7 +265,7 @@ public class MySplayMap implements NavigableMap<Integer, String> {
         return res;
     }
 
-    private Node ceilingNode(int key) {    // наименьший >= key
+    private Node ceilingNode(int key) {
         Node t = root, res = null;
         while (t != null) {
             if (t.key >= key) { res = t; t = t.left; } else t = t.right;
@@ -292,7 +273,7 @@ public class MySplayMap implements NavigableMap<Integer, String> {
         return res;
     }
 
-    private Node higherNode(int key) {     // наименьший > key
+    private Node higherNode(int key) {
         Node t = root, res = null;
         while (t != null) {
             if (t.key > key) { res = t; t = t.left; } else t = t.right;
@@ -308,10 +289,6 @@ public class MySplayMap implements NavigableMap<Integer, String> {
     @Override public Integer floorKey(Integer key)   { return keyOf(floorNode(key)); }
     @Override public Integer ceilingKey(Integer key) { return keyOf(ceilingNode(key)); }
     @Override public Integer higherKey(Integer key)  { return keyOf(higherNode(key)); }
-
-    /////////////////////////////////////////////////////////////////////
-    //        остальные методы интерфейса (не обязательные)            //
-    /////////////////////////////////////////////////////////////////////
 
     @Override public Map.Entry<Integer, String> lowerEntry(Integer key)   { return lowerNode(key); }
     @Override public Map.Entry<Integer, String> floorEntry(Integer key)   { return floorNode(key); }
