@@ -138,7 +138,6 @@ public class MyHashSet<E> implements Set<E> {
         }
         return result + "]";
     }
-
     @Override
     public boolean containsAll(Collection<?> c) {
         throw new UnsupportedOperationException();
