@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
-// Связанный хэш-сет (быстрый поиск + сохранение порядка добавления)
+// двусвязный список, который объединяет все элементы в порядке их добавления
 
 public class MyLinkedHashSet<E> implements Set<E> {
 

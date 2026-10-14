@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
-//Отсортированный массив (элементы всегда хранятся по возрастанию/алфавиту)
+//на основе обычного отсортированного массива, бинарный поиск
 
 public class MyTreeSet<E> implements Set<E> {
 

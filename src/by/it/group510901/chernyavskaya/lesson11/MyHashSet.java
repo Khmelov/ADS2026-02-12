@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
-// Хэш-таблица (быстрый поиск, но порядок элементов произвольный)
+// метод цепочек для решения коллизий
 
 public class MyHashSet<E> implements Set<E> {
 

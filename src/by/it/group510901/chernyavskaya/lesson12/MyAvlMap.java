@@ -21,7 +21,7 @@ public class MyAvlMap implements Map<Integer, String> {
     private String oldValue;
 
     private int h(Node n) { return n == null ? 0 : n.height; }
-    private int bf(Node n) { return n == null ? 0 : h(n.left) - h(n.right); }
+    private int bf(Node n) { return n == null ? 0 : h(n.left) - h(n.right); } //баланс-фактор
 
     private Node fix(Node n) {
         n.height = 1 + Math.max(h(n.left), h(n.right));
