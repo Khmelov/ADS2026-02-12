@@ -7,68 +7,31 @@ import java.util.ListIterator;
 
 public class ListA<E> implements List<E> {
 
-    private Object[] elements;
-    private int size = 0;
+    //Создайте аналог списка БЕЗ использования других классов СТАНДАРТНОЙ БИБЛИОТЕКИ
 
-    public ListA() {
-        elements = new Object[10];
-    }
-
+    /////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    //////               Обязательные к реализации методы             ///////
+    /////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
     @Override
     public String toString() {
-        StringBuilder build = new StringBuilder();
-        build.append("[");
-        for(int i = 0; i < this.size(); i++){
-            build.append(this.elements[i]);
-            if (i < this.size() - 1) {
-                build.append(", ");
-            }
-        }
-        build.append("]");
-        return build.toString();
+        return "";
     }
 
     @Override
     public boolean add(E e) {
-        try{
-            ensureLeng();
-            elements[size] = e;
-            size++;
-        } catch (Throwable er) {
-            return false;
-        }
-        return true;
-
-
+        return false;
     }
 
     @Override
     public E remove(int index) {
-        if(index >= 0 && index < this.size()){
-            Object elem = elements[index];
-            for (int i = index; i < size - 1 ; i++) {
-                elements[i] = elements[i+1];
-            }
-            elements[--size] = null;
-            return (E) elem;
-        }
         return null;
     }
 
     @Override
     public int size() {
-        return size;
-    }
-
-    private void ensureLeng(){
-        if(size == elements.length){
-            int newSize = elements.length + (elements.length >> 1);
-            Object[] newArr = new Object[newSize];
-            for(int i = 0; i < size; i++){
-                newArr[i] = elements[i];
-            }
-            elements = newArr;
-        }
+        return 0;
     }
 
     /////////////////////////////////////////////////////////////////////////
@@ -79,96 +42,49 @@ public class ListA<E> implements List<E> {
 
     @Override
     public void add(int index, E element) {
-        if(index >= 0 && index < this.size() && element != null){
-            ensureLeng();
-            for (int i = size; i > index ; i--) {
-                elements[i] = elements[i-1];
-            }
-            Object elem = elements[index];
-            size++;
-        }
+
     }
 
     @Override
     public boolean remove(Object o) {
-        boolean removed = false;
-        if(o != null){
-            for(int i = 0; i < size; i++){
-                if(o == elements[i]){
-                    this.remove(i);
-                    removed = true;
-                }
-            }
-        }
-        return removed;
+        return false;
     }
 
     @Override
     public E set(int index, E element) {
-        if(index >= 0 && index < this.size() && element != null){
-            E lastElem = (E) elements[index];
-            elements[index] = element;
-            return lastElem;
-        }
         return null;
     }
 
 
     @Override
     public boolean isEmpty() {
-        return size == 0;
+        return false;
     }
 
 
     @Override
     public void clear() {
-        for(int i = size - 1;i >= 0;i--){
-            this.remove(i);
-        }
+
     }
 
     @Override
     public int indexOf(Object o) {
-        if(o != null){
-            for(int i = 0; i < size; i++){
-                if(o == elements[i]){
-                    return i;
-                }
-            }
-        }
-        return -1;
+        return 0;
     }
 
     @Override
     public E get(int index) {
-        if(index >= 0 && index < this.size()){
-            return (E) elements[index];
-        }
         return null;
     }
 
     @Override
     public boolean contains(Object o) {
-        if(o != null){
-            for(int i = 0; i < size; i++){
-                if(o == elements[i]){
-                    return true;
-                }
-            }
-        }
         return false;
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        if(o != null){
-            for(int i = size - 1; i >= 0; i--){
-                if(o == elements[i]){
-                    return i;
-                }
-            }
-        }
-        return -1;
+        return 0;
     }
 
     @Override
