@@ -1,6 +1,5 @@
 package by.it.group510902.petrenko.lesson01;
 
-
 /*
  * Даны целые числа 1<=n<=1E18 и 2<=m<=1E5,
  * необходимо найти остаток от деления n-го числа Фибоначчи на m
@@ -44,6 +43,4 @@ public class FiboC {
         return leftovers.get((int) (n % leftovers.size()));
     }
 
-
 }
-
