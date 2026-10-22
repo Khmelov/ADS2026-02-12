@@ -18,7 +18,6 @@ public class MySplayMap implements NavigableMap<Integer, String> {
     private Node root;
     private int size = 0;
 
-    // Правый поворот
     private Node rightRotate(Node x) {
         Node y = x.left;
         x.left = y.right;
@@ -26,7 +25,6 @@ public class MySplayMap implements NavigableMap<Integer, String> {
         return y;
     }
 
-    // Левый поворот
     private Node leftRotate(Node x) {
         Node y = x.right;
         x.right = y.left;
@@ -34,22 +32,18 @@ public class MySplayMap implements NavigableMap<Integer, String> {
         return y;
     }
 
-    // Splay-операция: перемещает узел с заданным ключом (или ближайший к нему) в корень
     private Node splay(Node root, Integer key) {
         if (root == null || root.key.equals(key)) {
             return root;
         }
 
-        // Ключ в левом поддереве
         if (key.compareTo(root.key) < 0) {
             if (root.left == null) return root;
 
-            // Zig-Zig (Left Left)
             if (key.compareTo(root.left.key) < 0) {
                 root.left.left = splay(root.left.left, key);
                 root = rightRotate(root);
             }
-            // Zig-Zag (Left Right)
             else if (key.compareTo(root.left.key) > 0) {
                 root.left.right = splay(root.left.right, key);
                 if (root.left.right != null) {
@@ -59,18 +53,15 @@ public class MySplayMap implements NavigableMap<Integer, String> {
 
             return (root.left == null) ? root : rightRotate(root);
         }
-        // Ключ в правом поддереве
         else {
             if (root.right == null) return root;
 
-            // Zag-Zig (Right Left)
             if (key.compareTo(root.right.key) < 0) {
                 root.right.left = splay(root.right.left, key);
                 if (root.right.left != null) {
                     root.right = rightRotate(root.right);
                 }
             }
-            // Zag-Zag (Right Right)
             else if (key.compareTo(root.right.key) > 0) {
                 root.right.right = splay(root.right.right, key);
                 root = leftRotate(root);
@@ -321,8 +312,6 @@ public class MySplayMap implements NavigableMap<Integer, String> {
         sb.append(node.key).append("=").append(node.value);
         appendInOrder(node.right, sb);
     }
-
-    // --- Заглушки для оставшихся методов интерфейса NavigableMap, если потребуются компилятором ---
 
     @Override
     public Map.Entry<Integer, String> lowerEntry(Integer key) { return null; }
