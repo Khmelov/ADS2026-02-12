@@ -1,4 +1,4 @@
-package by.it.a_khmelev.lesson09;
+package by.it.group551001.maxim_belyak.lesson09;
 
 import java.util.*;
 
@@ -55,7 +55,7 @@ public class ListB<E> implements List<E> {
         }
         return x;
     }
-
+    // дОБАВЛЯЕТ НОВЫЙ УЗЕЛ В КОНЕЦ СПИСКА
     private void linkLast(E e) {
         Node<E> last = tail;
         Node<E> newNode = new Node<>(last, e, null);
