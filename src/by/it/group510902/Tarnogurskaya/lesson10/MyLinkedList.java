@@ -19,6 +19,7 @@ public class MyLinkedList<E> implements Deque<E> {
         }
     }
 
+
     private Node<E> first;
     private Node<E> last;
     private int size = 0;
