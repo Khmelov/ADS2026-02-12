@@ -16,6 +16,7 @@ public class MyTreeSet<E extends Comparable<? super E>> implements Set<E> {
         this.size = 0;
     }
 
+
     private void grow() {
         int oldCapacity = elements.length;
         int newCapacity = oldCapacity + (oldCapacity >> 1);

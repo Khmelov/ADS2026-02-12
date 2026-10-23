@@ -6,6 +6,7 @@ import java.util.Set;
 
 public class MyHashSet<E> implements Set<E> {
 
+
     private static class Node<E> {
         E value;
         Node<E> next;

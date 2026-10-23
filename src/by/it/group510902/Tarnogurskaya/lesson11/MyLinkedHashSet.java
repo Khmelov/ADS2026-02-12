@@ -18,6 +18,7 @@ public class MyLinkedHashSet<E> implements Set<E> {
         }
     }
 
+
     private Node<E>[] table;
     private Node<E> head;
     private Node<E> tail;
