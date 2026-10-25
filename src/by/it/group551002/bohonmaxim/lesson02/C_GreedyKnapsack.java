@@ -15,6 +15,8 @@ package by.it.group551002.bohonmaxim.lesson02;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class C_GreedyKnapsack {
@@ -49,7 +51,16 @@ public class C_GreedyKnapsack {
         //кроме того, можете описать свой компаратор в классе Item
 
         //ваше решение.
+        int i = 0;
+        double freeSpace = W;
+        Arrays.sort(items, Comparator.comparingDouble(Item:: unitValue).reversed());
 
+        while (items[i].weight < freeSpace){
+            result += items[i].cost;
+            freeSpace -= items[i].weight;
+            i++;
+        }
+        result =result + (items[i].cost * (freeSpace / items[i].weight));
 
         System.out.printf("Удалось собрать рюкзак на сумму %f\n", result);
         return result;
@@ -63,6 +74,10 @@ public class C_GreedyKnapsack {
             this.cost = cost;
             this.weight = weight;
         }
+
+        double unitValue(){
+            return (double) cost/weight;
+        };
 
         @Override
         public String toString() {

@@ -44,6 +44,33 @@ public class A_QSort {
             System.out.print(index + " ");
         }
     }
+    
+    void quickSort(Segment[] array, int low, int high) {
+        if (low < high) {
+            int pivotIndex = partition(array, low, high);
+            quickSort(array, low, pivotIndex - 1);
+            quickSort(array, pivotIndex + 1, high);
+        }
+    }
+
+    int partition(Segment[] array, int low, int high) {
+        Segment pivot = array[high];
+        int i = low - 1;
+
+        for (int j = low; j < high; j++) {
+            if (array[j].compareTo(pivot) <= 0) {
+                i++;
+                Segment temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+            }
+        }
+
+        Segment temp = array[i + 1];
+        array[i + 1] = array[high];
+        array[high] = temp;
+        return i + 1;
+    }
 
     int[] getAccessory(InputStream stream) throws FileNotFoundException {
         // подготовка к чтению данных
@@ -68,7 +95,23 @@ public class A_QSort {
         }
         // тут реализуйте логику задачи с применением быстрой сортировки
         // в классе отрезка Segment реализуйте нужный для этой задачи компаратор
+        quickSort(segments, 0, n-1);
 
+         for (int i = 0; i < m; i++) {
+            int point = points[i];
+            int count = 0;
+
+            for (int j = 0; j < n; j++) {
+                if (segments[j].start > point) {
+                    break;
+                }
+                if (segments[j].start <= point && point <= segments[j].stop) {
+                    count++;
+                }
+            }
+
+            result[i] = count;
+        }
         // !!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
@@ -79,8 +122,13 @@ public class A_QSort {
         int stop;
 
         Segment(int start, int stop) {
-            this.start = start;
-            this.stop = stop;
+            if (start <= stop) {
+                this.start = start;
+                this.stop = stop;
+            } else {
+                this.start = stop;
+                this.stop = start;
+            }
             // тут вообще-то лучше доделать конструктор на случай если
             // концы отрезков придут в обратном порядке
         }
@@ -88,8 +136,7 @@ public class A_QSort {
         @Override
         public int compareTo(Segment o) {
             // подумайте, что должен возвращать компаратор отрезков
-
-            return 0;
+            return this.start - o.start;
         }
     }
 

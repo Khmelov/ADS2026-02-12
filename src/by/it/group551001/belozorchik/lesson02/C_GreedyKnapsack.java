@@ -47,13 +47,13 @@ public class C_GreedyKnapsack {
         //тут реализуйте алгоритм сбора рюкзака
         //будет особенно хорошо, если с собственной сортировкой
         //кроме того, можете описать свой компаратор в классе Item
-        // сортировка пузырьком
-        // сортируем по убыванию удельной стоимости (cost/weight)
+
+        // сортировка пузырьком по убыванию удельной стоимости cost/weight
         for (int i = 0; i < items.length - 1; i++) {
             for (int j = 0; j < items.length - i - 1; j++) {
                 // если текущий предмет дешевле следующего по удельной цене
                 if (items[j].compareTo(items[j + 1]) > 0) {
-                    // то меняем их местами
+                    // swapаем
                     Item temp = items[j];
                     items[j] = items[j + 1];
                     items[j + 1] = temp;
@@ -61,24 +61,30 @@ public class C_GreedyKnapsack {
             }
         }
         //ваше решение.
-        int currentWeight = 0;
+        int currWeight = 0;
 
-        // сам аглоритм сбора рюкзака
-        for (Item item : items) {
-            if (currentWeight < W) {
-                // скока места осталось в рюкзаке
-                int remainingSpace = W - currentWeight;
+        // аглоритм сбора рюкзака
+        for (int i = 0; i < items.length; i++) {
+            // если место есть
+            if (currWeight < W) {
+                Item item = items[i];
+                int remainingSpace = W - currWeight;
 
+                // предмет влезает полностью
                 if (item.weight <= remainingSpace) {
-                    // берем предмет целиком
-                    result += item.cost;
-                    currentWeight += item.weight;
-                } else {
-                    // если не влезает целиком — режем
-                    // возьмем ту часть веса, которая заполнит остаток рюкзака
+                    result += item.cost;             // добавляем всю стоимость
+                    currWeight += item.weight;    // увеличиваем занятый вес
+                }
+
+                // предмет не влезает
+                else {
+                    // считаем цену за 1 кг
                     double unitPrice = (double) item.cost / item.weight;
+                    // возьмём столько килограмм, сколько влезет
+                    // Стоимость = Цена_за_кг * Оставшееся_место
                     result += unitPrice * remainingSpace;
-                    currentWeight = W; // Рюкзак полон
+                    // рюкзак заполнен
+                    // выходим из цикла
                     break;
                 }
             }
@@ -108,12 +114,11 @@ public class C_GreedyKnapsack {
         @Override
         public int compareTo(Item o) {
             //тут может быть ваш компаратор
-// вычисляем удельную стоимость для обоих предметов
+            // вычисляем удельную стоимость для обоих предметов
             double v1 = (double) this.cost / this.weight;
             double v2 = (double) o.cost / o.weight;
 
-            // нужно отсортировать по убыванию
-            // поэтому если v2 > v1, возвращаем положительное число
+            // сортируем по убыванию, поэтому если v2 > v1, возвращаем 1
             if (v2 > v1) return 1;
             if (v2 < v1) return -1;
 

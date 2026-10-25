@@ -3,6 +3,7 @@ package by.it.group551004.bulavin.lesson05;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
+import java.util.Arrays;
 
 /*
 Видеорегистраторы и площадь.
@@ -69,7 +70,27 @@ public class A_QSort {
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
+        int[] st = new int[n];
+        int[] fn = new int[n];
 
+        for(int i = 0; i < n; i++){
+            st[i] = segments[i].start;
+            fn[i] = segments[i].stop + 1;
+        }
+
+        Arrays.sort(st);
+        Arrays.sort(fn);
+
+        int uks = 0, ukf = 0;
+        for(int i = 0; i < m; i++){
+            while(uks < n && st[uks] < points[i]) {
+                uks++;
+            }
+            while(ukf < n && fn[ukf] <= points[i]) {
+                ukf++;
+            }
+            result[i] = uks - ukf;
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }

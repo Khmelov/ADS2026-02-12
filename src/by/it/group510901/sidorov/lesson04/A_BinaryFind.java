@@ -55,13 +55,27 @@ public class A_BinaryFind {
         int[] result = new int[k];
         for (int i = 0; i < k; i++) {
             int value = scanner.nextInt();
-            //тут реализуйте бинарный поиск индекса
+            // реализация бинарного поиска
+            int left = 0;
+            int right = n - 1;
+            int foundIndex = -1;
 
+            while (left <= right) {
+                // Находим середину (защита от переполнения int)
+                int mid = left + (right - left) / 2;
 
-            result[i] = 0;
+                if (a[mid] == value) {
+                    foundIndex = mid + 1;
+                    break;
+                } else if (a[mid] < value) {
+                    left = mid + 1; // Ищем в правой части
+                } else {
+                    right = mid - 1; // Ищем в левой части
+                }
+            }
+            result[i] = foundIndex;
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
-
 }

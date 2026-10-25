@@ -1,8 +1,6 @@
 package by.it.group510902.petrenko.lesson01;
 
-
 import java.math.BigInteger;
-import java.util.ArrayList;
 
 /*
  * Вам необходимо выполнить способ вычисления чисел Фибоначчи со вспомогательным массивом
@@ -40,6 +38,4 @@ public class FiboB {
 
     }
 
-
 }
-
