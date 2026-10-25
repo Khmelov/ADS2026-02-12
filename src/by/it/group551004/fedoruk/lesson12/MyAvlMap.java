@@ -23,10 +23,6 @@ public class MyAvlMap implements Map<Integer, String> {
     private Node root;
     private int size = 0;
 
-    /////////////////////////////////////////////////////////////////////////
-    //////               Вспомогательные методы АВЛ-дерева            ///////
-    /////////////////////////////////////////////////////////////////////////
-
     private int height(Node node) {
         return node == null ? 0 : node.height;
     }
@@ -61,14 +57,12 @@ public class MyAvlMap implements Map<Integer, String> {
         updateHeight(node);
         int bf = balanceFactor(node);
         if (bf > 1) {
-            // Левое поддерево выше
             if (balanceFactor(node.left) < 0) {
                 node.left = rotateLeft(node.left);
             }
             return rotateRight(node);
         }
         if (bf < -1) {
-            // Правое поддерево выше
             if (balanceFactor(node.right) > 0) {
                 node.right = rotateRight(node.right);
             }
@@ -130,7 +124,6 @@ public class MyAvlMap implements Map<Integer, String> {
             if (node.right == null) {
                 return node.left;
             }
-            // Заменяем удаляемый узел минимальным из правого поддерева
             Node min = minNode(node.right);
             min.right = removeMin(node.right);
             min.left = node.left;
@@ -160,10 +153,6 @@ public class MyAvlMap implements Map<Integer, String> {
         }
         return containsValue(node.left, value) || containsValue(node.right, value);
     }
-
-    /////////////////////////////////////////////////////////////////////////
-    //////               Обязательные к реализации методы             ///////
-    /////////////////////////////////////////////////////////////////////////
 
     @Override
     public String toString() {

@@ -27,18 +27,14 @@ public class MySplayMap implements NavigableMap<Integer, String> {
     private Node root;
     private int size = 0;
 
-    /////////////////////////////////////////////////////////////////////////
-    //////               Вспомогательные методы splay-дерева          ///////
-    /////////////////////////////////////////////////////////////////////////
 
-    // Поднимает в корень узел с ключом key или последний узел на пути поиска
     private Node splay(Node t, Integer key) {
         if (t == null) {
             return null;
         }
         Node header = new Node(null, null);
-        Node leftMax = header;  // Максимальный узел левого дерева
-        Node rightMin = header; // Минимальный узел правого дерева
+        Node leftMax = header;
+        Node rightMin = header;
         while (true) {
             int cmp = key.compareTo(t.key);
             if (cmp < 0) {
@@ -79,7 +75,6 @@ public class MySplayMap implements NavigableMap<Integer, String> {
                 break;
             }
         }
-        // Сборка: левое дерево, t, правое дерево
         leftMax.right = t.left;
         rightMin.left = t.right;
         t.left = header.right;
@@ -120,8 +115,6 @@ public class MySplayMap implements NavigableMap<Integer, String> {
         return containsValue(node.left, value) || containsValue(node.right, value);
     }
 
-    // Копирует в target все пары с ключами между from и to с учетом включения границ
-    // null означает отсутствие соответствующей границы
     private void copyRange(Node node, Integer from, boolean fromInclusive,
                            Integer to, boolean toInclusive, MySplayMap target) {
         if (node == null) {
@@ -140,7 +133,6 @@ public class MySplayMap implements NavigableMap<Integer, String> {
         }
     }
 
-    // Наибольший ключ, меньший key (или равный ему при inclusive)
     private Integer lower(Integer key, boolean inclusive) {
         Integer result = null;
         Node current = root;
@@ -159,7 +151,6 @@ public class MySplayMap implements NavigableMap<Integer, String> {
         return result;
     }
 
-    // Наименьший ключ, больший key (или равный ему при inclusive)
     private Integer higher(Integer key, boolean inclusive) {
         Integer result = null;
         Node current = root;
@@ -178,9 +169,6 @@ public class MySplayMap implements NavigableMap<Integer, String> {
         return result;
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    //////               Обязательные к реализации методы             ///////
-    /////////////////////////////////////////////////////////////////////////
 
     @Override
     public String toString() {
@@ -206,7 +194,6 @@ public class MySplayMap implements NavigableMap<Integer, String> {
             root.value = value;
             return old;
         }
-        // Новый узел становится корнем, старый корень делится на два поддерева
         Node node = new Node(key, value);
         if (cmp < 0) {
             node.left = root.left;
@@ -228,7 +215,6 @@ public class MySplayMap implements NavigableMap<Integer, String> {
         if (node == null) {
             return null;
         }
-        // Удаляемый узел в корне: объединяем его поддеревья
         String old = node.value;
         if (root.left == null) {
             root = root.right;

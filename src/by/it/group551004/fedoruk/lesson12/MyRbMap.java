@@ -30,10 +30,6 @@ public class MyRbMap implements SortedMap<Integer, String> {
     private Node root;
     private int size = 0;
 
-    /////////////////////////////////////////////////////////////////////////
-    //////               Вспомогательные методы КЧ-дерева             ///////
-    /////////////////////////////////////////////////////////////////////////
-
     private boolean isRed(Node node) {
         return node != null && node.color == RED;
     }
@@ -137,7 +133,6 @@ public class MyRbMap implements SortedMap<Integer, String> {
         return balance(h);
     }
 
-    // Ключ обязательно присутствует в дереве
     private Node delete(Node h, Integer key) {
         if (key < h.key) {
             if (!isRed(h.left) && !isRed(h.left.left)) {
@@ -188,8 +183,6 @@ public class MyRbMap implements SortedMap<Integer, String> {
         return containsValue(node.left, value) || containsValue(node.right, value);
     }
 
-    // Копирует в target все пары с ключами из диапазона [from, to)
-    // null означает отсутствие соответствующей границы
     private void copyRange(Node node, Integer from, Integer to, MyRbMap target) {
         if (node == null) {
             return;
@@ -207,9 +200,6 @@ public class MyRbMap implements SortedMap<Integer, String> {
         }
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    //////               Обязательные к реализации методы             ///////
-    /////////////////////////////////////////////////////////////////////////
 
     @Override
     public String toString() {
