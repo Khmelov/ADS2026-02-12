@@ -35,7 +35,7 @@ public class MyTreeSet<E> implements Set<E> {
         int high = size - 1;
 
         while (low <= high) {
-            int mid = (low + high) >>> 1;
+            int mid = (low + high)/2;
             Comparable<? super E> cmpItem = (Comparable<? super E>) array[mid];
             int cmp = cmpItem.compareTo((E) o);
             if (cmp < 0) {
