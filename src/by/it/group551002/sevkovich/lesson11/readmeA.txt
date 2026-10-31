@@ -13,9 +13,9 @@
     //////               Обязательные к реализации методы             ///////
     /////////////////////////////////////////////////////////////////////////
 
-                size()
-                clear()
-                isEmpty()
-                add(Object)
-                remove(Object)
-                contains(Object)
+                size()              +
+                clear()             +
+                isEmpty()           +
+                add(Object)         +
+                remove(Object)      +
+                contains(Object)    +
