@@ -1,9 +1,6 @@
 package by.it.group510901.chibisov.lesson09;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 public class ListA<E> implements List<E> {
 
@@ -49,6 +46,7 @@ public class ListA<E> implements List<E> {
     //////               Обязательные к реализации методы             ///////
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -192,6 +190,7 @@ public class ListA<E> implements List<E> {
     ////////        но они будут нужны для корректной отладки    ////////////
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
+
     @Override
     public Iterator<E> iterator() {
         return null;

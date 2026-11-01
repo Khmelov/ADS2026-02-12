@@ -4,24 +4,26 @@ import java.util.*;
 
 public class MyLinkedList<E> implements Deque<E> {
 
-    private static class Node<E> {
-        E item;
-        Node<E> next;
-        Node<E> prev;
-        public Node(E item, Node<E> next, Node<E> prev) {
-            this.item = item;
+    private static class Node {
+        Object value;
+        Node next;
+        Node prev;
+
+        public Node(Object value, Node next, Node prev) {
+            this.value = value;
             this.next = next;
             this.prev = prev;
         }
     }
-    private Node<E> head;
-    private Node<E> tail;
+    private Node head;
+    private Node tail;
     private int size;
 
-    private E unlink(Node<E> current) {
-        E old = current.item;
-        Node<E> prev = current.prev;
-        Node<E> next = current.next;
+    @SuppressWarnings("unchecked")
+    private E unlink(Node current) {
+        E old = (E) current.value;
+        Node prev = current.prev;
+        Node next = current.next;
 
         if (prev == null) {
             head = next;
@@ -29,13 +31,15 @@ public class MyLinkedList<E> implements Deque<E> {
             prev.next = next;
             current.prev = null;
         }
+
         if (next == null) {
             tail = prev;
         } else {
             next.prev = prev;
             current.next = null;
         }
-        current.item = null;
+
+        current.value = null;
         size--;
 
         return old;
@@ -49,15 +53,13 @@ public class MyLinkedList<E> implements Deque<E> {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append('[');
-        Node<E> current = head;
-        if (current != null) {
-            sb.append(current.item);
-            current = current.next;
-        }
+        Node current = head;
+        boolean isFirst = true;
         while (current != null) {
-            sb.append(", ");
-            sb.append(current.item);
+            if (!isFirst) sb.append(", ");
+            sb.append(current.value);
             current = current.next;
+            isFirst = false;
         }
         sb.append(']');
         return sb.toString();
@@ -67,9 +69,10 @@ public class MyLinkedList<E> implements Deque<E> {
     public int size() {
         return size;
     }
+
     @Override
     public void addFirst(E e) {
-        head = new Node<E>(e, head, null);
+        head = new Node(e, head, null);
         if (head.next == null) {
             tail = head;
         } else {
@@ -80,7 +83,7 @@ public class MyLinkedList<E> implements Deque<E> {
 
     @Override
     public void addLast(E e) {
-        tail = new Node<E>(e, null, tail);
+        tail = new Node(e, null, tail);
         if (tail.prev == null) {
             head = tail;
         } else {
@@ -96,15 +99,17 @@ public class MyLinkedList<E> implements Deque<E> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public E getFirst() {
         if (head == null) throw new NoSuchElementException();
-        return head.item;
+        return (E) head.value;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public E getLast() {
         if (tail == null) throw new NoSuchElementException();
-        return tail.item;
+        return (E) tail.value;
     }
 
     @Override
@@ -131,7 +136,7 @@ public class MyLinkedList<E> implements Deque<E> {
 
     public E remove(int index) {
         if (index < 0 || index >= size) throw new IndexOutOfBoundsException();
-        Node<E> current;
+        Node current;
         if (index < size / 2) {
             current = head;
             for (int i = 0; i < index; i++) {
@@ -148,8 +153,8 @@ public class MyLinkedList<E> implements Deque<E> {
 
     @Override
     public boolean remove(Object o) {
-        Node<E> current = head;
-        while (current != null && !(Objects.equals(o, current.item))) {
+        Node current = head;
+        while (current != null && !(Objects.equals(o, current.value))) {
             current = current.next;
         }
         if (current == null) return false;
@@ -168,10 +173,10 @@ public class MyLinkedList<E> implements Deque<E> {
 
     @Override
     public void clear() {
-        Node<E> current = head;
+        Node current = head;
         while (current != null) {
-            Node<E> next = current.next;
-            current.item = null;
+            Node next = current.next;
+            current.value = null;
             current.next = current.prev = null;
             current = next;
         }
@@ -181,9 +186,9 @@ public class MyLinkedList<E> implements Deque<E> {
 
     @Override
     public boolean contains(Object o) {
-        Node<E> current = head;
+        Node current = head;
         while (current != null) {
-            if (Objects.equals(o, current.item)) return true;
+            if (Objects.equals(o, current.value)) return true;
             current = current.next;
         }
         return false;
@@ -292,7 +297,7 @@ public class MyLinkedList<E> implements Deque<E> {
 
     private class Itr implements Iterator<E> {
 
-        Node<E> cursor = head;
+        Node cursor = head;
 
         @Override
         public boolean hasNext() {
@@ -300,9 +305,10 @@ public class MyLinkedList<E> implements Deque<E> {
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         public E next() {
             if (cursor == null) throw new NoSuchElementException();
-            E e = cursor.item;
+            E e = (E) cursor.value;
             cursor = cursor.next;
             return e;
         }

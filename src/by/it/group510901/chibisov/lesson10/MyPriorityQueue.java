@@ -150,6 +150,7 @@ public class MyPriorityQueue<E> implements Queue<E> {
 
     @Override
     public E peek() {
+        if (isEmpty()) return null;
         return elementAt(0);
     }
 
@@ -189,11 +190,11 @@ public class MyPriorityQueue<E> implements Queue<E> {
     public boolean addAll(Collection<? extends E> c) {
         if (c == null) throw new NullPointerException();
         if (c == this) throw new IllegalArgumentException();
-        if (c.isEmpty()) return false;
+        boolean modified = false;
         for (E e : c) {
-            add(e);
+            if (add(e)) modified = true;
         }
-        return true;
+        return modified;
     }
 
     @Override
@@ -264,11 +265,8 @@ public class MyPriorityQueue<E> implements Queue<E> {
 
         @Override
         public E next() {
-            if (cursor >= size) {
-                throw new NoSuchElementException();
-            }
+            if (cursor >= size) throw new NoSuchElementException();
             return elementAt(cursor++);
         }
     }
-
 }
