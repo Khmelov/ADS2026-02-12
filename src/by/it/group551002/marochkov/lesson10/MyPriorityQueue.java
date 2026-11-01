@@ -122,10 +122,10 @@ public class MyPriorityQueue<E> implements Queue<E> {
 
     @Override
     public E peek(){
-        if(data[0] != null){
-            return data[0];
-        }else {
+        if(size == 0){
             return null;
+        }else {
+            return data[0];
         }
     }
 
@@ -157,6 +157,7 @@ public class MyPriorityQueue<E> implements Queue<E> {
 
     @Override
     public boolean contains(Object o){
+        if(o == null) return false;
         for(int i = 0;i < size; i++){
            if(o.equals(data[i])) return true;
         }
@@ -188,10 +189,12 @@ public class MyPriorityQueue<E> implements Queue<E> {
 
     @Override
     public boolean addAll(Collection<? extends E> c){
+        boolean isChanged = false;
         for(E x : c){
             add(x);
+            isChanged = true;
         }
-        return true;
+        return isChanged;
     }
 
     @Override
