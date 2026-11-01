@@ -63,7 +63,7 @@ public class MyPriorityQueue<E> implements Queue<E> {
         Comparable<E> comp = (Comparable<E>) key;
         int half = size / 2;
         while (index < half) {
-            int child = (index << 1) + 1;
+            int child = (index / 2) + 1;
             E c = heap[child];
             int right = child + 1;
             if (right < size && ((Comparable<E>) c).compareTo(heap[right]) > 0) {
