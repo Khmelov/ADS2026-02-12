@@ -20,7 +20,6 @@ public class MyLinkedList<E> implements Deque<E> {
 	@Override public E peek() { return null; }
 	@Override public void push(E e) {}
 	@Override public E pop() { return null; }
-	@Override public boolean contains(Object o) { return true; }
 	@Override public Iterator<E> iterator() { return null; }
 	@Override public Iterator<E> descendingIterator() { return null; }
 	@Override public Object[] toArray() { return null; }
@@ -41,6 +40,7 @@ public class MyLinkedList<E> implements Deque<E> {
 
 	L<E> f = null, l = null;
 	int n = 0;
+
 
 
 
@@ -76,7 +76,7 @@ public class MyLinkedList<E> implements Deque<E> {
 		if(a >= n)throw new NoSuchElementException();
 		if(a == 0){
 			E res = f.v;
-			if(n == 0){
+			if(n == 1){
 				l = f = null;
 				n = 0;
 			} else {
@@ -194,6 +194,17 @@ public class MyLinkedList<E> implements Deque<E> {
 
 	public boolean isEmpty() {
 		return n == 0;
+	}
+
+	@Override
+	public boolean contains(Object o){
+		if(f == null)return false;
+		L<E> fi = f;
+		while(fi != null){
+			if(o.equals(fi.v))return true;
+			fi = fi.n;
+		}
+		return false;
 	}
 
 	
