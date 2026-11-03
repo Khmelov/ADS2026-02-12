@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:src/by/it/group510901/rusilevich/lesson01/Lesson01Test.java
+package by.it.group510901.rusilevich.lesson01;
+========
 package by.it.group551002.loiko.lesson01;
+>>>>>>>> 7330764456c1f8a303ac12bd1d01ce62bc18cfeb:src/by/it/group551002/loiko/lesson01/Lesson01Test.java
 
 import org.junit.Test;
 
