@@ -7,18 +7,14 @@ import java.util.ListIterator;
 
 public class ListB<E> implements List<E> {
 
-
-    //Создайте аналог списка БЕЗ использования других классов СТАНДАРТНОЙ БИБЛИОТЕКИ
-
     // Поля для хранения элементов и их количества
     private Object[] elements = new Object[10];
     private int size = 0;
 
     /////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////
     //////               Обязательные к реализации методы             ///////
     /////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////
+
     @Override
     public String toString() {
         if (size == 0) {
@@ -96,7 +92,7 @@ public class ListB<E> implements List<E> {
         // Находим индекс элемента по значению
         int index = indexOf(o);
         if (index != -1) {
-            remove(index); // Удаляем по индексу
+            remove(index);
             return true;
         }
         return false;
@@ -104,17 +100,15 @@ public class ListB<E> implements List<E> {
 
     @Override
     public E set(int index, E element) {
-        E oldElement = (E) elements[index]; // Запоминаем старый элемент
-        elements[index] = element;          // Записываем новый
-        return oldElement;                  // Возвращаем старый
+        E oldValue = (E) elements[index];
+        elements[index] = element;
+        return oldValue;
     }
-
 
     @Override
     public boolean isEmpty() {
         return size == 0;
     }
-
 
     @Override
     public void clear() {
@@ -141,7 +135,7 @@ public class ListB<E> implements List<E> {
                 }
             }
         }
-        return -1; // Не нашли
+        return -1;
     }
 
     @Override
@@ -170,16 +164,12 @@ public class ListB<E> implements List<E> {
                 }
             }
         }
-        return -1; // Не нашли
+        return -1;
     }
 
-
-    /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
     //////               Опциональные к реализации методы             ///////
     /////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////
-
 
     @Override
     public boolean containsAll(Collection<?> c) {
@@ -206,7 +196,6 @@ public class ListB<E> implements List<E> {
         return false;
     }
 
-
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
         return null;
@@ -232,15 +221,8 @@ public class ListB<E> implements List<E> {
         return new Object[0];
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////
-    ////////        Эти методы имплементировать необязательно    ////////////
-    ////////        но они будут нужны для корректной отладки    ////////////
-    /////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////
     @Override
     public Iterator<E> iterator() {
         return null;
     }
-
 }
