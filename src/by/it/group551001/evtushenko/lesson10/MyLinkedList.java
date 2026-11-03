@@ -27,19 +27,23 @@ public class MyLinkedList<E> implements Deque<E> {
 	@Override public boolean containsAll(Collection<?> c) { return true; }
 	@Override public boolean addAll(Collection<? extends E> c) { return true; }
 	@Override public boolean removeAll(Collection<?> c) { return true; }
-	@Override public boolean retainAll(Collection<?> c) { return true; }
+	@Override public boolean retainAll(Collection<?> c) {
+		boolean res = false;
+		for(Object o: c)res = res || remove(o);
+		return res;
+	}
 
-	private static class L<T>{
-		T v;
-		L<T> n, p;
+	public static class L<T>{
+		public T v;
+		public L<T> n, p;
 		L(T v){
 			this.v = v;
 			n = p = null;
 		}
 	}
 
-	L<E> f = null, l = null;
-	int n = 0;
+	public L<E> f = null, l = null;
+	public int n = 0;
 
 
 

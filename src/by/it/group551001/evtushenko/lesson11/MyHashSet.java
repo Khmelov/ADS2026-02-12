@@ -7,7 +7,7 @@ import java.util.Set;
 import by.it.group551001.evtushenko.lesson10.MyLinkedList;
 
 public class MyHashSet<E> implements Set<E> {
-	private MyLinkedList<E>[] a;
+	MyLinkedList<E>[] a;
 	int n, m;
 
 	@SuppressWarnings("unchecked")
@@ -41,7 +41,7 @@ public class MyHashSet<E> implements Set<E> {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void reb(){
+	public void reb(){
 		MyLinkedList<E>[] b = (MyLinkedList<E>[])new MyLinkedList<?>[m<<1];
 		for (int i = 0; i < m << 1; i++) {
 			b[i] = new MyLinkedList<>();
