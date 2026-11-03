@@ -181,7 +181,6 @@ public class ListC<E> implements List<E> {
         return is;
     }
 
-
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
         int i = index;

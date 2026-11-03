@@ -131,7 +131,6 @@ public class MyPriorityQueue<E> implements java.util.Queue<E> {
         E moved = arr[last];
         arr[last] = null;
 
-
         siftDown(index, moved);
 
         if (arr[index] == moved) {

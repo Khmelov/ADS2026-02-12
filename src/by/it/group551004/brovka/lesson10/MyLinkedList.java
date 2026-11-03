@@ -15,7 +15,6 @@ public class MyLinkedList<E> implements java.util.Deque<E> {
         }
     }
 
-
     public String toString() {
         String str = "[";
         Node<E> curr = head;

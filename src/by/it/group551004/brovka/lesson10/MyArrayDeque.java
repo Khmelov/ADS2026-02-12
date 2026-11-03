@@ -9,7 +9,6 @@ public class MyArrayDeque<E> implements java.util.Deque<E> {
         arr = (E[]) new Object[10];
     }
 
-
     @Override
     public String toString(){
         String str = "[";
