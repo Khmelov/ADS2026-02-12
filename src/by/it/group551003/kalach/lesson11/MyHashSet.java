@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 public class MyHashSet<E> implements Set<E> {
-
+//множество на хэш таблице
     // узел односвязного списка для элементов с одинаковым индексом (коллизии)
     private static class Node<E> {
         final E value;
