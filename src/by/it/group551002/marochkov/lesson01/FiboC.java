@@ -40,7 +40,7 @@ public class FiboC {
                 }
             }
         }
-        return   C;
+        return arrC;
     }
 
     long[][] powMat(long[][] A, long n, int m) {
