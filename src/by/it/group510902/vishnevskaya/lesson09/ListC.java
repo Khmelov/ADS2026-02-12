@@ -111,7 +111,7 @@ public class ListC<E> implements List<E> {
     }
 
     @Override
-    public E set(int index, E element) {
+    public E set(int index, E element) { // заменить по номеру
         E oldValue = (E) elements[index];
         elements[index] = element;
         return oldValue;
@@ -134,7 +134,7 @@ public class ListC<E> implements List<E> {
     }
 
     @Override
-    public int indexOf(Object o) {
+    public int indexOf(Object o) { // поиск по индексу с начала
         for (int i = 0; i < size; i++) {
             if ((o == null && elements[i] == null) || (o != null && o.equals(elements[i]))) {
                 return i;
@@ -144,17 +144,17 @@ public class ListC<E> implements List<E> {
     }
 
     @Override
-    public E get(int index) {
+    public E get(int index) { // элемент по номеру
         return (E) elements[index];
     }
 
     @Override
-    public boolean contains(Object o) {
+    public boolean contains(Object o) { // есть ли о
         return indexOf(o) != -1;}
 
 
     @Override
-    public int lastIndexOf(Object o) {
+    public int lastIndexOf(Object o) { // поиск по индексу с конца
         for (int i = size - 1; i >= 0; i--) {
             if ((o == null && elements[i] == null) || (o != null && o.equals(elements[i]))) {
                 return i;
@@ -217,7 +217,7 @@ public class ListC<E> implements List<E> {
 
 
     @Override
-    public boolean retainAll(Collection<?> c) {
+    public boolean retainAll(Collection<?> c) { // оставить всё, что есть в коллекции
         boolean modified = false;
 
         for (int i = this.size() - 1; i >= 0; i--) {
@@ -276,4 +276,3 @@ public class ListC<E> implements List<E> {
     }
 
 }
-
