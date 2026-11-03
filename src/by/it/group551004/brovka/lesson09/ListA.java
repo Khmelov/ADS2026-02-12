@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+
 public class ListA<E> implements List<E> {
     private int size;
     private E[] arr;

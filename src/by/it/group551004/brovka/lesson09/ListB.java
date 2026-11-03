@@ -35,6 +35,7 @@ public class ListB<E> implements List<E> {
         }
 
 
+
     @Override
     public boolean add(E e) {
         if (size == arr.length) {
