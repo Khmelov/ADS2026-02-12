@@ -1,13 +1,10 @@
 package by.it.group510901.chibisov.lesson10;
 
-import java.util.Collection;
-import java.util.Deque;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class MyArrayDeque<E> implements Deque<E> {
 
-    private static final int DEFAULT_CAPACITY = 10;
+    private static final int DEFAULT_CAPACITY = 11;
     private Object[] queue;
     private int head;
     private int tail;
@@ -141,17 +138,9 @@ public class MyArrayDeque<E> implements Deque<E> {
 
     @Override
     public void clear() {
-        if (head <= tail) {
-            for (int i = head; i < tail; i++) {
-                queue[i] = null;
-            }
-        } else {
-            for (int i = head; i < queue.length; i++) {
-                queue[i] = null;
-            }
-            for (int i = 0; i < tail; i++) {
-                queue[i] = null;
-            }
+        int size = size();
+        for (int i = 0; i < size; i++) {
+            queue[(head + i) % queue.length] = null;
         }
         head = tail = 0;
     }
@@ -159,17 +148,9 @@ public class MyArrayDeque<E> implements Deque<E> {
     @Override
     public boolean contains(Object o) {
         if (o == null) return false;
-        if (head <= tail) {
-            for (int i = head; i < tail; i++) {
-                if (o.equals(queue[i])) return true;
-            }
-        } else {
-            for (int i = head; i < queue.length; i++) {
-                if (o.equals(queue[i])) return true;
-            }
-            for (int i = 0; i < tail; i++) {
-                if (o.equals(queue[i])) return true;
-            }
+        int size = size();
+        for (int i = 0; i < size; i++) {
+            if (o.equals(queue[(head + i) % queue.length])) return true;
         }
         return false;
     }
