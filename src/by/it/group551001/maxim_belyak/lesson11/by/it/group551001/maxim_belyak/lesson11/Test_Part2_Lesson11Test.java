@@ -1,4 +1,4 @@
-package by.it.a_khmelev.lesson11;
+package by.it.group551001.maxim_belyak.lesson11;
 
 
 import by.it.HomeWork;

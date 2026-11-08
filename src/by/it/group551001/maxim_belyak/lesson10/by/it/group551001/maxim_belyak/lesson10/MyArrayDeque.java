@@ -1,4 +1,4 @@
-package by.it.a_khmelev.lesson10;
+package by.it.group551001.maxim_belyak.lesson10;
 
 import java.util.Collection;
 import java.util.Deque;
