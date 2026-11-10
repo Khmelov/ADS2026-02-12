@@ -12,7 +12,7 @@ import java.util.SortedMap;
 
 public class MySplayMap implements NavigableMap<Integer, String> {
 
-    // ======================= Узел дерева =======================
+    //  Узел дерева
     private static final class Node {
         Integer key;
         String value;
@@ -27,7 +27,7 @@ public class MySplayMap implements NavigableMap<Integer, String> {
     private Node root;
     private int size;
 
-    // ======================= Splay =======================
+    //  Splay
 
     /** Поднимает узел x в корень. */
     private void splay(Node x) {
@@ -87,7 +87,7 @@ public class MySplayMap implements NavigableMap<Integer, String> {
         x.parent = y;
     }
 
-    // ======================= Поиск =======================
+    // Поиск
 
     /** Возвращает узел с ключом key или null; найденный узел становится корнем. */
     private Node find(Integer key) {
@@ -109,7 +109,7 @@ public class MySplayMap implements NavigableMap<Integer, String> {
         return null;
     }
 
-    // ======================= Обязательные методы =======================
+    //  Обязательные методы
 
     @Override
     public String put(Integer key, String value) {

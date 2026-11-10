@@ -111,7 +111,7 @@ public class MyRbMap implements SortedMap<Integer, String> {
         return x;
     }
 
-    // Смена цветов (когда оба ребенка красные)
+    // Смена цветов
     private void flipColors(Node h) {
         h.color = !h.color;
         if (h.left != null) h.left.color = !h.left.color;
@@ -138,7 +138,7 @@ public class MyRbMap implements SortedMap<Integer, String> {
         else if (cmp > 0) h.right = putRec(h.right, key, value);
         else h.value = value; // Ключ уже есть, обновляем значение
 
-        // Исправление нарушений LLRB-дерева во время подъема по рекурсии
+        // Исправление нарушений LLRB-дерева во время подъема
         if (isRed(h.right) && !isRed(h.left)) h = rotateLeft(h);
         if (isRed(h.left) && isRed(h.left.left)) h = rotateRight(h);
         if (isRed(h.left) && isRed(h.right)) flipColors(h);

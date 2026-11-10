@@ -89,7 +89,7 @@ public class MyAvlMap implements Map<Integer, String> {
     @Override
     public boolean containsKey(Object key) {
         if (!(key instanceof Integer)) return false;
-        return get((Integer) key) != null; // Проще всего искать через get
+        return get((Integer) key) != null;
     }
 
     @Override
@@ -125,7 +125,7 @@ public class MyAvlMap implements Map<Integer, String> {
         return oldValue;
     }
 
-    // Рекурсивная вставка с балансировкой
+
     private Node insertRec(Node node, int key, String value) {
         // 1. Стандартная вставка в дерево поиска
         if (node == null)
@@ -192,7 +192,7 @@ public class MyAvlMap implements Map<Integer, String> {
         return current;
     }
 
-    // Рекурсивное удаление узла с балансировкой
+
     private Node deleteRec(Node root, int key) {
         if (root == null)
             return null;
@@ -275,8 +275,7 @@ public class MyAvlMap implements Map<Integer, String> {
         return sb.toString();
     }
 
-    // Симметричный обход дерева (In-order): левый -> корень -> правый.
-    // Поскольку это дерево поиска, ключи будут идти строго по возрастанию!
+
     private void inOrderToString(Node node, StringBuilder sb) {
         if (node != null) {
             inOrderToString(node.left, sb);
