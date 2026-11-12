@@ -59,7 +59,7 @@ public class MyPriorityQueue<E> implements java.util.Queue<E> {
     @Override
     public E peek() {
         return size == 0 ? null : queue[0];
-    }
+    } // посмотреть минимум
 
     @Override
     public E poll() {
@@ -72,7 +72,7 @@ public class MyPriorityQueue<E> implements java.util.Queue<E> {
         queue[lastIdx] = null;
 
         if (lastIdx != 0) {
-            siftDown(0, lastElem);
+            siftDown(0, lastElem); // просеиваем вниз
         }
         return result;
     }
@@ -89,10 +89,10 @@ public class MyPriorityQueue<E> implements java.util.Queue<E> {
     @Override
     public boolean contains(Object o) {
         return indexOf(o) != -1;
-    }
+    } // линейный поиск
 
     @Override
-    public boolean containsAll(Collection<?> c) {
+    public boolean containsAll(Collection<?> c) { // все элементы из с
         for (Object item : c) {
             if (!contains(item)) {
                 return false;
@@ -102,7 +102,7 @@ public class MyPriorityQueue<E> implements java.util.Queue<E> {
     }
 
     @Override
-    public boolean addAll(Collection<? extends E> c) {
+    public boolean addAll(Collection<? extends E> c) { // добавить все из с
         if (c == null) throw new NullPointerException();
         if (c == this) throw new IllegalArgumentException();
         boolean modified = false;
@@ -115,7 +115,7 @@ public class MyPriorityQueue<E> implements java.util.Queue<E> {
     }
 
     @Override
-    public boolean removeAll(Collection<?> c) {
+    public boolean removeAll(Collection<?> c) { // оставляем те, которых нет в с
         if (c == null) throw new NullPointerException();
         int newSize = 0;
         for (int i = 0; i < size; i++) {
@@ -135,7 +135,7 @@ public class MyPriorityQueue<E> implements java.util.Queue<E> {
     }
 
     @Override
-    public boolean retainAll(Collection<?> c) {
+    public boolean retainAll(Collection<?> c) { // оставляем те, которые есть в с
         if (c == null) throw new NullPointerException();
         int newSize = 0;
         for (int i = 0; i < size; i++) {

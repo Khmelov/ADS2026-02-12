@@ -16,7 +16,7 @@ public class MyTreeSet<E extends Comparable<? super E>> implements Set<E> {
         this.size = 0;
     }
 
-    private void grow() {
+    private void grow() {  // расширение массива
         int oldCapacity = elements.length;
         int newCapacity = oldCapacity + (oldCapacity >> 1);
         Object[] newElements = new Object[newCapacity];
@@ -142,7 +142,7 @@ public class MyTreeSet<E extends Comparable<? super E>> implements Set<E> {
     }
 
     @Override
-    public boolean retainAll(Collection<?> c) {
+    public boolean retainAll(Collection<?> c) { // оставляет элементы только из с
         if (c == null) throw new NullPointerException();
         boolean modified = false;
         Iterator<E> it = iterator();

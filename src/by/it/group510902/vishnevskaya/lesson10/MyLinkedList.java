@@ -66,7 +66,7 @@ public class MyLinkedList<E> implements Deque<E> {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException();
         }
-        return unlink(node(index));
+        return unlink(node(index)); // выцепляет из цепочки узел и возращает значение
     }
 
 

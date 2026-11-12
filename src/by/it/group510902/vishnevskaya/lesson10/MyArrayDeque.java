@@ -54,7 +54,7 @@ public class MyArrayDeque<E> implements Deque<E> {
 
     @Override
     public E getLast() {
-        if (size == 0) throw new NoSuchElementException();
+        if (size == 0) throw new NoSuchElementException(); // "нечего показывать"
         return elements[(tail - 1 + elements.length) % elements.length];
     }
 
@@ -64,7 +64,7 @@ public class MyArrayDeque<E> implements Deque<E> {
     }
 
     @Override
-    public E pollFirst() {
+    public E pollFirst() { // "забрать" первый
         if (size == 0) return null;
         E item = elements[head];
         elements[head] = null;

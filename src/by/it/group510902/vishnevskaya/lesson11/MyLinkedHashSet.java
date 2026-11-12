@@ -49,16 +49,16 @@ public class MyLinkedHashSet<E> implements Set<E> {
         int index = getIndex(e);
         Node<E> newNode = new Node<>(e);
 
-        newNode.next = table[index];
-        table[index] = newNode;
+        newNode.next = table[index]; // предыдущую голову двигаем в след узел
+        table[index] = newNode; // новый узел в голове ячейки
 
         if (tail == null) {
             head = newNode;
             tail = newNode;
         } else {
-            tail.insertionNext = newNode;
-            newNode.insertionPrev = tail;
-            tail = newNode;
+            tail.insertionNext = newNode; // справа новый узел
+            newNode.insertionPrev = tail; // влево двигаем хвост
+            tail = newNode; // переносим хвост в новый узел
         }
 
         size++;
@@ -200,7 +200,7 @@ public class MyLinkedHashSet<E> implements Set<E> {
     }
 
     @Override
-    public boolean retainAll(Collection<?> c) {
+    public boolean retainAll(Collection<?> c) { // оставляет элементы только из с
         if (c == null) throw new NullPointerException();
         boolean modified = false;
         Node<E> current = head;
