@@ -84,7 +84,7 @@ public class PointsA {
             clusterSizes.put(root, clusterSizes.getOrDefault(root, 0) + 1);
         }
 
-        // Сортируем размеры кластеров по УБЫВАНИЮ
+        // Сортируем
         List<Integer> sizes = new ArrayList<>(clusterSizes.values());
         Collections.sort(sizes, Collections.reverseOrder());
 
