@@ -4,6 +4,7 @@ import java.util.*;
 
 public class SitesB {
 
+
     static class DSU {
         Map<String, String> parent;
         Map<String, Integer> rank;

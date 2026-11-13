@@ -32,6 +32,7 @@ public class GraphC {
             reversedGraph.computeIfAbsent(to, k -> new ArrayList<>()).add(from);
         }
 
+
         // Алгоритм Косарайю
         Stack<String> stack = new Stack<>();
         Set<String> visited = new HashSet<>();

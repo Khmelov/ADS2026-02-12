@@ -2,6 +2,7 @@ package by.it.group551003.kravtsov.lesson13;
 
 import java.util.*;
 
+
 public class GraphB {
     // Обходим все вершины графа из каждой ещё не посещённой запускаем DFS-поиск цикла.
     public static void main(String[] args) {

@@ -4,6 +4,7 @@ import java.util.*;
 
 public class PointsA {
 
+
     static class DSU {
         int[] parent;
         int[] size;

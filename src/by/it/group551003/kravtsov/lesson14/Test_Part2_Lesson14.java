@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 
+
 @SuppressWarnings("NewClassNamingConvention")
 public class Test_Part2_Lesson14 extends HomeWork {
 
