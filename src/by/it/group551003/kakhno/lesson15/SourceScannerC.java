@@ -82,14 +82,29 @@ public class SourceScannerC {
             }
         }
 
+        boolean[] printed = new boolean[sources.size()];
+
         for (int i = 0; i < sources.size(); i++) {
-            if (!copies.get(i).isEmpty()) {
-                System.out.println(sources.get(i).path);
+            if (!copies.get(i).isEmpty() && !printed[i]) {
+                List<String> group = new ArrayList<>();
+                group.add(sources.get(i).path);
+                printed[i] = true;
 
-                Collections.sort(copies.get(i));
+                for (String copy : copies.get(i)) {
+                    group.add(copy);
+                    for (int k = 0; k < sources.size(); k++)
+                        if (sources.get(k).path.equals(copy)) {
+                            printed[k] = true;
+                            break;
+                        }
+                }
 
-                for (String copy : copies.get(i))
-                    System.out.println(copy);
+                Collections.sort(group);
+
+                for (String file : group)
+                    System.out.println(file);
+
+                System.out.println();
             }
         }
     }
