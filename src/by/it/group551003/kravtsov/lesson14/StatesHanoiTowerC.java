@@ -2,19 +2,22 @@ package by.it.group551003.kravtsov.lesson14;
 
 import java.util.Scanner;
 
-public  class StatesHanoiTowerC {
+public class StatesHanoiTowerC {
 
     private static int[] heights;
     private static int[] parent;
     private static int[] size;
-    private static int[] first;
+    private static int[] firstStep;
+    private static int base;
     private static int step = -1;
 
+    // поиск корня + сжатие пути
     private static int find(int i) {
         if (parent[i] == i) return i;
         return parent[i] = find(parent[i]);
     }
 
+    // объединение по размеру поддерева
     private static void union(int i, int j) {
         int rootI = find(i);
         int rootJ = find(j);
@@ -29,27 +32,31 @@ public  class StatesHanoiTowerC {
         }
     }
 
+    // Рекурсивное решение Ханойских башен: переносим n дисков from -> to
     private static void solve(int n, int from, int to, int aux) {
         if (n == 0) return;
+
         solve(n - 1, from, aux, to);
 
+        // Сам ход: снимаем верхний диск с from, кладём на to
         heights[from]--;
         heights[to]++;
         step++;
 
-        int maxH = heights[0];
-        if (heights[1] > maxH) maxH = heights[1];
-        if (heights[2] > maxH) maxH = heights[2];
+        // Ключ группы — тройка (A, B, C), кодируем в одно число
+        int key = (heights[0] * base + heights[1]) * base + heights[2];
 
-        if (first[maxH] == -1) {
-            first[maxH] = step;
+        // Если такая тройка уже встречалась — объединяем шаги в один кластер
+        if (firstStep[key] == -1) {
+            firstStep[key] = step;
         } else {
-            union(first[maxH], step);
+            union(firstStep[key], step);
         }
 
         solve(n - 1, aux, to, from);
     }
 
+    // Быстрая сортировка по возрастанию
     private static void quickSort(int[] a, int l, int r) {
         if (l >= r) return;
         int pivot = a[l + (r - l) / 2];
@@ -74,16 +81,20 @@ public  class StatesHanoiTowerC {
         if (!scanner.hasNextInt()) return;
         int n = scanner.nextInt();
 
-        int total = (1 << n) - 1;
+        int total = (1 << n) - 1;      // всего шагов = 2^N - 1
+
         parent = new int[total];
         size = new int[total];
-        first = new int[n + 1];
-        for (int i = 0; i <= n; i++) {
-            first[i] = -1;
-        }
         for (int i = 0; i < total; i++) {
             parent[i] = i;
             size[i] = 1;
+        }
+
+        // base = N+1, чтобы закодировать тройку (a,b,c) в одно число
+        base = n + 1;
+        firstStep = new int[base * base * base];
+        for (int i = 0; i < firstStep.length; i++) {
+            firstStep[i] = -1;
         }
 
         heights = new int[]{n, 0, 0};
@@ -91,25 +102,24 @@ public  class StatesHanoiTowerC {
 
         solve(n, 0, 1, 2);
 
-        int count = 0;
-        for (int i = 0; i <= n; i++) {
-            if (first[i] != -1) {
-                count++;
+        // Собираем размеры кластеров: для каждой тройки берём размер её DSU-множества
+        int[] result = new int[total];
+        int k = 0;
+        boolean[] seenRoot = new boolean[total];
+        for (int key = 0; key < firstStep.length; key++) {
+            if (firstStep[key] != -1) {
+                int root = find(firstStep[key]);
+                if (!seenRoot[root]) {
+                    seenRoot[root] = true;
+                    result[k++] = size[root];
+                }
             }
         }
 
-        int[] result = new int[count];
-        int idx = 0;
-        for (int i = 0; i <= n; i++) {
-            if (first[i] != -1) {
-                result[idx++] = size[find(first[i])];
-            }
-        }
-
-        quickSort(result, 0, result.length - 1);
+        quickSort(result, 0, k - 1);
 
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < result.length; i++) {
+        for (int i = 0; i < k; i++) {
             if (i > 0) sb.append(" ");
             sb.append(result[i]);
         }
