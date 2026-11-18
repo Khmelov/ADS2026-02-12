@@ -111,7 +111,6 @@ public class SourceScannerB {
         while (end > start && text.charAt(end - 1) < 33) end--;
         return text.substring(start, end);
     }
-
     // Удаление пустых строк
     private static String removeEmptyLines(String content) {
         StringBuilder result = new StringBuilder();

@@ -60,7 +60,6 @@ public class SourceScannerA {
         }
         return sb.toString();
     }
-
     // Удаляем символы с кодом <33 в начале и конце
     private static String trimControlChars(String text) {
         int start = 0, end = text.length();

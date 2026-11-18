@@ -1,6 +1,7 @@
 Создайте класс SourceScannerC с методом main,
 который читает все файлы *.java из каталога src и его подкаталогов.
 
+
 Каталог можно получить так:
         String src = System.getProperty("user.dir")
                        + File.separator + "src" + File.separator;

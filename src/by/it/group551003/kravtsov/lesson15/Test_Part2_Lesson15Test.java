@@ -66,5 +66,4 @@ public class Test_Part2_Lesson15Test extends HomeWork {
         }
         return samples;
     }
-
 }
