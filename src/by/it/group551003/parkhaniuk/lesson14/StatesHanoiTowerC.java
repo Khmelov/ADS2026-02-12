@@ -89,20 +89,17 @@ public class StatesHanoiTowerC {
             size[i] = 1;
         }
 
-        // Массив для хранения индекса первого шага, на котором встретилась конкретная максимальная высота
-        // Возможные высоты лежат в диапазоне от 1 до N
         int[] firstSeen = new int[N + 1];
         for (int i = 1; i <= N; i++) {
             firstSeen[i] = -1;
         }
 
-        // Объединяем все шаги с одинаковой максимальной высотой с самым первым встреченным шагом для этой высоты
         for (int i = 0; i < totalSteps; i++) {
             int h = maxHeights[i];
             if (firstSeen[h] == -1) {
-                firstSeen[h] = i; // запоминаем первый шаг для данной высоты
+                firstSeen[h] = i;
             } else {
-                union(parent, size, i, firstSeen[h]); // объединяем текущий шаг с первым
+                union(parent, size, i, firstSeen[h]);
             }
         }
 
@@ -114,7 +111,6 @@ public class StatesHanoiTowerC {
             }
         }
 
-        // Сортировка размеров по возрастанию (сортировка вставками)
         for (int i = 1; i < clusterCount; i++) {
             int key = clusterSizes[i];
             int j = i - 1;

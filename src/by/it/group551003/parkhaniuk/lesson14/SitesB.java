@@ -9,7 +9,6 @@ public class SitesB {
     private static int[] parent;
     private static int[] size;
 
-    // Эвристика 2: сокращение пути (Path Compression)
     public static int find(int i) {
         if (parent[i] == i) {
             return i;
@@ -17,7 +16,6 @@ public class SitesB {
         return parent[i] = find(parent[i]);
     }
 
-    // Эвристика 1: объединение по размеру поддерева (Union by Size)
     public static void union(int i, int j) {
         int rootI = find(i);
         int rootJ = find(j);
@@ -38,7 +36,6 @@ public class SitesB {
         List<String[]> edges = new ArrayList<>();
 
         String line;
-        // Чтение ввода до строки "end"
         while ((line = reader.readLine()) != null) {
             line = line.trim();
             if (line.isEmpty()) {
@@ -78,14 +75,12 @@ public class SitesB {
             size[i] = 1;
         }
 
-        // Объединение связанных сайтов
         for (String[] edge : edges) {
             int id1 = siteToId.get(edge[0]);
             int id2 = siteToId.get(edge[1]);
             union(id1, id2);
         }
 
-        // Сбор размеров всех полученных кластеров
         List<Integer> clusterSizes = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             if (parent[i] == i) {
@@ -93,10 +88,8 @@ public class SitesB {
             }
         }
 
-        // Сортировка размеров по убыванию (соответствует логике calculateTestOut в тесте)
         clusterSizes.sort(Collections.reverseOrder());
 
-        // Вывод результатов через пробел
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < clusterSizes.size(); i++) {
             sb.append(clusterSizes.get(i));

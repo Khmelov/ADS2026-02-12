@@ -9,7 +9,6 @@ public class PointsA {
     private static int[] parent;
     private static int[] size;
 
-    // Эвристика 2: сокращение пути (Path Compression)
     public static int find(int i) {
         if (parent[i] == i) {
             return i;
@@ -17,7 +16,6 @@ public class PointsA {
         return parent[i] = find(parent[i]);
     }
 
-    // Эвристика 1: объединение по размеру поддерева (Union by Size)
     public static void union(int i, int j) {
         int rootI = find(i);
         int rootJ = find(j);
@@ -61,7 +59,6 @@ public class PointsA {
             size[i] = 1;
         }
 
-        // Проверяем все пары точек и объединяем, если расстояние строго меньше D
         for (int i = 0; i < N; i++) {
             for (int j = i + 1; j < N; j++) {
                 double dx = points[i][0] - points[j][0];
@@ -75,7 +72,6 @@ public class PointsA {
             }
         }
 
-        // Собираем размеры кластеров
         int[] clusterSizes = new int[N];
         int clusterCount = 0;
         for (int i = 0; i < N; i++) {
@@ -84,18 +80,16 @@ public class PointsA {
             }
         }
 
-        // Сортируем размеры по УБЫВАНИЮ (требуется в юнит-тесте)
         for (int i = 1; i < clusterCount; i++) {
             int key = clusterSizes[i];
             int j = i - 1;
-            while (j >= 0 && clusterSizes[j] < key) { // Изменено условие на < для сортировки по убыванию
+            while (j >= 0 && clusterSizes[j] < key) {
                 clusterSizes[j + 1] = clusterSizes[j];
                 j--;
             }
             clusterSizes[j + 1] = key;
         }
 
-        // Выводим результат в строку через пробел
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < clusterCount; i++) {
             sb.append(clusterSizes[i]);
