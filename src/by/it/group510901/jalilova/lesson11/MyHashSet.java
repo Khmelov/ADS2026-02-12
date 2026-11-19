@@ -1,4 +1,10 @@
 package by.it.group510901.jalilova.lesson11;
+/*              size()
+                clear()
+                isEmpty()
+                add(Object)
+                remove(Object)
+                contains(Object)*/
 
 import java.util.HashSet;
 import java.util.Iterator;

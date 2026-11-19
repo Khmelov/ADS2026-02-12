@@ -1,4 +1,16 @@
 package by.it.group510901.jalilova.lesson11;
+/*              toString()
+                size()
+                clear()
+                isEmpty()
+                add(Object)
+                remove(Object)
+                contains(Object)
+
+                containsAll(Collection)
+                addAll(Collection)
+                removeAll(Collection)
+                retainAll(Collection)*/
 
 import java.util.Collection;
 import java.util.Iterator;

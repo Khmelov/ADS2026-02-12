@@ -1,12 +1,22 @@
 package by.it.group510901.jalilova.lesson11;
+/*              toString()
+                size()
+                clear()
+                isEmpty()
+                add(Object)
+                remove(Object)
+                contains(Object)
 
+                containsAll(Collection)
+                addAll(Collection)
+                removeAll(Collection)
+                retainAll(Collection)*/
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
 public class MyLinkedHashSet<E> implements Set<E> {
 
-    // Узел участвует в ДВУХ структурах:
     //   next цепочка коллизий внутри корзины
     //   before after общий двусвязный список порядка добавления
     private static class Node<E> {
@@ -260,7 +270,7 @@ public class MyLinkedHashSet<E> implements Set<E> {
             public E next() {
                 if (nextNode == null) throw new java.util.NoSuchElementException();
                 E e = nextNode.element;
-                nextNode = nextNode.after;   // идём по порядку добавления!
+                nextNode = nextNode.after;   // идём по порядку добавления
                 return e;
             }
         };
