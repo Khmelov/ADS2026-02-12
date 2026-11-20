@@ -62,10 +62,12 @@ public class StatesHanoiTowerC {
     public static void main(String[] args) {
         java.util.Scanner sc = new java.util.Scanner(System.in);
         int N = sc.nextInt();
-        int totalSteps = (1 << N) - 1;
+        int totalSteps = (int) Math.pow(2, N) - 1;
         dsu = new DSU(totalSteps);
         representative = new int[N + 1];
         java.util.Arrays.fill(representative, -1);
+        step = 0;
+        java.util.Arrays.fill(heights, 0);
         heights[0] = N;
         hanoi(N, 0, 1, 2);
 
