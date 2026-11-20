@@ -177,7 +177,7 @@ public class MySplayMap implements NavigableMap<Integer, String> {
             while (maxLeft.right != null) {
                 maxLeft = maxLeft.right;
             }
-            splay(maxLeft); // maxLeft становится корнем левого поддерева
+            splay(maxLeft);
             maxLeft.right = node.right;
             if (node.right != null) {
                 node.right.parent = maxLeft;
@@ -322,7 +322,6 @@ public class MySplayMap implements NavigableMap<Integer, String> {
     }
 
     private void fillSubMapStandard(Node current, java.util.TreeMap<Integer, String> target, Integer from, Integer to) {
-        // В Splay-дереве вместо проверки на NIL используется обычный null
         if (current == null)
             return;
 
