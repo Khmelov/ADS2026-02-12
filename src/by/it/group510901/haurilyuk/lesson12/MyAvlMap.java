@@ -1,4 +1,4 @@
-package by.it.group551004.zubko.lesson12;
+package by.it.group510901.haurilyuk.lesson12;
 
 import java.util.Collection;
 import java.util.Map;
