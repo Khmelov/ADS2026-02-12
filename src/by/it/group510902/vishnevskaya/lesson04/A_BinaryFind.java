@@ -33,10 +33,12 @@ public class A_BinaryFind {
         for (int index : result) {
             System.out.print(index + " ");
         }
-    }
+    } /*код реалзует алгоритм ьинарного кода для быстрого
+     нвхождения индексов элементов */
 
     private int binarySearch(int[] arr, int value) {
-        int left = 0;
+        int left = 0; /*возращает инде
+        делит массив попполам, число больше среднего прав*/
         int right = arr.length - 1;
 
         while (left <= right) {
@@ -55,7 +57,7 @@ public class A_BinaryFind {
     }
 
     public int[] findIndex(InputStream stream) throws FileNotFoundException {
-        Scanner scanner = new Scanner(stream);
+        Scanner scanner = new Scanner(stream); /* счиатает данные*/
 
         int n = scanner.nextInt();
         int[] a = new int[n];
