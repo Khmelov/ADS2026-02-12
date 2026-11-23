@@ -1,10 +1,6 @@
 package by.it.group510901.chibisov.lesson09;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class ListC<E> implements List<E> {
 
@@ -56,6 +52,7 @@ public class ListC<E> implements List<E> {
     //////               Обязательные к реализации методы             ///////
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -269,9 +266,9 @@ public class ListC<E> implements List<E> {
 
     @Override
     public Object[] toArray() {
-        Object[] result = new Object[size];
-        System.arraycopy(elementData,0,result,0,size);
-        return result;
+        Object[] a = new Object[size];
+        System.arraycopy(elementData, 0, a, 0, size);
+        return a;
     }
 
     /////////////////////////////////////////////////////////////////////////
@@ -280,6 +277,7 @@ public class ListC<E> implements List<E> {
     ////////        но они будут нужны для корректной отладки    ////////////
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
+
     @Override
     public Iterator<E> iterator() {
         return new Itr();
@@ -296,9 +294,7 @@ public class ListC<E> implements List<E> {
 
         @Override
         public E next() {
-            if (cursor >= size) {
-                throw new NoSuchElementException();
-            }
+            if (cursor >= size) throw new NoSuchElementException();
             return elementAt(cursor++);
         }
     }
