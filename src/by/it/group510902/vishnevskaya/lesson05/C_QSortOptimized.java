@@ -28,7 +28,7 @@ import java.util.Scanner;
 
 */
 
-
+/*для каждой точки посчитать сколькими отрезками она принадлежит*/
 public class C_QSortOptimized {
 
     public static void main(String[] args) throws FileNotFoundException {
@@ -45,7 +45,7 @@ public class C_QSortOptimized {
         arr[i] = arr[j];
         arr[j] = tmp;
     }
-
+/*сортировка отрезков быстрой сортировкой с разбиением и удалением рекурсии*/
     private void quickSort3Way(Segment[] arr, int low, int high) {
         while (low < high) {
             int lt = low, gt = high;
@@ -72,7 +72,7 @@ public class C_QSortOptimized {
             }
         }
     }
-
+ /*находит отрезки, затем линейный подсчет среди них*/
     private int upperBoundStart(Segment[] segments, int point) {
         int left = 0, right = segments.length;
         while (left < right) {

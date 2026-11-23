@@ -12,6 +12,7 @@ import java.util.Scanner;
 Пример: https://karussell.wordpress.com/2010/03/01/fast-integer-sorting-algorithm-on/
 Вольный перевод: http://programador.ru/sorting-positive-int-linear-time/
 */
+
 public class B_CountSort {
 
     public static void main(String[] args) throws FileNotFoundException {
