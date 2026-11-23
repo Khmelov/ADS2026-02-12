@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 public class MyTreeSet<E> implements Set<E> {
-
+//множество отсортированное по возрастанию без повторов
     private E[] elements;   // всегда отсортирован по возрастанию, без повторов
     private int size = 0;
 
@@ -155,7 +155,7 @@ public class MyTreeSet<E> implements Set<E> {
     ////////////////////////////////////////////////////////////////////////
 
     @Override
-    public Iterator<E> iterator() {
+    public Iterator<E> iterator() { //выдает элементы по одному
         return new Iterator<E>() {
             private int i = 0;
 
