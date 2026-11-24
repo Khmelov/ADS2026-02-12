@@ -28,7 +28,7 @@ public class B_Sheduler {
 
     List<Event> calcStartTimes(Event[] events, int from, int to) {
         //Events - события которые нужно распределить в аудитории
-        //в период [from, int] (включительно).
+        //в период [from, to] (включительно).
         //оптимизация проводится по наибольшему числу непересекающихся событий.
         //Начало и конец событий могут совпадать.
         List<Event> result;
@@ -38,7 +38,7 @@ public class B_Sheduler {
         int lastEndTime = from;
 
         for (Event event : events) {
-            if (event.start >= lastEndTime) {
+            if (event.start >= lastEndTime && event.stop <= to) {
                 result.add(event);
                 lastEndTime = event.stop;  // обновляем время окончания
             }
