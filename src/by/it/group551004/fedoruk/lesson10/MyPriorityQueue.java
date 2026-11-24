@@ -30,7 +30,7 @@ public class MyPriorityQueue<E> implements Queue<E> {
     private void siftUp(int k, E x) {
         Comparable<? super E> key = (Comparable<? super E>) x;
         while (k > 0) {
-            int parent = (k - 1) >>> 1;
+            int parent = (k - 1) / 2;
             E e = array[parent];
             if (key.compareTo(e) >= 0) {
                 break;
@@ -44,9 +44,9 @@ public class MyPriorityQueue<E> implements Queue<E> {
     @SuppressWarnings("unchecked")
     private void siftDown(int k, E x) {
         Comparable<? super E> key = (Comparable<? super E>) x;
-        int half = size >>> 1;
+        int half = size / 2;
         while (k < half) {
-            int child = (k << 1) + 1;
+            int child = 2 * k + 1;
             E c = array[child];
             int right = child + 1;
             if (right < size && ((Comparable<? super E>) c).compareTo(array[right]) > 0) {
@@ -63,7 +63,7 @@ public class MyPriorityQueue<E> implements Queue<E> {
     }
 
     private void heapify() {
-        for (int i = (size >>> 1) - 1; i >= 0; i--) {
+        for (int i = (size / 2) - 1; i >= 0; i--) {
             siftDown(i, array[i]);
         }
     }
