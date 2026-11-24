@@ -1,9 +1,6 @@
 package by.it.group510901.chibisov.lesson09;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 public class ListB<E> implements List<E> {
 
@@ -55,6 +52,7 @@ public class ListB<E> implements List<E> {
     //////               Обязательные к реализации методы             ///////
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -181,7 +179,6 @@ public class ListB<E> implements List<E> {
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
 
-
     @Override
     public boolean containsAll(Collection<?> c) {
         return false;
@@ -206,7 +203,6 @@ public class ListB<E> implements List<E> {
     public boolean retainAll(Collection<?> c) {
         return false;
     }
-
 
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
@@ -239,6 +235,7 @@ public class ListB<E> implements List<E> {
     ////////        но они будут нужны для корректной отладки    ////////////
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
+
     @Override
     public Iterator<E> iterator() {
         return null;
