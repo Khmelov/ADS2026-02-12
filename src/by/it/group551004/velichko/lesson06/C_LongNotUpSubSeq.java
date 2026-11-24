@@ -56,8 +56,54 @@ public class C_LongNotUpSubSeq {
             m[i] = scanner.nextInt();
         }
         //тут реализуйте логику задачи методами динамического программирования (!!!)
-        int result = 0;
 
+        // Для n до 1E5 используем алгоритм за O(n log n) с бинарным поиском
+        int[] tails = new int[n];     // tails[i] - минимальный последний элемент невозрастающей подпоследовательности длины i+1
+        int[] pos = new int[n];       // pos[i] - позиция в исходном массиве для tails[i]
+        int[] prev = new int[n];      // prev[i] - индекс предыдущего элемента в подпоследовательности для m[i]
+
+        int length = 0;  // длина текущей максимальной подпоследовательности
+
+        for (int i = 0; i < n; i++) {
+            int left = 0, right = length;
+            while (left < right) {
+                int mid = (left + right) / 2;
+                if (tails[mid] >= m[i]) {
+                    left = mid + 1;
+                } else {
+                    right = mid;
+                }
+            }
+
+            int currentPos = left;
+            if (currentPos == length) {
+                length++;
+            }
+
+            tails[currentPos] = m[i];
+            pos[currentPos] = i;
+
+            if (currentPos > 0) {
+                prev[i] = pos[currentPos - 1];
+            } else {
+                prev[i] = -1;
+            }
+        }
+
+        int[] indices = new int[length];
+        int current = pos[length - 1];
+        for (int i = length - 1; i >= 0; i--) {
+            indices[i] = current + 1;
+            current = prev[current];
+        }
+
+        System.out.println(length);
+        for (int i = 0; i < length; i++) {
+            System.out.print(indices[i] + " ");
+        }
+        System.out.println();
+
+        int result = length;
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;

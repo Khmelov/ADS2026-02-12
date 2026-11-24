@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class MyLinkedList<E> implements Deque<E> {
-
+//дусвязный список
     private static class Node<E> {
         E value;
         Node<E> prev;
@@ -71,7 +71,7 @@ public class MyLinkedList<E> implements Deque<E> {
         return true;
     }
 
-    // удаление по индексу (метод интерфейса List, в Deque его нет)
+    // удаление по индексу
     public E remove(int index) {
         if (index < 0 || index >= size) throw new IndexOutOfBoundsException();
         Node<E> node = nodeAt(index);
@@ -323,7 +323,7 @@ public class MyLinkedList<E> implements Deque<E> {
     }
 
     @Override
-    public Iterator<E> descendingIterator() {
+    public Iterator<E> descendingIterator() {  //выдает элементы множества по одному с конца
         return new Iterator<E>() {
             private Node<E> cur = last;
 
