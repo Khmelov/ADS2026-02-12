@@ -45,8 +45,28 @@ public class A_Knapsack {
             gold[i]=scanner.nextInt();
         }
 
+        boolean[] dp = new boolean[w + 1];
+        dp[0] = true;
+
+        for (int i = 0; i <= w; i++) {
+            if (dp[i]) {
+                for (int j = 0; j < n; j++) {
+                    int nextWeight = i + gold[j];
+                    if (nextWeight <= w) {
+                        dp[nextWeight] = true;
+                    }
+                }
+            }
+        }
 
         int result = 0;
+        for (int i = w; i >= 0; i--) {
+            if (dp[i]) {
+                result = i;
+                break;
+            }
+        }
+
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
