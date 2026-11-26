@@ -1,4 +1,4 @@
-package by.it.group551001.mousik_aleksey.lesson01;
+package by.it.group510901.rusilevich;
 
 /*
  * Даны целые числа 1<=n<=1E18 и 2<=m<=1E5,
@@ -24,28 +24,35 @@ public class FiboC {
     long fasterC(long n, int m) {
         //Интуитивно найти решение не всегда просто и
         //возможно потребуется дополнительный поиск информации
-        long period=0;
-        long pred=0;
-        long curr=1;
-        int i = 0;
-        while (i < m * m && !(pred == 0 && curr == 1 && period > 0)) {
-            long next = (pred + curr) % m;
-            pred = curr;
-            curr = next;
-            period++;
-            i++;
-        }
-        long reduced = n % period;
-        if (reduced == 0) return 0;
-        if (reduced == 1) return 1 % m;
-        long a = 0; long b = 1;
-        for (long k = 2; k <= reduced; k++) {
+        if (m == 1) return 0;
+        if (n <= 1) return n % m;
+        long a = 0;
+        long b = 1;
+        long period = 0;
+        for (long i = 2; i <= 6L * m; i++) {
             long c = (a + b) % m;
             a = b;
             b = c;
+            if (a == 0 && b == 1) {
+                period = i - 1;
+                break;
+            }
         }
-        return b;
-        //return -1L;
+        if (period == 0) {
+            period = 6L * m;
+        }
+        long reducedN = n % period;
+        if (reducedN == 0) return 0;
+        if (reducedN == 1) return 1;
+        long f0 = 0;
+        long f1 = 1;
+        long fn = 0;
+        for (int i = 2; i <= reducedN; i++) {
+            fn = (f0 + f1) % m;
+            f0 = f1;
+            f1 = fn;
+        }
+        return fn;
     }
 
 
