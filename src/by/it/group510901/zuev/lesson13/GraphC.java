@@ -47,7 +47,8 @@ public class GraphC {
         }
 
         for (List<String> comp : components) {
-            System.out.println(String.join("", comp));
+            System.out.println(String.join(
+                    "", comp));
         }
     }
 
