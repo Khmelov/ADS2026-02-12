@@ -32,7 +32,7 @@ Sample Output:
 */
 
 
-public class C_GetInversions {
+public class C_GetInversions { /*кол-во инверсий в массиве*/
 
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = C_GetInversions.class.getResourceAsStream("dataC.txt");
@@ -41,8 +41,8 @@ public class C_GetInversions {
         System.out.print(result);
     }
 
-    private long mergeSort(int[] arr, int[] temp, int left, int right) {
-        if (left >= right) {
+    private long mergeSort(int[] arr, int[] temp, int left, int right) {/*рекурсивно раделяет массив пополам*/
+        if (left >= right) { /*сортировка соияния*/
             return 0;
         }
         int mid = left + (right - left) / 2;
@@ -53,7 +53,8 @@ public class C_GetInversions {
         return invCount;
     }
 
-    private long merge(int[] arr, int[] temp, int left, int mid, int right) {
+    private long merge(int[] arr, int[] temp, int left, int mid, int right) { /*сливает 2 отсортиртированные
+    части в одну*/
         int i = left;
         int j = mid + 1;
         int k = left;
@@ -83,7 +84,7 @@ public class C_GetInversions {
         return invCount;
     }
 
-    int calc(InputStream stream) throws FileNotFoundException {
+    int calc(InputStream stream) throws FileNotFoundException { /*считает размер массива н и сами числа*/
         Scanner scanner = new Scanner(stream);
         int n = scanner.nextInt();
         int[] a = new int[n];

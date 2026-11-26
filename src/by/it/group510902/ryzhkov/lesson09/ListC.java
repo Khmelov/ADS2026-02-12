@@ -17,8 +17,6 @@ public class ListC<E> implements List<E> {
     ////// Обязательные к реализации методы ///////
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
-    private final int DEFAULT_CAPACITY = 10;
-
     private Object[] elements;
     private int size;
 
@@ -29,7 +27,7 @@ public class ListC<E> implements List<E> {
     }
 
     public ListC() {
-        elements = new Object[DEFAULT_CAPACITY];
+        elements = new Object[10];
     }
 
     @Override
@@ -298,7 +296,7 @@ public class ListC<E> implements List<E> {
     @Override
     public <T> T[] toArray(T[] a) {
         if (a.length < size) {
-            return (T[]) java.util.Arrays.copyOf(elements, size, a.getClass());
+            return (T[]) Arrays.copyOf(elements, size, a.getClass());
         }
 
         System.arraycopy(elements, 0, a, 0, size);
