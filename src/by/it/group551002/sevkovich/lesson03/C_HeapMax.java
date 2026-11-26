@@ -75,7 +75,7 @@ public class C_HeapMax {
         private List<Long> heap = new ArrayList<>();
 
         // 2*i+1 - left child, 2*i+2 - right child
-        int siftDown(int i) { //просеивание вниз
+        int siftDown(int i) {
             int toSwap = i;
             while (true) {
                 if (2 * i + 1 < heap.size() && heap.get(i) < heap.get(2 * i + 1)) toSwap = 2 * i + 1;
@@ -87,7 +87,7 @@ public class C_HeapMax {
             }
         }
 
-        int siftUp(int i) { //просеивание вверх
+        int siftUp(int i) {
             long tmp;
             while (i > 0) {
                 if (heap.get((i-1)/2) > heap.get(i)){
@@ -101,17 +101,17 @@ public class C_HeapMax {
             return 0;
         }
 
-        void insert(Long value) { //вставка
-            heap.add(value);              // 1. Добавляем в конец
-            System.out.printf("Successfully inserted to %d\n", siftUp(heap.size() - 1));      // 2. "Поднимаем" новый элемент, если нужно
+        void insert(Long value) {
+            heap.add(value);
+            System.out.printf("Successfully inserted to %d\n", siftUp(heap.size() - 1));
         }
 
-        Long extractMax() { //извлечение и удаление максимума
+        Long extractMax() {
             if (heap.isEmpty()) return null;
-            Long max = heap.getFirst();       // 1. Запоминаем корень (максимум)
-            heap.set(0, heap.removeLast()); // 2. Последний → на место корня
+            Long max = heap.get(0);
+            heap.set(0, heap.remove(heap.size() - 1));
             if (!heap.isEmpty()) {
-                System.out.printf("Succesfully extracted and new root is sifted to %d!\n", siftDown(0));              // 3. "Опускаем" новый корень, если нужно
+                System.out.printf("Succesfully extracted and new root is sifted to %d!\n", siftDown(0));
             }
             return max;
         }
