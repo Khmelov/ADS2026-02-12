@@ -73,7 +73,7 @@ public class StatesHanoiTowerC {
         sizes = new int[3];
         stepCount = 0;
 
-        int total = Math.powExact(2, N) - 1;
+        int total = (1 << N) - 1;
         heights = new int[total];
 
         sizes[0] = N;
